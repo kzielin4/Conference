@@ -1,4 +1,6 @@
 package Zielinski.Kamil.Model;
+import java.sql.Timestamp;
+
 /**
  * 
  */
@@ -8,15 +10,15 @@ public class Speaker
 {
 	private int idSpeaker;
 	private String firstName;
-	private String secoundName;
-	private Data arrivalDate;
-	private Data departureDate;
+	private String secondName;
+	private Timestamp arrivalDate;
+	private Timestamp departureDate;
 
-	public Speaker(String firstName, String secoundName, Data arrivalDate, Data departureDate)
+	public Speaker(String firstName, String secoundName, Timestamp arrivalDate, Timestamp departureDate)
 	{
 		super();
 		this.firstName = firstName;
-		this.secoundName = secoundName;
+		this.secondName = secoundName;
 		this.arrivalDate = arrivalDate;
 		this.departureDate = departureDate;
 	}
@@ -31,32 +33,32 @@ public class Speaker
 		this.firstName = firstName;
 	}
 
-	public String getSecoundName()
+	public String getSecondName()
 	{
-		return secoundName;
+		return secondName;
 	}
 
-	public void setSecoundName(String secoundName)
+	public void setSecondName(String secoundName)
 	{
-		this.secoundName = secoundName;
+		this.secondName = secoundName;
 	}
 
-	public Data getArrivalDate()
+	public Timestamp getArrivalDate()
 	{
 		return arrivalDate;
 	}
 
-	public void setArrivalDate(Data arrivalDate)
+	public void setArrivalDate(Timestamp arrivalDate)
 	{
 		this.arrivalDate = arrivalDate;
 	}
 
-	public Data getDepartureDate()
+	public Timestamp getDepartureDate()
 	{
 		return departureDate;
 	}
 
-	public void setDepartureDate(Data departureDate)
+	public void setDepartureDate(Timestamp departureDate)
 	{
 		this.departureDate = departureDate;
 	}

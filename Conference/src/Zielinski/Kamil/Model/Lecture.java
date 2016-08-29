@@ -6,7 +6,16 @@ public class Lecture
 	private String thema;
 	private int speakerNumber;
 	private int sessionNumber;
-   
+
+	public Lecture(int idLecture, String thema, int speakerNumber, int sessionNumber)
+	{
+		super();
+		this.idLecture = idLecture;
+		this.thema = thema;
+		this.speakerNumber = speakerNumber;
+		this.sessionNumber = sessionNumber;
+	}
+
 	public String getThema()
 	{
 		return thema;

@@ -27,6 +27,28 @@ public class DBConnector
 			System.out.println(ex);
 		}
 	}
+	public ResultSet executeQuery(String query) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		Savepoint sp = connection.setSavepoint();
+		ResultSet rset=null;
+		try
+		{
+			stmt = connection.createStatement();
+			rset = stmt.executeQuery(query);
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		finally
+		{
+			return rset;
+		}
+	}
+	
 	public Session getSession(int id) throws SQLException
 	{
 		java.sql.Statement stmt = null;
@@ -46,14 +68,13 @@ public class DBConnector
 				Timestamp timestamp2 = rset.getTimestamp(4);
 				System.out.println("ID: " + name + "    " + timestamp1 + "    " + timestamp1);
 				tempSession = new Session(idx, null, timestamp1, timestamp2, name);
-
 			}
 
 		}
 		catch (SQLException ex)
 		{
 			ex.printStackTrace();
-			System.out.println("Wyjatek");
+			System.out.println(ex);
 			connection.rollback(sp);
 		}
 		finally
@@ -63,22 +84,84 @@ public class DBConnector
 		}
 	}
 
-	public Speaker getSpeaker(int id)
+	public Speaker getSpeaker(int id) throws SQLException
 	{
-		return null;
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM speaker where idSpeaker=" + id + ";";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		Speaker tempSpeaker = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			if (rset.next())
+			{
+				String firstName = rset.getString(2);
+				String secoundName = rset.getString(3);
+				Timestamp arrivalDate = rset.getTimestamp(4);
+				Timestamp departureDate= rset.getTimestamp(5);
+				System.out.println("ID: " + firstName + "    " + secoundName + "    "+ arrivalDate + "    "+departureDate);
+				tempSpeaker = new Speaker(firstName, secoundName, arrivalDate, departureDate);
+			}
 
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		finally
+		{
+			// connection.commit();
+			return tempSpeaker;
+		}
 	}
 
-	public Lecture getLecture(int id)
+	public Lecture getLecture(int id) throws SQLException
 	{
-		return null;
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM speaker where idSpeaker=" + id + ";";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		Lecture tempLecture = null;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			if (rset.next())
+			{
+				//String firstName = rset.getString(2);
+				//String secoundName = rset.getString(3);
+				//Timestamp arrivalDate = rset.getTimestamp(4);
+				//Timestamp departureDate= rset.getTimestamp(5);
+				//System.out.println("ID: " + firstName + "    " + secoundName + "    "+ arrivalDate + "    "+departureDate);
+				//tempLecture = new Lecture(idLecture, thema, speakerNumber, sessionNumber);
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		finally
+		{
+			// connection.commit();
+			return tempLecture;
+		}
 
 	}
 
 	public static void main(String[] args) throws SQLException
 	{
 		DBConnector con = new DBConnector();
+		// do inserta
+		//INSERT INTO `mydb`.`speaker` (`idSpeaker`, `firstName`, `lastName`, `arrivalDate`, `departureDate`) VALUES ('1', 'Kamil', 'Zielinski', '2012-01-01', '2012-01-03');
 		con.getSession(1);
+		con.getSpeaker(3);
 	}
 
 }
