@@ -1,31 +1,44 @@
 package Zielinski.Kamil.Model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Session
 {
+
+	public Session(int idSession, ArrayList<Lecture> lectures, Timestamp beginDate, Timestamp endDate, String sessionName)
+	{
+		super();
+		this.idSession = idSession;
+		this.lectures = lectures;
+		this.beginDate = beginDate;
+		this.endDate = endDate;
+		this.sessionName = sessionName;
+	}
+
 	private int idSession;
 	private ArrayList<Lecture> lectures;
-	private Date beginDate;
-	private Date endDate;
+	private Timestamp beginDate;
+	private Timestamp endDate;
+	private String sessionName;
 
-	public Date getBeginDate()
+	public Timestamp getBeginDate()
 	{
 		return beginDate;
 	}
 
-	public void setBeginDate(Date beginDate)
+	public void setBeginDate(Timestamp beginDate)
 	{
 		this.beginDate = beginDate;
 	}
 
-	public Date getEndDate()
+	public Timestamp getEndDate()
 	{
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate)
+	public void setEndDate(Timestamp endDate)
 	{
 		this.endDate = endDate;
 	}
@@ -48,6 +61,16 @@ public class Session
 	public void setIdSession(int idSession)
 	{
 		this.idSession = idSession;
+	}
+
+	public String getSessionName()
+	{
+		return sessionName;
+	}
+
+	public void setSessionName(String sessionName)
+	{
+		this.sessionName = sessionName;
 	}
 
 }

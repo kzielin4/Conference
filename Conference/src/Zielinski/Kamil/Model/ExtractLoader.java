@@ -8,9 +8,10 @@ import java.util.ArrayList;
 public class ExtractLoader
 {
 	private ArrayList<Extract> extracts;
-
+   
 	public void read(String file)
-	{
+	{ 
+		file="Extracts/"+file;
 		try (BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
 			String line;
