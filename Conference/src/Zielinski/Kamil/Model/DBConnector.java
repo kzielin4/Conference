@@ -3,10 +3,13 @@ package Zielinski.Kamil.Model;
 import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
+
+import javax.swing.ToolTipManager;
 
 public class DBConnector
 {
@@ -27,11 +30,12 @@ public class DBConnector
 			System.out.println(ex);
 		}
 	}
+
 	public ResultSet executeQuery(String query) throws SQLException
 	{
 		java.sql.Statement stmt = null;
 		Savepoint sp = connection.setSavepoint();
-		ResultSet rset=null;
+		ResultSet rset = null;
 		try
 		{
 			stmt = connection.createStatement();
@@ -48,7 +52,7 @@ public class DBConnector
 			return rset;
 		}
 	}
-	
+
 	public Session getSession(int id) throws SQLException
 	{
 		java.sql.Statement stmt = null;
@@ -100,8 +104,9 @@ public class DBConnector
 				String firstName = rset.getString(2);
 				String secoundName = rset.getString(3);
 				Timestamp arrivalDate = rset.getTimestamp(4);
-				Timestamp departureDate= rset.getTimestamp(5);
-				System.out.println("ID: " + firstName + "    " + secoundName + "    "+ arrivalDate + "    "+departureDate);
+				Timestamp departureDate = rset.getTimestamp(5);
+				System.out.println(
+						"ID: " + firstName + "    " + secoundName + "    " + arrivalDate + "    " + departureDate);
 				tempSpeaker = new Speaker(firstName, secoundName, arrivalDate, departureDate);
 			}
 
@@ -132,12 +137,14 @@ public class DBConnector
 			ResultSet rset = stmt.executeQuery(selectString);
 			if (rset.next())
 			{
-				//String firstName = rset.getString(2);
-				//String secoundName = rset.getString(3);
-				//Timestamp arrivalDate = rset.getTimestamp(4);
-				//Timestamp departureDate= rset.getTimestamp(5);
-				//System.out.println("ID: " + firstName + "    " + secoundName + "    "+ arrivalDate + "    "+departureDate);
-				//tempLecture = new Lecture(idLecture, thema, speakerNumber, sessionNumber);
+				// String firstName = rset.getString(2);
+				// String secoundName = rset.getString(3);
+				// Timestamp arrivalDate = rset.getTimestamp(4);
+				// Timestamp departureDate= rset.getTimestamp(5);
+				// System.out.println("ID: " + firstName + " " + secoundName + "
+				// "+ arrivalDate + " "+departureDate);
+				// tempLecture = new Lecture(idLecture, thema, speakerNumber,
+				// sessionNumber);
 			}
 
 		}
@@ -155,13 +162,47 @@ public class DBConnector
 
 	}
 
+	public int addSession(Session session) throws SQLException
+	{
+		PreparedStatement insert = null;
+		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd)"+ " values (?, ?, ?, ?);";
+		Savepoint sp = connection.setSavepoint();
+		String DataString;
+		int DataInt;
+		try
+		{
+			insert = connection.prepareCall(insertString);
+			insert.setInt(1, session.getIdSession());
+			insert.setString(2, session.getSessionName());
+			insert.setTimestamp(3, session.getBeginDate());
+			insert.setTimestamp(4, session.getEndDate());
+			insert.execute();
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Duplikat klucza");
+			connection.rollback(sp);
+		}
+		finally
+		{
+			//connection.commit();
+			insert.close();
+		}
+		return 0;
+
+	}
+
 	public static void main(String[] args) throws SQLException
 	{
 		DBConnector con = new DBConnector();
 		// do inserta
-		//INSERT INTO `mydb`.`speaker` (`idSpeaker`, `firstName`, `lastName`, `arrivalDate`, `departureDate`) VALUES ('1', 'Kamil', 'Zielinski', '2012-01-01', '2012-01-03');
-		con.getSession(1);
-		con.getSpeaker(3);
+		// INSERT INTO `mydb`.`speaker` (`idSpeaker`, `firstName`, `lastName`,
+		// `arrivalDate`, `departureDate`) VALUES ('1', 'Kamil', 'Zielinski',
+		// '2012-01-01', '2012-01-03');
+		//con.getSession(1);
+		//con.getSpeaker(3);
+		System.out.println("----------------------------------------------------------");
+		//con.addSession(new Session(2, null, Timestamp.valueOf("2012-01-01 12:12:12"), Timestamp.valueOf("2012-01-03 12:12:12"), "sessionName"));
 	}
 
 }
