@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.swing.ToolTipManager;
 
@@ -127,7 +128,7 @@ public class DBConnector
 	public Lecture getLecture(int id) throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM speaker where idSpeaker=" + id + ";";
+		String selectString = "SELECT * FROM lecture where idLecture=" + id + ";";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		Lecture tempLecture = null;
@@ -165,10 +166,9 @@ public class DBConnector
 	public int addSession(Session session) throws SQLException
 	{
 		PreparedStatement insert = null;
-		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd)"+ " values (?, ?, ?, ?);";
+		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd)" + " values (?, ?, ?, ?);";
 		Savepoint sp = connection.setSavepoint();
-		String DataString;
-		int DataInt;
+		int isADD = 0;
 		try
 		{
 			insert = connection.prepareCall(insertString);
@@ -177,6 +177,7 @@ public class DBConnector
 			insert.setTimestamp(3, session.getBeginDate());
 			insert.setTimestamp(4, session.getEndDate());
 			insert.execute();
+			isADD = 1;
 		}
 		catch (SQLException ex)
 		{
@@ -185,10 +186,83 @@ public class DBConnector
 		}
 		finally
 		{
-			//connection.commit();
+			// connection.commit();
+			System.out.println("Rekord dodany");
 			insert.close();
 		}
-		return 0;
+		return isADD;
+
+	}
+
+	public int addSpeaker(Speaker speaker) throws SQLException
+	{
+		PreparedStatement insert = null;
+		String insertString = "insert into speaker (idSpeaker,firstName,secondName,arrivalDate,departureDate)"
+				+ " values (?, ?, ?, ?, ?);";
+		Savepoint sp = connection.setSavepoint();
+		int isADD = 0;
+		try
+		{
+			insert = connection.prepareCall(insertString);
+			insert.setInt(1, speaker.getIdSpeaker());
+			insert.setString(2, speaker.getFirstName());
+			insert.setString(3, speaker.getLastName());
+			insert.setTimestamp(3, speaker.getArrivalDate());
+			insert.setTimestamp(4, speaker.getDepartureDate());
+			insert.execute();
+			isADD = 1;
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Duplikat klucza");
+			connection.rollback(sp);
+		}
+		finally
+		{
+			// connection.commit();
+			System.out.println("Rekord dodany");
+			insert.close();
+		}
+		return isADD;
+	}
+
+	public ArrayList<Lecture> getAllLectureFromSession(int idx) throws SQLException
+	{
+		ArrayList<Lecture> lectures = new ArrayList<Lecture>();
+		// TODO
+		// dowalic while od getlecture i dodajemy do listy i zwracamy liste
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM lecture where idSession=" + idx + ";";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			while (rset.next())
+			{
+				// String firstName = rset.getString(2);
+				// String secoundName = rset.getString(3);
+				// Timestamp arrivalDate = rset.getTimestamp(4);
+				// Timestamp departureDate= rset.getTimestamp(5);
+				// System.out.println("ID: " + firstName + " " + secoundName + "
+				// "+ arrivalDate + " "+departureDate);
+				// tempLecture = new Lecture(idLecture, thema, speakerNumber,
+				// sessionNumber);
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		finally
+		{
+			// connection.commit();
+			return lectures;
+		}
 
 	}
 
@@ -199,10 +273,12 @@ public class DBConnector
 		// INSERT INTO `mydb`.`speaker` (`idSpeaker`, `firstName`, `lastName`,
 		// `arrivalDate`, `departureDate`) VALUES ('1', 'Kamil', 'Zielinski',
 		// '2012-01-01', '2012-01-03');
-		//con.getSession(1);
-		//con.getSpeaker(3);
+		// con.getSession(1);
+		// con.getSpeaker(3);
 		System.out.println("----------------------------------------------------------");
-		//con.addSession(new Session(2, null, Timestamp.valueOf("2012-01-01 12:12:12"), Timestamp.valueOf("2012-01-03 12:12:12"), "sessionName"));
+		// con.addSession(new Session(2, null, Timestamp.valueOf("2012-01-01
+		// 12:12:12"), Timestamp.valueOf("2012-01-03 12:12:12"),
+		// "sessionName"));
 	}
 
 }

@@ -10,7 +10,7 @@ public class Speaker
 {
 	private int idSpeaker;
 	private String firstName;
-	private String secondName;
+	private String lastName;
 	private Timestamp arrivalDate;
 	private Timestamp departureDate;
 
@@ -18,7 +18,7 @@ public class Speaker
 	{
 		super();
 		this.firstName = firstName;
-		this.secondName = secoundName;
+		this.lastName = secoundName;
 		this.arrivalDate = arrivalDate;
 		this.departureDate = departureDate;
 	}
@@ -33,14 +33,14 @@ public class Speaker
 		this.firstName = firstName;
 	}
 
-	public String getSecondName()
+	public String getLastName()
 	{
-		return secondName;
+		return lastName;
 	}
 
-	public void setSecondName(String secoundName)
+	public void setLastName(String secoundName)
 	{
-		this.secondName = secoundName;
+		this.lastName = secoundName;
 	}
 
 	public Timestamp getArrivalDate()
