@@ -3,7 +3,7 @@ package Zielinski.Kamil.App;
 import java.sql.Timestamp;
 import Zielinski.Kamil.Model.ExtractLoader;
 import Zielinski.Kamil.Model.Validator;
-
+import javafx.*;
 public class App
 {
 
