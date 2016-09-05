@@ -1,29 +1,32 @@
 package Zielinski.Kamil.Controler;
 
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Controler extends Application
+public class Controler 
 {
-	private Button button;
-
-	public void click()
+	private Button buttonValidate;
+    //private Stage logScene;
+	public void click() throws IOException
 	{
-		System.out.println("Kliknalem");
+		System.out.println("Click");
+		Stage logScene=new Stage();
+		Pane page = (Pane)FXMLLoader.load(Main.class.getResource("LogWindow.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.setTitle("LogWindow");
+		logScene.showAndWait();
+		logScene.setResizable(false);
 	}
 
-	@Override
-	public void start(Stage primaryStage)
-	{
-
-	}
-
-	public static void main(String[] args)
-	{
-		launch(args);
-	}
 
 }

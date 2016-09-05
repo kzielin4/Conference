@@ -12,7 +12,7 @@
          <image>
             <Image url="@../../../../ob1.jpg" />
          </image></ImageView>
-      <Button fx:id="buttonValidate" layoutX="238.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Speakers" />
+      <Button fx:id="buttonValidate" layoutX="238.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Speakers" onAction="#click"/>
       <Button fx:id="buttonValidate1" layoutX="434.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Lectures" />
       <Button fx:id="buttonValidate2" layoutX="42.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Sessions" />
       <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Load Extract" />
