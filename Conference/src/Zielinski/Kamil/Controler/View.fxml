@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Zielinski.Kamil.Controler.Controler">
+   <children>
+      <ImageView fitHeight="164.0" fitWidth="356.0" layoutX="166.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../ob1.jpg" />
+         </image></ImageView>
+      <Button fx:id="buttonValidate" layoutX="238.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Speakers" />
+      <Button fx:id="buttonValidate1" layoutX="434.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Lectures" />
+      <Button fx:id="buttonValidate2" layoutX="42.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Sessions" />
+      <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Load Extract" />
+      <Button fx:id="buttonValidate21" layoutX="238.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Create Conference Schedule" />
+      <Button fx:id="buttonValidate211" layoutX="434.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Export To File" />
+      <ToggleButton layoutX="434.0" layoutY="369.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="ENG/PL" />
+   </children>
+</Pane>
