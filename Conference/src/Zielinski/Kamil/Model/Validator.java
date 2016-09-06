@@ -1,14 +1,27 @@
 package Zielinski.Kamil.Model;
 
+import java.awt.List;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.xml.crypto.Data;
+
 public class Validator
 {
-	public int validate(String line)
+	public boolean validateLine(String line)
 	{
-		return 1;
+		parseLine(line);
+		return true;
+	}
+
+	public ArrayList<String> parseLine(String line)
+	{
+		ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(line.split(",")));
+		System.out.println(extractData.size());
+		return extractData;
 	}
 
 	public boolean validateName(String name)
@@ -41,10 +54,7 @@ public class Validator
 		{
 			ex.printStackTrace();
 		}
-		finally
-		{
-			return isOK;
-		}
+		return isOK;
 	}
 
 	public boolean isStringDate(String date)
@@ -58,7 +68,7 @@ public class Validator
 		}
 		catch (ParseException pe)
 		{
-			
+
 			return false;
 		}
 		return true;
