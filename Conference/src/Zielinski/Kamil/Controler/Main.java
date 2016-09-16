@@ -2,12 +2,15 @@ package Zielinski.Kamil.Controler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application
 {
@@ -28,10 +31,10 @@ public class Main extends Application
 	{
 		try
 		{
-			Pane page = (Pane) FXMLLoader.load(Main.class.getResource("View.fxml"));
+			Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("LoginWindow.fxml"));
 			Scene scene = new Scene(page);
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Conference");
+			primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.show();
 			primaryStage.setResizable(false);
 		}
