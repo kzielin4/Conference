@@ -35,17 +35,17 @@ public class Controler
 		logScene.setTitle("LogWindow");
 		logScene.show();
 		logScene.setResizable(false);
-		Stage stage= new Stage(StageStyle.UNDECORATED);
-		stage.initModality(Modality.APPLICATION_MODAL);
+		//Stage stage= new Stage(StageStyle.UNDECORATED);
+		//stage.initModality(Modality.APPLICATION_MODAL);
 		//stage = new LogStage(page, StageStyle.UNDECORATED);
-		Pane pan1 = (Pane) FXMLLoader.load(LogStage.class.getResource("NotView.fxml"));
-		Scene scene1 = new Scene(pan1);
+		//Pane pan1 = (Pane) FXMLLoader.load(LogStage.class.getResource("NotView.fxml"));
+		////Scene scene1 = new Scene(pan1);
 		//stage = new LogStage(scene1, StageStyle.UNDECORATED);
-        stage.setScene(scene1);
+        //stage.setScene(scene1);
         //stage.setSize(200, 100);
         ////stage.setAlwaysOnTop(true);
         ///stage.setLocation(1100.0,300.0);
-        stage.show();
+       // stage.show();
 	}
 
 	public void loadExtracts()

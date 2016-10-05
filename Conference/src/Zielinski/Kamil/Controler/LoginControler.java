@@ -1,7 +1,12 @@
 package Zielinski.Kamil.Controler;
 
 import java.awt.Label;
+import java.io.File;
 import java.io.IOException;
+import java.net.PasswordAuthentication;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,14 +31,12 @@ public class LoginControler
 	@FXML
 	private Label notificationLabel;
 
-	public void pokazKomunikat()
+	public void login()
 	{
 		String user = userField.getText();
 		String pass = passwordField.getText();
-		System.out.println(user);
-		System.out.println(pass);
-		//tu sie jak¹œ walidacje walnie
-		if (1 == 1)
+		// tu sie jak¹œ walidacje walnie
+		if (passwordVeryfication(new String(user), new String(pass)))
 		{
 			try
 			{
@@ -71,5 +74,33 @@ public class LoginControler
 	public void showNegativeNotification()
 	{
 		notificationLabel.setText("Invalid Username/Password");
+	}
+
+	public boolean passwordVeryfication(String user, String password)
+	{
+		String filePath = "config/UserData.csv";
+		File file = new File(filePath);
+
+		try
+		{
+			Scanner input = new Scanner(file);
+			while (input.hasNext())
+			{
+				String data = input.next();
+				ArrayList<String> userData = new ArrayList<String>(Arrays.asList(data.split(",")));				
+				if (userData.get(0).equals(user) && userData.get(1).equals(password))
+				{
+					return true;
+				}
+			}
+			input.close();
+
+		}
+		catch (IOException e)
+		{
+
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
