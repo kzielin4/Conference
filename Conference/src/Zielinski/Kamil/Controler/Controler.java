@@ -3,6 +3,7 @@ package Zielinski.Kamil.Controler;
 import java.io.IOException;
 
 import Zielinski.Kamil.Model.ExtractLoader;
+import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,10 +19,12 @@ public class Controler
 {
 	private Button buttonValidate;
 	private ExtractLoader extractLoader;
+	private TimetableSkeletonLoader timetableSkeletonLoader;
 
 	public Controler()
 	{
 		extractLoader = new ExtractLoader();
+		timetableSkeletonLoader = new TimetableSkeletonLoader();
 	}
 
 	public void click() throws IOException
@@ -35,17 +38,6 @@ public class Controler
 		logScene.setTitle("LogWindow");
 		logScene.show();
 		logScene.setResizable(false);
-		//Stage stage= new Stage(StageStyle.UNDECORATED);
-		//stage.initModality(Modality.APPLICATION_MODAL);
-		//stage = new LogStage(page, StageStyle.UNDECORATED);
-		//Pane pan1 = (Pane) FXMLLoader.load(LogStage.class.getResource("NotView.fxml"));
-		////Scene scene1 = new Scene(pan1);
-		//stage = new LogStage(scene1, StageStyle.UNDECORATED);
-        //stage.setScene(scene1);
-        //stage.setSize(200, 100);
-        ////stage.setAlwaysOnTop(true);
-        ///stage.setLocation(1100.0,300.0);
-       // stage.show();
 	}
 
 	public void loadExtracts()
@@ -53,7 +45,11 @@ public class Controler
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
 		extractLoader.executeLoading();
-
+	}
+	
+	public void loadSkeleton()
+	{
+		timetableSkeletonLoader.loadTimetableSkeleton();
 	}
 
 }

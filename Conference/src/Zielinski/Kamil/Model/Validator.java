@@ -57,7 +57,7 @@ public class Validator
 		return isOK;
 	}
 
-	public boolean isStringDate(String date)
+	public boolean isStringDateMinute(String date)
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		dateFormat.setLenient(false);
@@ -69,6 +69,50 @@ public class Validator
 		catch (ParseException pe)
 		{
 
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isStringDate(String date)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		try
+		{
+			dateFormat.parse(date.trim());
+
+		}
+		catch (ParseException pe)
+		{
+
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isStringTime(String time)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+		dateFormat.setLenient(false);
+		try
+		{
+			dateFormat.parse(time.trim());
+
+		}
+		catch (ParseException pe)
+		{
+			System.out.println("false");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isTime(String startTime, String endTime)
+	{
+
+		if (!isStringTime(startTime) || !isStringTime(endTime))
+		{
 			return false;
 		}
 		return true;
