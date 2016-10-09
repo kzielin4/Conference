@@ -13,7 +13,10 @@ public class TimetableSkeletonLoader
 	{
 		DATE, DATA
 	};
-
+    public enum EventType
+    {
+    	SESSION,PLENARY,OTHER,ERROR
+    }
 	public Validator validator;
 
 	public TimetableSkeletonLoader()
@@ -54,17 +57,24 @@ public class TimetableSkeletonLoader
 				}
 				else
 				{
-					ArrayList<String> line = new ArrayList<String>(Arrays.asList(data.split(",")));
-					if (line.get(0).length() == 11 && lineDateString!="NULL")
+					ArrayList<String> fields = new ArrayList<String>(Arrays.asList(data.split(",")));
+					if (fields.get(0).length() == 11 && lineDateString!="NULL")
 					{
-						String beginTime = line.get(0).substring(0, 5);
-						String endTime = line.get(0).substring(6, 11);
+						String beginTime = fields.get(0).substring(0, 5);
+						String endTime = fields.get(0).substring(6, 11);
 						System.out.println(beginTime + " " + endTime);
 						if(validator.isTime(beginTime, endTime))
 						{
 							Timestamp beginTimestamp=Timestamp.valueOf(lineDateString+ " "+beginTime+":00" );
 							Timestamp endTimestamp=Timestamp.valueOf(lineDateString+ " "+endTime+":00" );
-							System.out.println(beginTimestamp + " " + endTimestamp);
+							checkEvent(fields);
+						}
+						else
+						{
+							//TODO
+							/*
+							 * Obsluga bledu
+							 */
 						}
 					}
 					else
@@ -97,5 +107,35 @@ public class TimetableSkeletonLoader
 		}
 		else
 			return LineType.DATA;
+	}
+	//TOFIX
+	public EventType checkEvent(ArrayList<String> fields)
+	{
+		if(fields.size()==2)
+		{
+			if(fields.get(1).length()>7 &&((String) fields.get(1).subSequence(0,7)).toUpperCase().contains("PLENARY"))
+			{
+				System.out.println("plenary");
+				return EventType.PLENARY;
+			}
+			else
+			{
+				System.out.println("other");
+				return EventType.OTHER;
+			}
+		}
+		else
+		{
+			for (String field : fields)
+			{
+				if(fields.get(1).length()>7 && !((String) field.subSequence(0,7)).toUpperCase().contains("SESSION"))
+				{
+					System.out.println("error");
+					return EventType.ERROR;
+				}
+			}
+		}
+		System.out.println("session");
+		return EventType.SESSION;
 	}
 }
