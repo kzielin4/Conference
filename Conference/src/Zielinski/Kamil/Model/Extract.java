@@ -9,33 +9,34 @@ package Zielinski.Kamil.Model;
  */
 public class Extract
 {
-	private String line;
-	private int valid;
+	private Lecture lecture;
+	private Speaker speaker;
 
-	public Extract(String line, int valid)
+	public Extract(Lecture lecture, Speaker speaker)
 	{
 		super();
-		this.line = line;
-		this.valid = valid;
+		this.lecture = lecture;
+		this.speaker = speaker;
 	}
 
-	public String getLine()
+	public Lecture getLecture()
 	{
-		return line;
+		return lecture;
 	}
 
-	public void setLine(String line)
+	public void setLecture(Lecture lecture)
 	{
-		this.line = line;
+		this.lecture = lecture;
 	}
 
-	public int getValid()
+	public Speaker getSpeaker()
 	{
-		return valid;
+		return speaker;
 	}
 
-	public void setValid(int valid)
+	public void setSpeaker(Speaker speaker)
 	{
-		this.valid = valid;
+		this.speaker = speaker;
 	}
+
 }

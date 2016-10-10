@@ -1,11 +1,21 @@
 package Zielinski.Kamil.Model;
 
+import java.util.ArrayList;
+
 public class Lecture
 {
+	public enum LectureType{
+		N,P
+	};
+	private LectureType type;
 	private int idLecture;
 	private String thema;
+	private String extract;
+	private ArrayList<String> authorsList;
 	private int speakerNumber;
 	private int sessionNumber;
+	private boolean isAssigned;
+	private int numberInSession;
 
 	public Lecture(int idLecture, String thema, int speakerNumber, int sessionNumber)
 	{

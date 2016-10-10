@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 import javax.print.DocFlavor.STRING;
 
@@ -12,67 +14,69 @@ public class ExtractLoader
 {
 	private ArrayList<Extract> extracts;
 	private Validator validator;
-    
+
 	public ExtractLoader()
 	{
 		super();
-		extracts=new ArrayList<Extract>();
-		validator=new Validator();
-	}
-    //Main method of ExtractLoader 
-	public void executeLoading()
-	{
-		File[] files=getAllFiles("Extracts/");
-		for (File file : files)
-		{
-			ArrayList<String> extractData=readData(file.getName());
-			if(extractData.size()==0)
-			{
-				continue;
-			}
-			else
-			{
-				for(String extractLine: extractData)
-				{
-					validator.validateLine(extractLine);
-				}
-			}
-		}
-	}
-    //Method to load data from giving extract
-	public File[] getAllFiles(String direct)
-	{
-		//direct="Extracts/"+direct;
-		File directory = new File(direct);
-		File[] fList = directory.listFiles();
-		for (File file : fList)
-		{
-			if (file.isFile())
-			{
-				System.out.println(file.getAbsolutePath());
-			}
-		}
-		return fList;
+		extracts = new ArrayList<Extract>();
+		validator = new Validator();
 	}
 
-	public ArrayList<String> readData(String file)
+	// Main method of ExtractLoader
+	/*
+	 * public void executeLoading() { File[] files=getAllFiles("Extracts/"); for
+	 * (File file : files) { ArrayList<String>
+	 * extractData=readData(file.getName()); if(extractData.size()==0) {
+	 * continue; } else { for(String extractLine: extractData) {
+	 * validator.validateLine(extractLine); } } } } //Method to load data from
+	 * giving extract public File[] getAllFiles(String direct) {
+	 * //direct="Extracts/"+direct; File directory = new File(direct); File[]
+	 * fList = directory.listFiles(); for (File file : fList) { if
+	 * (file.isFile()) { System.out.println(file.getAbsolutePath()); } } return
+	 * fList; }
+	 * 
+	 * public ArrayList<String> readData(String file) { ArrayList<String>
+	 * exctractData=new ArrayList<String>(); file = "Extracts/" + file; try
+	 * (BufferedReader br = new BufferedReader(new FileReader(file))) { String
+	 * line; while ((line = br.readLine()) != null) { System.out.println(line);
+	 * exctractData.add(line); } } catch (IOException e) { System.out.println(
+	 * "CAN NOT OPEN THE PATH"); } return exctractData; }
+	 */
+	public ArrayList<Extract> loadExtracts()
 	{
-		ArrayList<String> exctractData=new ArrayList<String>();
-		file = "Extracts/" + file;
-		try (BufferedReader br = new BufferedReader(new FileReader(file)))
+		ArrayList<Extract> extractList= new ArrayList<Extract>();
+		String filePath = "Extracts/Extracts.csv";
+		File file = new File(filePath);
+		int i = 0;
+		try
 		{
-			String line;
-			while ((line = br.readLine()) != null)
+			Scanner input = new Scanner(file);
+			input.useDelimiter("\n");
+			while (input.hasNextLine())
 			{
-				System.out.println(line);
-				exctractData.add(line);
+				++i;
+				String data = input.next();
+				ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(data.split(",")));
+				System.out.println(extractData.size());
+				if (validateExtractLine(extractData))
+				{
+                   //DEVIDE AUTHORS
+					ArrayList<String> authorsList = new ArrayList<String>(Arrays.asList(extractData.get(9).split("/")));
+					//TODO
+					//TU DODAÆ WYK£ADOWCÓW
+				    //TU DODAÆ WYK£ADY
+				}
 			}
+			input.close();
+
 		}
 		catch (IOException e)
 		{
-			System.out.println("CAN NOT OPEN THE PATH");
+
+			e.printStackTrace();
 		}
-		return exctractData;
+		System.out.println(i);
+		return extractList;
 	}
 
 	public int countExtracts()
@@ -90,4 +94,79 @@ public class ExtractLoader
 		return extracts.get(idx);
 	}
 
+	// TODO
+	// ROZSZERZ O CONFIG ile ma byæ pól
+	public boolean validateExtractLine(ArrayList<String> extractData)
+	{
+		int requiredFields = 10;
+		if (extractData.size() != requiredFields)
+		{
+			return false;
+		}
+		else
+		{
+			if (!validator.isNumeric(extractData.get(0)))
+			{
+				System.out.println("id-nie");
+				// tu log o zlym formacie id
+				return false;
+			}
+			// warunek na slot ale co to jest ?
+			else if (!validator.isNumeric(extractData.get(1)))
+			{
+				System.out.println("slot-nie");
+				// tu log o zlym formacie slot
+				return false;
+			}
+			// warunek s³ownikowy streamu
+			else if (!isStream(extractData.get(2)))
+			{
+				System.out.println("stram-nie");
+				return false;
+			}
+			// warunek kategorii
+			else 
+			{
+				String categories = extractData.get(5).trim();
+				ArrayList<String> categorieList = new ArrayList<String>(Arrays.asList(categories.split("/")));
+				for (String string : categorieList)
+				{
+					//check is category filed is okej
+					if (!validator.isNumeric(string) && !isCategory(string))
+					{
+						System.out.println("categorie-nie");
+						return false;
+					}
+				}
+				
+				if(!validator.isLectureType(extractData.get(6)))
+				{
+					System.out.println("type-nie");
+					return false;
+				}
+				if(!validator.isStringDateMinute(extractData.get(7).replace(".", "-")) || !validator.isStringDateMinute(extractData.get(8).replace(".", "-")) )
+				{
+					System.out.println("data-nie");
+					return false;
+				}
+				//to trzeba bêdzie zrobiæ przy tworzeniu klasy
+				//extractData.get(7)=extractData.get(7).replace(".", "-");
+				//TODO
+				//CZY DODAÆ WALIDACJE IMION
+			}
+		}
+		System.out.println("cyfra");
+		return true;
+	}
+	private boolean isStream(String string)
+	{
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	private boolean isCategory(String string)
+	{
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

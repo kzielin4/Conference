@@ -20,6 +20,6 @@ public class App
 		// System.out.println(vali.validateDates("1920-01-01 12:12", "1920-01-01
 		// 12:11"));
         //System.out.println(vali.isStringDate("11aa111111"));
-        loader.executeLoading();
+        //loader.executeLoading();
 	}
 }

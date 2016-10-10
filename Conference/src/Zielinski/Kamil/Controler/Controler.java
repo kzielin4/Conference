@@ -44,7 +44,8 @@ public class Controler
 	{
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
-		extractLoader.executeLoading();
+		//extractLoader.executeLoading();
+		extractLoader.loadExtracts();
 	}
 	
 	public void loadSkeleton()

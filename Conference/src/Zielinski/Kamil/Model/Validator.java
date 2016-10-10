@@ -118,4 +118,29 @@ public class Validator
 		return true;
 	}
 
+	public boolean isNumeric(String value)
+	{
+		try
+		{
+			double number = Double.parseDouble(value);
+		}
+		catch (NumberFormatException nfe)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isLectureType(String type)
+	{
+		String s1 = new String("P");
+		String s2 = new String("N");
+		String s3 = new String(type);
+		if (s1.equals(s3) || s2.equals(s3))
+		{
+			return true;
+		}
+		return false;
+	}
+
 }
