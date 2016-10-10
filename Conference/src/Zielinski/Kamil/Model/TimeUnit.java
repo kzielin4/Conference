@@ -5,18 +5,26 @@ import java.sql.Timestamp;
 public class TimeUnit
 {
 	private Timestamp startTime;
-	private int duration;
-	private String timeUnitType;
-	
+	private long duration;
+	private boolean isFree;
+	private int sessionId;
+	private String unitName;
+	private Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType unitType;
+	/*public enum EventType
+	{
+		SESSION, PLENARY, OTHER, ERROR
+	}*/
 	/*
 	 * Tu mo¿na dodaæ pola dla zajêtego i wolnego miejsca i przydzielenie
-	 * */
-	public TimeUnit(Timestamp startTime, int duration, String timeUnitType)
+	 */
+	public TimeUnit(Timestamp startTime, long duration, String timeUnitType,Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType plenary)
 	{
 		super();
 		this.startTime = startTime;
 		this.duration = duration;
-		this.timeUnitType = timeUnitType;
+		this.unitName = timeUnitType;
+		this.isFree = true;
+		this.unitType=plenary;
 	}
 
 	public Timestamp getStartTime()
@@ -29,23 +37,48 @@ public class TimeUnit
 		this.startTime = startTime;
 	}
 
-	public int getDuration()
+	public long getDuration()
 	{
 		return duration;
 	}
 
-	public void setDuration(int duration)
+	public void setDuration(long duration)
 	{
 		this.duration = duration;
 	}
 
-	public String getTimeUnitType()
+	public String getUnitName()
 	{
-		return timeUnitType;
+		return unitName;
 	}
 
-	public void setTimeUnitType(String timeUnitType)
+	public void setUnitName(String timeUnitType)
 	{
-		this.timeUnitType = timeUnitType;
+		this.unitName = timeUnitType;
+	}
+	
+	public void setSession(int idxSession)
+	{
+		this.sessionId=idxSession;
+	}
+
+	public boolean isFree()
+	{
+		return isFree;
+	}
+
+	public void setFree(boolean isFree)
+	{
+		this.isFree = isFree;
+	}
+
+	public int getSessionId()
+	{
+		return sessionId;
+	}
+
+	public void setSessionId(int sessionId)
+	{
+		this.sessionId = sessionId;
 	}
 }

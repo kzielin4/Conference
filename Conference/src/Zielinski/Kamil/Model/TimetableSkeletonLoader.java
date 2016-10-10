@@ -13,10 +13,12 @@ public class TimetableSkeletonLoader
 	{
 		DATE, DATA
 	};
-    public enum EventType
-    {
-    	SESSION,PLENARY,OTHER,ERROR
-    }
+
+	public enum EventType
+	{
+		SESSION, PLENARY, OTHER, ERROR
+	}
+
 	public Validator validator;
 
 	public TimetableSkeletonLoader()
@@ -24,12 +26,13 @@ public class TimetableSkeletonLoader
 		validator = new Validator();
 	}
 
-	public boolean loadTimetableSkeleton()
+	public TimetableSkeleton loadTimetableSkeleton()
 	{
+		TimetableSkeleton skeleton = new TimetableSkeleton();
 		String filePath = "config/szkilet.csv";
 		File file = new File(filePath);
 		Timestamp lineDate;
-		String lineDateString="NULL";
+		String lineDateString = "NULL";
 		try
 		{
 			Scanner input = new Scanner(file);
@@ -42,9 +45,9 @@ public class TimetableSkeletonLoader
 					System.out.println(line.get(0));
 					if (validator.isStringDate(line.get(0)))
 					{
-						//System.out.println("okej");
-						lineDateString=line.get(0);
-						lineDate = Timestamp.valueOf(line.get(0)+ " 00:00:00");
+						// System.out.println("okej");
+						lineDateString = line.get(0);
+						lineDate = Timestamp.valueOf(line.get(0) + " 00:00:00");
 					}
 					else
 					{
@@ -58,20 +61,44 @@ public class TimetableSkeletonLoader
 				else
 				{
 					ArrayList<String> fields = new ArrayList<String>(Arrays.asList(data.split(",")));
-					if (fields.get(0).length() == 11 && lineDateString!="NULL")
+					if (fields.get(0).length() == 11 && lineDateString != "NULL")
 					{
 						String beginTime = fields.get(0).substring(0, 5);
 						String endTime = fields.get(0).substring(6, 11);
 						System.out.println(beginTime + " " + endTime);
-						if(validator.isTime(beginTime, endTime))
+						if (validator.isTime(beginTime, endTime))
 						{
-							Timestamp beginTimestamp=Timestamp.valueOf(lineDateString+ " "+beginTime+":00" );
-							Timestamp endTimestamp=Timestamp.valueOf(lineDateString+ " "+endTime+":00" );
-							checkEvent(fields);
+							Timestamp beginTimestamp = Timestamp.valueOf(lineDateString + " " + beginTime + ":00");
+							Timestamp endTimestamp = Timestamp.valueOf(lineDateString + " " + endTime + ":00");
+							long dif = (endTimestamp.getTime()) - (beginTimestamp.getTime());
+							System.out.println(dif);
+							EventType eventType = checkEvent(fields);
+							if (eventType == EventType.PLENARY)
+							{
+								skeleton.addTimeUnit(
+										new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.PLENARY));
+							}
+							else if (eventType == EventType.OTHER)
+							{
+								skeleton.addTimeUnit(new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.OTHER));
+							}
+							else if (eventType == EventType.SESSION)
+							{
+								for (int i = 1; i <= fields.size(); i++)
+								{
+									skeleton.addTimeUnit(
+											new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.SESSION));
+								}
+							}
+							else
+							{
+								// obsluga bledu
+								// return null;
+							}
 						}
 						else
 						{
-							//TODO
+							// TODO
 							/*
 							 * Obsluga bledu
 							 */
@@ -79,7 +106,7 @@ public class TimetableSkeletonLoader
 					}
 					else
 					{
-						//TODO
+						// TODO
 						/*
 						 * Obsluga bledu
 						 */
@@ -95,7 +122,7 @@ public class TimetableSkeletonLoader
 
 			e.printStackTrace();
 		}
-		return false;
+		return skeleton;
 	}
 
 	public LineType checkLineType(String line)
@@ -108,12 +135,14 @@ public class TimetableSkeletonLoader
 		else
 			return LineType.DATA;
 	}
-	//TOFIX
+
+	// TOFIX
 	public EventType checkEvent(ArrayList<String> fields)
 	{
-		if(fields.size()==2)
+		if (fields.size() == 2)
 		{
-			if(fields.get(1).length()>7 &&((String) fields.get(1).subSequence(0,7)).toUpperCase().contains("PLENARY"))
+			if (fields.get(1).length() >= 7
+					&& ((String) fields.get(1).subSequence(0, 7)).toUpperCase().contains("PLENARY"))
 			{
 				System.out.println("plenary");
 				return EventType.PLENARY;
@@ -128,7 +157,7 @@ public class TimetableSkeletonLoader
 		{
 			for (String field : fields)
 			{
-				if(fields.get(1).length()>7 && !((String) field.subSequence(0,7)).toUpperCase().contains("SESSION"))
+				if (fields.indexOf(field) != 0 && !field.toUpperCase().contains("SESSION"))
 				{
 					System.out.println("error");
 					return EventType.ERROR;
