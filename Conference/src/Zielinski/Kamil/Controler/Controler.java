@@ -2,6 +2,7 @@ package Zielinski.Kamil.Controler;
 
 import java.io.IOException;
 
+import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.ExtractLoader;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
@@ -20,11 +21,13 @@ public class Controler
 	private Button buttonValidate;
 	private ExtractLoader extractLoader;
 	private TimetableSkeletonLoader timetableSkeletonLoader;
+	private Categories categories;
 
 	public Controler()
 	{
 		extractLoader = new ExtractLoader();
 		timetableSkeletonLoader = new TimetableSkeletonLoader();
+		categories=new Categories();
 	}
 
 	public void click() throws IOException
@@ -50,7 +53,12 @@ public class Controler
 	
 	public void loadSkeleton()
 	{
+		//categories.loadCategories();
 		timetableSkeletonLoader.loadTimetableSkeleton();
+	}
+	public void loadCategories()
+	{
+		categories.loadCategories();
 	}
 
 }

@@ -16,7 +16,7 @@
       <Button fx:id="buttonValidate1" layoutX="434.0" layoutY="219.0" mnemonicParsing="false" onAction="#loadSkeleton" prefHeight="25.0" prefWidth="170.0" text="Show Lectures" />
       <Button fx:id="buttonValidate2" layoutX="42.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Sessions" />
       <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" onAction="#loadExtracts" prefHeight="25.0" prefWidth="170.0" text="Load Extract" />
-      <Button fx:id="buttonValidate21" layoutX="238.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Create Conference Schedule" />
+      <Button fx:id="buttonValidate21" layoutX="238.0" layoutY="288.0" mnemonicParsing="false" onAction="#loadCategories" prefHeight="25.0" prefWidth="170.0" text="Create Conference Schedule" />
       <Button fx:id="buttonValidate211" layoutX="434.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Export To File" />
       <ToggleButton layoutX="434.0" layoutY="369.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="ENG/PL" />
    </children>

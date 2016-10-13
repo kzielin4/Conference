@@ -14,6 +14,7 @@ public class ExtractLoader
 {
 	private ArrayList<Extract> extracts;
 	private Validator validator;
+	private Categories categories;
 
 	public ExtractLoader()
 	{
@@ -54,18 +55,23 @@ public class ExtractLoader
 			input.useDelimiter("\n");
 			while (input.hasNextLine())
 			{
-				++i;
-				String data = input.next();
+				String data = input.nextLine();
 				ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(data.split(",")));
 				System.out.println(extractData.size());
-				if (validateExtractLine(extractData))
+				if (i!=0 && validateExtractLine(extractData))
 				{
                    //DEVIDE AUTHORS
 					ArrayList<String> authorsList = new ArrayList<String>(Arrays.asList(extractData.get(9).split("/")));
+					//Lecture lecture = new Lecture(0, thema, speakerNumber, sessionNumber)
 					//TODO
 					//TU DODAÆ WYK£ADOWCÓW
 				    //TU DODAÆ WYK£ADY
 				}
+				else if(i!=0)
+				{
+					return null;
+				}
+				++i;
 			}
 			input.close();
 
@@ -111,28 +117,13 @@ public class ExtractLoader
 				// tu log o zlym formacie id
 				return false;
 			}
-			// warunek na slot ale co to jest ?
-			else if (!validator.isNumeric(extractData.get(1)))
-			{
-				System.out.println("slot-nie");
-				// tu log o zlym formacie slot
-				return false;
-			}
-			// warunek s³ownikowy streamu
-			else if (!isStream(extractData.get(2)))
-			{
-				System.out.println("stram-nie");
-				return false;
-			}
 			// warunek kategorii
 			else 
 			{
-				String categories = extractData.get(5).trim();
-				ArrayList<String> categorieList = new ArrayList<String>(Arrays.asList(categories.split("/")));
-				for (String string : categorieList)
+				for (int i=3;i<6;++i)
 				{
 					//check is category filed is okej
-					if (!validator.isNumeric(string) && !isCategory(string))
+					if (!validator.isNumeric(extractData.get(i)) && !isCategory(extractData.get(i)))
 					{
 						System.out.println("categorie-nie");
 						return false;
@@ -168,5 +159,10 @@ public class ExtractLoader
 	{
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public void setCategories(Categories categories)
+	{
+		this.categories = categories;
 	}
 }
