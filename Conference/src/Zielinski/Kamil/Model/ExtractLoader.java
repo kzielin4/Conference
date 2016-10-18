@@ -11,6 +11,9 @@ import java.util.Scanner;
 
 import javax.print.DocFlavor.STRING;
 
+import Zielinski.Kamil.Model.Lecture.LectureType;
+import Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType;
+
 public class ExtractLoader
 {
 	private ArrayList<Extract> extracts;
@@ -48,9 +51,9 @@ public class ExtractLoader
 	public ArrayList<Extract> loadExtracts()
 	{
 		categories.setCategories(categories.loadCategories());
-		if(categories.getSize()==0)
+		if (categories.getSize() == 0)
 		{
-			//tu log ze brak kategorii
+			// tu log ze brak kategorii
 			return null;
 		}
 		ArrayList<Extract> extractList = new ArrayList<Extract>();
@@ -70,10 +73,21 @@ public class ExtractLoader
 				{
 					// DEVIDE AUTHORS
 					ArrayList<String> authorsList = new ArrayList<String>(Arrays.asList(extractData.get(9).split("/")));
-					//Lecture lecture = new Lecture(idLecture, thema, speakerNumber, sessionNumber);
+					// Lecture lecture = new Lecture(idLecture, thema,
+					// speakerNumber, sessionNumber);
 					Timestamp beginTimestamp = Timestamp.valueOf(extractData.get(7).replace(".", "-") + ":00");
 					Timestamp endTimestamp = Timestamp.valueOf(extractData.get(8).replace(".", "-") + ":00");
-					Speaker speaker = new Speaker(authorsList.get(0),beginTimestamp , endTimestamp);
+					Speaker speaker = new Speaker(authorsList.get(0), beginTimestamp, endTimestamp);
+					Lecture lecture;
+					if (extractData.get(6).equals(new String("P")))
+					{
+						lecture = new Lecture(LectureType.P, extractData.get(1), extractData.get(2));
+					}
+					else
+					{
+						lecture = new Lecture(LectureType.N, extractData.get(1), extractData.get(2));
+					}
+					extractList.add(new Extract(lecture, speaker, Integer.parseInt(extractData.get(0))));
 					// TODO
 					// TU DODAÆ WYK£ADOWCÓW
 					// TU DODAÆ WYK£ADY

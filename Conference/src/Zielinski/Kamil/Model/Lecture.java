@@ -4,30 +4,29 @@ import java.util.ArrayList;
 
 public class Lecture
 {
+	public Lecture(LectureType type, String thema, String extract)
+	{
+		super();
+		this.type = type;
+		this.thema = thema;
+		this.abstractLecture = extract;
+	}
+
 	public enum LectureType
 	{
 		N, P
 	};
 
 	private LectureType type;
-	private int idLecture;
+	//private int idLecture;
 	private String thema;
-	private String extract;
-	private ArrayList<String> authorsList;
-	private int speakerNumber;
+	private String abstractLecture;
+	//private int speakerNumber;
 	private int sessionNumber;
 	private boolean isAssigned;
 	private int numberInSession;
 
-	public Lecture(int idLecture, String thema, int speakerNumber, int sessionNumber)
-	{
-		super();
-		this.idLecture = idLecture;
-		this.thema = thema;
-		this.speakerNumber = speakerNumber;
-		this.sessionNumber = sessionNumber;
-		this.isAssigned = false;
-	}
+
 
 	public String getThema()
 	{
@@ -39,7 +38,7 @@ public class Lecture
 		this.thema = thema;
 	}
 
-	public int getSpeakerNumber()
+/*	public int getSpeakerNumber()
 	{
 		return speakerNumber;
 	}
@@ -48,6 +47,16 @@ public class Lecture
 	{
 		this.speakerNumber = speakerNumber;
 	}
+	public int getIdLecture()
+	{
+		return idLecture;
+	}
+
+	public void setIdLecture(int idLecture)
+	{
+		this.idLecture = idLecture;
+	}
+	*/
 
 	public int getSessionNumber()
 	{
@@ -59,13 +68,4 @@ public class Lecture
 		this.sessionNumber = sessionNumber;
 	}
 
-	public int getIdLecture()
-	{
-		return idLecture;
-	}
-
-	public void setIdLecture(int idLecture)
-	{
-		this.idLecture = idLecture;
-	}
 }
