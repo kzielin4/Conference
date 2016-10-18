@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -21,6 +22,7 @@ public class ExtractLoader
 		super();
 		extracts = new ArrayList<Extract>();
 		validator = new Validator();
+		categories = new Categories();
 	}
 
 	// Main method of ExtractLoader
@@ -45,7 +47,13 @@ public class ExtractLoader
 	 */
 	public ArrayList<Extract> loadExtracts()
 	{
-		ArrayList<Extract> extractList= new ArrayList<Extract>();
+		categories.setCategories(categories.loadCategories());
+		if(categories.getSize()==0)
+		{
+			//tu log ze brak kategorii
+			return null;
+		}
+		ArrayList<Extract> extractList = new ArrayList<Extract>();
 		String filePath = "Extracts/Extracts.csv";
 		File file = new File(filePath);
 		int i = 0;
@@ -58,17 +66,21 @@ public class ExtractLoader
 				String data = input.nextLine();
 				ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(data.split(",")));
 				System.out.println(extractData.size());
-				if (i!=0 && validateExtractLine(extractData))
+				if (i != 0 && validateExtractLine(extractData))
 				{
-                   //DEVIDE AUTHORS
+					// DEVIDE AUTHORS
 					ArrayList<String> authorsList = new ArrayList<String>(Arrays.asList(extractData.get(9).split("/")));
-					//Lecture lecture = new Lecture(0, thema, speakerNumber, sessionNumber)
-					//TODO
-					//TU DODAÆ WYK£ADOWCÓW
-				    //TU DODAÆ WYK£ADY
+					//Lecture lecture = new Lecture(idLecture, thema, speakerNumber, sessionNumber);
+					Timestamp beginTimestamp = Timestamp.valueOf(extractData.get(7).replace(".", "-") + ":00");
+					Timestamp endTimestamp = Timestamp.valueOf(extractData.get(8).replace(".", "-") + ":00");
+					Speaker speaker = new Speaker(authorsList.get(0),beginTimestamp , endTimestamp);
+					// TODO
+					// TU DODAÆ WYK£ADOWCÓW
+					// TU DODAÆ WYK£ADY
 				}
-				else if(i!=0)
+				else if (i != 0)
 				{
+					System.out.println(i);
 					return null;
 				}
 				++i;
@@ -118,37 +130,38 @@ public class ExtractLoader
 				return false;
 			}
 			// warunek kategorii
-			else 
+			else
 			{
-				for (int i=3;i<6;++i)
+				for (int i = 3; i < 6; ++i)
 				{
-					//check is category filed is okej
-					if (!validator.isNumeric(extractData.get(i)) && !isCategory(extractData.get(i)))
+					// check is category filed is okej
+					if (!validator.isNumeric(extractData.get(i)) || !isCategory(extractData.get(i)))
 					{
 						System.out.println("categorie-nie");
 						return false;
 					}
 				}
-				
-				if(!validator.isLectureType(extractData.get(6)))
+
+				if (!validator.isLectureType(extractData.get(6)))
 				{
 					System.out.println("type-nie");
 					return false;
 				}
-				if(!validator.isStringDateMinute(extractData.get(7).replace(".", "-")) || !validator.isStringDateMinute(extractData.get(8).replace(".", "-")) )
+				if (!validator.isStringDateMinute(extractData.get(7).replace(".", "-"))
+						|| !validator.isStringDateMinute(extractData.get(8).replace(".", "-")))
 				{
 					System.out.println("data-nie");
 					return false;
 				}
-				//to trzeba bêdzie zrobiæ przy tworzeniu klasy
-				//extractData.get(7)=extractData.get(7).replace(".", "-");
-				//TODO
-				//CZY DODAÆ WALIDACJE IMION
+				// to trzeba bêdzie zrobiæ przy tworzeniu klasy
+				// extractData.get(7)=extractData.get(7).replace(".", "-");
+				// TODO
+				// CZY DODAÆ WALIDACJE IMION
 			}
 		}
-		System.out.println("cyfra");
 		return true;
 	}
+
 	private boolean isStream(String string)
 	{
 		// TODO Auto-generated method stub
@@ -157,8 +170,12 @@ public class ExtractLoader
 
 	private boolean isCategory(String string)
 	{
-		// TODO Auto-generated method stub
-		return true;
+		int num = Integer.parseInt(string);
+		if (categories.isCategory(num))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public void setCategories(Categories categories)

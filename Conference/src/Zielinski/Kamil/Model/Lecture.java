@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class Lecture
 {
-	public enum LectureType{
-		N,P
+	public enum LectureType
+	{
+		N, P
 	};
+
 	private LectureType type;
 	private int idLecture;
 	private String thema;
@@ -24,6 +26,7 @@ public class Lecture
 		this.thema = thema;
 		this.speakerNumber = speakerNumber;
 		this.sessionNumber = sessionNumber;
+		this.isAssigned = false;
 	}
 
 	public String getThema()

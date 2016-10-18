@@ -108,7 +108,7 @@ public class DBConnector
 				Timestamp departureDate = rset.getTimestamp(5);
 				System.out.println(
 						"ID: " + firstName + "    " + secoundName + "    " + arrivalDate + "    " + departureDate);
-				tempSpeaker = new Speaker(firstName, secoundName, arrivalDate, departureDate);
+				//tempSpeaker = new Speaker(firstName, secoundName, arrivalDate, departureDate);
 			}
 
 		}

@@ -6,4 +6,5 @@ public class Conference
 {
    private TimetableSkeleton timetableSkeleton;
    private ArrayList<Session> sessions;
+   private ArrayList<Extract> extracts;
 }

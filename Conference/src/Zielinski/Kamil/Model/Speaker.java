@@ -9,38 +9,16 @@ import javax.xml.crypto.Data;
 public class Speaker
 {
 	private int idSpeaker;
-	private String firstName;
-	private String lastName;
+	private String firstAndSecondName;
 	private Timestamp arrivalDate;
 	private Timestamp departureDate;
 
-	public Speaker(String firstName, String secoundName, Timestamp arrivalDate, Timestamp departureDate)
+	public Speaker(String firstAndSecondName, Timestamp arrivalDate, Timestamp departureDate)
 	{
 		super();
-		this.firstName = firstName;
-		this.lastName = secoundName;
+		this.firstAndSecondName = firstAndSecondName;
 		this.arrivalDate = arrivalDate;
 		this.departureDate = departureDate;
-	}
-
-	public String getFirstName()
-	{
-		return firstName;
-	}
-
-	public void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
-
-	public String getLastName()
-	{
-		return lastName;
-	}
-
-	public void setLastName(String secoundName)
-	{
-		this.lastName = secoundName;
 	}
 
 	public Timestamp getArrivalDate()
@@ -71,5 +49,19 @@ public class Speaker
 	public void setIdSpeaker(int idSpeaker)
 	{
 		this.idSpeaker = idSpeaker;
+	}
+
+
+
+	public String getFirstAndSecondName()
+	{
+		return firstAndSecondName;
+	}
+
+
+
+	public void setFirstAndSecondName(String firstAndSecondName)
+	{
+		this.firstAndSecondName = firstAndSecondName;
 	}
 }
