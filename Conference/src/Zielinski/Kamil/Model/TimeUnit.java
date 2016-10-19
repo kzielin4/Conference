@@ -2,30 +2,70 @@ package Zielinski.Kamil.Model;
 
 import java.sql.Timestamp;
 
+import Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType;
+
 public class TimeUnit
 {
 	private Timestamp startTime;
 	private long duration;
 	private boolean isFree;
 	private int sessionId;
+	private Settings settings;
 	private String unitName;
+	private int maxLectureInUnit;
 	private Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType unitType;
-	/*public enum EventType
-	{
-		SESSION, PLENARY, OTHER, ERROR
-	}*/
+
+	/*
+	 * public enum EventType { SESSION, PLENARY, OTHER, ERROR }
+	 */
 	/*
 	 * Tu mo¿na dodaæ pola dla zajêtego i wolnego miejsca i przydzielenie
 	 */
-	public TimeUnit(Timestamp startTime, long duration, String timeUnitType,Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType plenary)
+	public TimeUnit(Timestamp startTime, long duration, String timeUnitType,
+			Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType type)
 	{
 		super();
 		this.startTime = startTime;
 		this.duration = duration;
 		this.unitName = timeUnitType;
 		this.isFree = true;
-		this.unitType=plenary;
+		this.unitType = type;
+		this.settings = new Settings();
+		this.maxLectureInUnit=-2;
 	}
+
+	public int setMaxLectureInUnit()
+    {
+    	if(unitType==EventType.PLENARY)
+    	{
+    		if(getMinuteDuration()<settings.getMinutePerPlenaryLecture())
+    		{
+    			return 0;
+    		}
+    		else
+    		{
+    			maxLectureInUnit=getMinuteDuration()/settings.getMinutePerPlenaryLecture();
+    			return maxLectureInUnit;
+    		}
+    	}
+    	else if(unitType==EventType.SESSION)
+		{
+    		if(getMinuteDuration()<settings.getMinutePerLecture())
+    		{
+    			return 0;
+    		}
+    		else
+    		{
+    			maxLectureInUnit=getMinuteDuration()/settings.getMinutePerLecture();
+    			return maxLectureInUnit;
+    		}
+		}
+    	else
+    	{
+    		maxLectureInUnit=-1;
+    		return -1;
+    	}
+    }
 
 	public Timestamp getStartTime()
 	{
@@ -42,6 +82,11 @@ public class TimeUnit
 		return duration;
 	}
 
+	public int getMinuteDuration()
+	{
+		return (int) (duration / 60000);
+	}
+
 	public void setDuration(long duration)
 	{
 		this.duration = duration;
@@ -56,10 +101,10 @@ public class TimeUnit
 	{
 		this.unitName = timeUnitType;
 	}
-	
+
 	public void setSession(int idxSession)
 	{
-		this.sessionId=idxSession;
+		this.sessionId = idxSession;
 	}
 
 	public boolean isFree()
