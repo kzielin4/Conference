@@ -126,4 +126,14 @@ public class TimeUnit
 	{
 		this.sessionId = sessionId;
 	}
+
+	public Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType getUnitType()
+	{
+		return unitType;
+	}
+
+	public void setUnitType(Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType unitType)
+	{
+		this.unitType = unitType;
+	}
 }

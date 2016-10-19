@@ -68,7 +68,6 @@ public class ExtractLoader
 			{
 				String data = input.nextLine();
 				ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(data.split(",")));
-				System.out.println(extractData.size());
 				if (i != 0 && validateExtractLine(extractData))
 				{
 					// DEVIDE AUTHORS
@@ -94,7 +93,6 @@ public class ExtractLoader
 				}
 				else if (i != 0)
 				{
-					System.out.println(i);
 					return null;
 				}
 				++i;
@@ -107,7 +105,6 @@ public class ExtractLoader
 
 			e.printStackTrace();
 		}
-		System.out.println(i);
 		return extractList;
 	}
 

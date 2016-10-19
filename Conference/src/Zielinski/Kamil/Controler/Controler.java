@@ -3,7 +3,9 @@ package Zielinski.Kamil.Controler;
 import java.io.IOException;
 
 import Zielinski.Kamil.Model.Categories;
+import Zielinski.Kamil.Model.Conference;
 import Zielinski.Kamil.Model.ExtractLoader;
+import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
@@ -22,12 +24,13 @@ public class Controler
 	private ExtractLoader extractLoader;
 	private TimetableSkeletonLoader timetableSkeletonLoader;
 	private Categories categories;
-
+    private Conference conference;
 	public Controler()
 	{
 		extractLoader = new ExtractLoader();
 		timetableSkeletonLoader = new TimetableSkeletonLoader();
 		categories=new Categories();
+		conference = new Conference();
 	}
 
 	public void click() throws IOException
@@ -54,7 +57,11 @@ public class Controler
 	public void loadSkeleton()
 	{
 		//categories.loadCategories();
-		timetableSkeletonLoader.loadTimetableSkeleton();
+		//timetableSkeletonLoader.loadTimetableSkeleton();
+//		TimetableSkeleton sk=new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
+		TimetableSkeleton sk = new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
+		System.out.println("lol");
+		System.out.println("ILOŒÆ:  "+ sk.countSessionUnits() );
 	}
 	public void loadCategories()
 	{

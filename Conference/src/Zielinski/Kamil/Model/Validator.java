@@ -20,7 +20,7 @@ public class Validator
 	public ArrayList<String> parseLine(String line)
 	{
 		ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(line.split(",")));
-		System.out.println(extractData.size());
+		//System.out.println(extractData.size());
 		return extractData;
 	}
 

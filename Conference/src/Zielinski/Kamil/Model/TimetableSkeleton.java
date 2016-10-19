@@ -2,13 +2,22 @@ package Zielinski.Kamil.Model;
 
 import java.util.ArrayList;
 
+import Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType;
+
 public class TimetableSkeleton
 {
+	public TimetableSkeleton(TimetableSkeleton skeleton)
+	{
+		super();
+		this.timeUnits = skeleton.getTimeUnits();
+	}
+
 	// list of time blocks
 	private ArrayList<TimeUnit> timeUnits;
-    /**
-     * Main constructor
-     */
+
+	/**
+	 * Main constructor
+	 */
 	public TimetableSkeleton()
 	{
 		timeUnits = new ArrayList<TimeUnit>();
@@ -44,5 +53,55 @@ public class TimetableSkeleton
 	public void setSession(int idxUnit, int idxSession)
 	{
 		timeUnits.get(idxUnit).setSession(idxSession);
+	}
+
+	public int countSessionUnits()
+	{
+		int sum = 0;
+		if (timeUnits.size() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			for (TimeUnit timeUnit : timeUnits)
+			{
+				if (timeUnit.getUnitType() == EventType.SESSION)
+				{
+					sum += 1;
+				}
+			}
+		}
+		return sum;
+	}
+
+	public int countPlenaryUnits()
+	{
+		int sum = 0;
+		if (timeUnits.size() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			for (TimeUnit timeUnit : timeUnits)
+			{
+				if (timeUnit.getUnitType() == EventType.PLENARY)
+				{
+					sum += 1;
+				}
+			}
+		}
+		return sum;
+	}
+
+	public ArrayList<TimeUnit> getTimeUnits()
+	{
+		return timeUnits;
+	}
+
+	public void setTimeUnits(ArrayList<TimeUnit> timeUnits)
+	{
+		this.timeUnits = timeUnits;
 	}
 }

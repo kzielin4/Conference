@@ -42,7 +42,6 @@ public class TimetableSkeletonLoader
 				if (this.checkLineType(data) == LineType.DATE)
 				{
 					ArrayList<String> line = new ArrayList<String>(Arrays.asList(data.split(",")));
-					System.out.println(line.get(0));
 					if (validator.isStringDate(line.get(0)))
 					{
 						// System.out.println("okej");
@@ -75,19 +74,23 @@ public class TimetableSkeletonLoader
 							EventType eventType = checkEvent(fields);
 							if (eventType == EventType.PLENARY)
 							{
+								System.out.println("plenary");
 								skeleton.addTimeUnit(
 										new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.PLENARY));
 							}
 							else if (eventType == EventType.OTHER)
 							{
+								System.out.println("other");
 								skeleton.addTimeUnit(new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.OTHER));
 							}
 							else if (eventType == EventType.SESSION)
 							{
-								for (int i = 1; i <= fields.size(); i++)
+								for (int i = 1; i < fields.size(); i++)
 								{
+									//System.out.println("session");
+									System.out.println(fields.get(i));
 									skeleton.addTimeUnit(
-											new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.SESSION));
+											new TimeUnit(beginTimestamp, dif, fields.get(i), EventType.SESSION));
 								}
 							}
 							else
@@ -144,12 +147,12 @@ public class TimetableSkeletonLoader
 			if (fields.get(1).length() >= 7
 					&& ((String) fields.get(1).subSequence(0, 7)).toUpperCase().contains("PLENARY"))
 			{
-				System.out.println("plenary");
+
 				return EventType.PLENARY;
 			}
 			else
 			{
-				System.out.println("other");
+
 				return EventType.OTHER;
 			}
 		}
@@ -159,12 +162,12 @@ public class TimetableSkeletonLoader
 			{
 				if (fields.indexOf(field) != 0 && !field.toUpperCase().contains("SESSION"))
 				{
-					System.out.println("error");
+
 					return EventType.ERROR;
 				}
 			}
 		}
-		System.out.println("session");
+
 		return EventType.SESSION;
 	}
 }

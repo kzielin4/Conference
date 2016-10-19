@@ -38,25 +38,6 @@ public class Lecture
 		this.thema = thema;
 	}
 
-/*	public int getSpeakerNumber()
-	{
-		return speakerNumber;
-	}
-
-	public void setSpeakerNumber(int speakerNumber)
-	{
-		this.speakerNumber = speakerNumber;
-	}
-	public int getIdLecture()
-	{
-		return idLecture;
-	}
-
-	public void setIdLecture(int idLecture)
-	{
-		this.idLecture = idLecture;
-	}
-	*/
 
 	public int getSessionNumber()
 	{
@@ -66,6 +47,11 @@ public class Lecture
 	public void setSessionNumber(int sessionNumber)
 	{
 		this.sessionNumber = sessionNumber;
+	}
+
+	public LectureType getType()
+	{
+		return type;
 	}
 
 }

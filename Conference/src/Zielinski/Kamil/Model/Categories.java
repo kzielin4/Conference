@@ -73,7 +73,6 @@ public class Categories
 				i = i + 1;
 			}
 			input.close();
-			System.out.println("lol");
 
 		}
 		catch (IOException e)
@@ -107,7 +106,6 @@ public class Categories
 		{
 			if (categories.get(i).getIdCategory()==categoryNumber)
 			{
-				System.out.println(categoryNumber);
 				return true;
 			}
 		}
