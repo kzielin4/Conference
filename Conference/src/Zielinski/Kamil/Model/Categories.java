@@ -16,7 +16,7 @@ public class Categories
 	public Categories(ArrayList<Category> categories)
 	{
 		super();
-		this.categories = categories;
+		this.categories = new ArrayList<Category>(categories);
 		validator = new Validator();
 	}
 

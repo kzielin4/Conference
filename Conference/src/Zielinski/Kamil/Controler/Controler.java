@@ -5,6 +5,7 @@ import java.io.IOException;
 import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.Conference;
 import Zielinski.Kamil.Model.ExtractLoader;
+import Zielinski.Kamil.Model.Scheduler;
 import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
@@ -24,12 +25,13 @@ public class Controler
 	private ExtractLoader extractLoader;
 	private TimetableSkeletonLoader timetableSkeletonLoader;
 	private Categories categories;
-    private Conference conference;
+	private Conference conference;
+
 	public Controler()
 	{
 		extractLoader = new ExtractLoader();
 		timetableSkeletonLoader = new TimetableSkeletonLoader();
-		categories=new Categories();
+		categories = new Categories();
 		conference = new Conference();
 	}
 
@@ -50,19 +52,39 @@ public class Controler
 	{
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
-		//extractLoader.executeLoading();
-		extractLoader.loadExtracts();
+		// extractLoader.executeLoading();
+		conference.setExtracts(extractLoader.loadExtracts());
+		TimetableSkeleton sk = new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
+		System.out.println("CONF: " + conference.countNormalLecture());
+		System.out.println("ILOŒÆ:  " + sk.countMaxNormalLectureInUnits());
+		if (conference.countNormalLecture() > sk.countMaxNormalLectureInUnits()
+				|| conference.countPlenaryLecture() > sk.countMaxPlenaryLectureInUnits())
+		{
+			// tu jakiœ b³¹d
+		}
+		conference.setTimetableSkeleton(sk);
+		conference.initNormalSessions();
+		genetic(conference);
+
 	}
-	
+
+	public void genetic(Conference conf)
+	{
+		System.out.println(conference.sessionSize());
+		Scheduler schedul = new Scheduler(conf);
+		schedul.initPopulation();
+	}
 	public void loadSkeleton()
 	{
-		//categories.loadCategories();
-		//timetableSkeletonLoader.loadTimetableSkeleton();
-//		TimetableSkeleton sk=new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
+		// categories.loadCategories();
+		// timetableSkeletonLoader.loadTimetableSkeleton();
+		// TimetableSkeleton sk=new
+		// TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
 		TimetableSkeleton sk = new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
 		System.out.println("lol");
-		System.out.println("ILOŒÆ:  "+ sk.countSessionUnits() );
+		System.out.println("ILOŒÆ:  " + sk.countSessionUnits());
 	}
+
 	public void loadCategories()
 	{
 		categories.loadCategories();

@@ -61,7 +61,7 @@ public class DBConnector
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		Session tempSession = null;
-		try
+		/*try
 		{
 			stmt = connection.createStatement();
 			ResultSet rset = stmt.executeQuery(selectString);
@@ -87,6 +87,8 @@ public class DBConnector
 			// connection.commit();
 			return tempSession;
 		}
+		*/
+		return tempSession;
 	}
 
 	public Speaker getSpeaker(int id) throws SQLException
@@ -201,7 +203,7 @@ public class DBConnector
 				+ " values (?, ?, ?, ?, ?);";
 		Savepoint sp = connection.setSavepoint();
 		int isADD = 0;
-		try
+		/*try
 		{
 			insert = connection.prepareCall(insertString);
 			insert.setInt(1, speaker.getIdSpeaker());
@@ -222,7 +224,7 @@ public class DBConnector
 			// connection.commit();
 			System.out.println("Rekord dodany");
 			insert.close();
-		}
+		}*/
 		return isADD;
 	}
 

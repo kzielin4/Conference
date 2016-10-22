@@ -31,7 +31,7 @@ public class TimeUnit
 		this.isFree = true;
 		this.unitType = type;
 		this.settings = new Settings();
-		this.maxLectureInUnit=-2;
+		setMaxLectureInUnit();
 	}
 
 	public int setMaxLectureInUnit()
@@ -136,4 +136,11 @@ public class TimeUnit
 	{
 		this.unitType = unitType;
 	}
+
+	public int getMaxLectureInUnit()
+	{
+		return maxLectureInUnit;
+	}
+
+	
 }

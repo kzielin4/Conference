@@ -3,6 +3,8 @@ package Zielinski.Kamil.Model;
 import java.util.ArrayList;
 
 import Zielinski.Kamil.Model.Lecture.LectureType;
+import Zielinski.Kamil.Model.Session.SessionType;
+import Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType;
 
 public class Conference
 {
@@ -73,11 +75,11 @@ public class Conference
 	{
 		this.isComplited = isComplited;
 	}
-	
+
 	public int countNormalLecture()
 	{
-		int sum=0;
-		if(extracts.size()==0)
+		int sum = 0;
+		if (extracts.size() == 0)
 		{
 			return 0;
 		}
@@ -85,32 +87,75 @@ public class Conference
 		{
 			for (Extract extract : extracts)
 			{
-				if (extract.getLecture().getType()==LectureType.N)
+				if (extract.getLecture().getType() == LectureType.N)
 				{
-					sum=sum+1;
-				}
-			}
-		}
-		return sum;
-	}
-	public int countPlenaryLecture()
-	{
-		int sum=0;
-		if(extracts.size()==0)
-		{
-			return 0;
-		}
-		else
-		{
-			for (Extract extract : extracts)
-			{
-				if (extract.getLecture().getType()==LectureType.P)
-				{
-					sum=sum+1;
+					sum = sum + 1;
 				}
 			}
 		}
 		return sum;
 	}
 
+	public int countPlenaryLecture()
+	{
+		int sum = 0;
+		if (extracts.size() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			for (Extract extract : extracts)
+			{
+				if (extract.getLecture().getType() == LectureType.P)
+				{
+					sum = sum + 1;
+				}
+			}
+		}
+		return sum;
+	}
+
+	public void initNormalSessions()
+	{
+		for (TimeUnit unit : timetableSkeleton.getTimeUnits())
+		{
+			if (unit.getUnitType() == EventType.SESSION)
+			{
+				sessions.add(new Session(sessions.size() - 1, unit.getStartTime(), unit.getMaxLectureInUnit(),
+						SessionType.SESSION));
+			}
+		}
+	}
+
+	public int sessionSize()
+	{
+		return sessions.size();
+	}
+
+	public long fitFunction()
+	{
+		long fit = 0;
+		return fit;
+	}
+
+	public ArrayList<Integer> getExtractIdList()
+	{
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for (Extract extract : extracts)
+		{
+			list.add(new Integer(extract.getIdExtract()));
+		}
+		return list;
+	}
+
+	public ArrayList<Boolean> getFalseList()
+	{
+		ArrayList<Boolean> list = new ArrayList<Boolean>();
+		for (Extract extract : extracts)
+		{
+			list.add(new Boolean(false));
+		}
+		return list;
+	}
 }

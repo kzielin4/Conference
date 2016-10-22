@@ -28,26 +28,6 @@ public class ExtractLoader
 		categories = new Categories();
 	}
 
-	// Main method of ExtractLoader
-	/*
-	 * public void executeLoading() { File[] files=getAllFiles("Extracts/"); for
-	 * (File file : files) { ArrayList<String>
-	 * extractData=readData(file.getName()); if(extractData.size()==0) {
-	 * continue; } else { for(String extractLine: extractData) {
-	 * validator.validateLine(extractLine); } } } } //Method to load data from
-	 * giving extract public File[] getAllFiles(String direct) {
-	 * //direct="Extracts/"+direct; File directory = new File(direct); File[]
-	 * fList = directory.listFiles(); for (File file : fList) { if
-	 * (file.isFile()) { System.out.println(file.getAbsolutePath()); } } return
-	 * fList; }
-	 * 
-	 * public ArrayList<String> readData(String file) { ArrayList<String>
-	 * exctractData=new ArrayList<String>(); file = "Extracts/" + file; try
-	 * (BufferedReader br = new BufferedReader(new FileReader(file))) { String
-	 * line; while ((line = br.readLine()) != null) { System.out.println(line);
-	 * exctractData.add(line); } } catch (IOException e) { System.out.println(
-	 * "CAN NOT OPEN THE PATH"); } return exctractData; }
-	 */
 	public ArrayList<Extract> loadExtracts()
 	{
 		categories.setCategories(categories.loadCategories());
@@ -86,7 +66,7 @@ public class ExtractLoader
 					{
 						lecture = new Lecture(LectureType.N, extractData.get(1), extractData.get(2));
 					}
-					extractList.add(new Extract(lecture, speaker, Integer.parseInt(extractData.get(0))));
+					extractList.add(new Extract(lecture, speaker, Integer.parseInt(extractData.get(0)),Integer.parseInt(extractData.get(3)),Integer.parseInt(extractData.get(4)),Integer.parseInt(extractData.get(5))));
 					// TODO
 					// TU DODAÆ WYK£ADOWCÓW
 					// TU DODAÆ WYK£ADY

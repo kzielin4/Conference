@@ -104,4 +104,42 @@ public class TimetableSkeleton
 	{
 		this.timeUnits = timeUnits;
 	}
+	public int countMaxNormalLectureInUnits()
+	{
+		int sum = 0;
+		if (timeUnits.size() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			for (TimeUnit timeUnit : timeUnits)
+			{
+				if (timeUnit.getUnitType() == EventType.SESSION)
+				{
+					sum = sum + timeUnit.getMaxLectureInUnit();
+				}
+			}
+		}
+		return sum;
+	}
+	public int countMaxPlenaryLectureInUnits()
+	{
+		int sum = 0;
+		if (timeUnits.size() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			for (TimeUnit timeUnit : timeUnits)
+			{
+				if (timeUnit.getUnitType() == EventType.SESSION)
+				{
+					sum = sum + timeUnit.getMaxLectureInUnit();
+				}
+			}
+		}
+		return sum;
+	}
 }

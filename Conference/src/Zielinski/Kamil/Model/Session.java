@@ -6,26 +6,41 @@ import java.util.ArrayList;
 
 public class Session
 {
-
-	public Session(int idSession, ArrayList<Lecture> lectures, Timestamp beginDate, Timestamp endDate, String sessionName)
+	public Session(int idSession, Timestamp beginDate, int maxAmmountLectureInSession,
+			SessionType type)
 	{
 		super();
 		this.idSession = idSession;
-		this.lectures = lectures;
+		// this.idlectures = lectures;
 		this.beginDate = beginDate;
-		this.endDate = endDate;
-		this.sessionName = sessionName;
+		// this.endDate = endDate;
+		//this.sessionName = sessionName;
+		this.maxAmmountLectureInSession = maxAmmountLectureInSession;
+		this.idLectures = new ArrayList<Integer>();
+		this.type = type;
 	}
 
 	private int idSession;
-	private ArrayList<Lecture> lectures;
+	private ArrayList<Integer> idLectures;
 	private Timestamp beginDate;
 	private Timestamp endDate;
 	private String sessionName;
+	private SessionType type;
+	private int maxAmmountLectureInSession;
+
+	public enum SessionType
+	{
+		SESSION, PLENARY
+	};
 
 	public Timestamp getBeginDate()
 	{
 		return beginDate;
+	}
+
+	public void addIdLectures(Integer id)
+	{
+		idLectures.add(id);
 	}
 
 	public void setBeginDate(Timestamp beginDate)
@@ -41,16 +56,6 @@ public class Session
 	public void setEndDate(Timestamp endDate)
 	{
 		this.endDate = endDate;
-	}
-
-	public void addLecture(Lecture lect)
-	{
-		this.lectures.add(lect);
-	}
-
-	public Lecture getLecture(int idx)
-	{
-		return this.lectures.get(idx);
 	}
 
 	public int getIdSession()
@@ -73,4 +78,37 @@ public class Session
 		this.sessionName = sessionName;
 	}
 
+	public int getMaxAmmountLectureInSession()
+	{
+		return maxAmmountLectureInSession;
+	}
+
+	public void setMaxAmmountLectureInSession(int maxAmmountLectureInSession)
+	{
+		this.maxAmmountLectureInSession = maxAmmountLectureInSession;
+	}
+
+	public int ammountOfAssignedLectures()
+	{
+		return idLectures.size();
+	}
+
+	public ArrayList<Integer> getIdLectures()
+	{
+		return idLectures;
+	}
+
+	public void setIdLectures(ArrayList<Integer> idLectures)
+	{
+		this.idLectures = idLectures;
+	}
+    public void printSession()
+    {
+    	int i=0;
+    	System.out.println("-------");
+    	for (Integer integer : idLectures)
+		{
+			System.out.println(integer);
+		}
+    }
 }
