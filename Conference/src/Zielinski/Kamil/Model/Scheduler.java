@@ -29,32 +29,34 @@ public class Scheduler
 	{
 		long dif = System.currentTimeMillis();
 		System.out.println("lol");
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 200000; ++i)
 		{
 			Individual ind1 = new Individual(
 					data.getExtractIdList()/* , data.getFalseList() */, data.getSessions(), data.getExtracts(), null);
 			ind1.init();
-			ind1.fitValue();
+			 ind1.fitValue();
 			// ind1.printObject();
 			population.add(ind1);
 			// data.clearId();
 		}
-		for(int i = 0; i < 200000; ++i)
+		System.out.println("stop1");
+		for (int i = 0; i < 1; ++i)
 		{
-	    Random rand = new Random();
-		int element1 = rand .nextInt((population.size() - 1 - 0) + 1) + 0;
-		int element2 = rand .nextInt((population.size() - 1 - 0) + 1) + 0;
-		Individual[] newindividual = crossover(population.get(element1), population.get(element2));
-		population.add(newindividual[0]);
-		population.add(newindividual[1]);
+			Random rand = new Random();
+			int element1 = rand.nextInt((population.size() - 1 - 0) + 1) + 0;
+			int element2 = rand.nextInt((population.size() - 1 - 0) + 1) + 0;
+			Individual[] newindividual = crossover(population.get(element1), population.get(element2));
+			population.add(newindividual[0]);
+			population.add(newindividual[1]);
 		}
-		
+
 		System.out.println("\n-----------------\n");
 		for (int i = 0; i < population.size(); ++i)
 		{
 			// System.out.println(population.get(i).getSizeAssign());
 			population.get(i).fitValue();
 		}
+		System.out.println("KOniec");
 
 	}
 
@@ -67,13 +69,13 @@ public class Scheduler
 	public Individual[] crossover(Individual ind1, Individual ind2)
 	{
 		Individual[] newIndiv = new Individual[2];
+
 		newIndiv[0] = new Individual(ind1.getIdExtracts(), ind1.getSessions(), ind1.getExtracts(),
 				ind1.getSessionToExtractAssigned());
 		newIndiv[1] = new Individual(ind2.getIdExtracts(), ind2.getSessions(), ind2.getExtracts(),
 				ind2.getSessionToExtractAssigned());
 
 		int randPoint = randNumber.nextInt(ind1.getIdExtracts().size());
-		System.out.println(randPoint);
 		int i;
 		for (i = 0; i < randPoint; ++i)
 		{

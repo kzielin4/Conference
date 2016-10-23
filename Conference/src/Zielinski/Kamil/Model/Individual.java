@@ -141,11 +141,14 @@ public class Individual
 			int val = ck.intValue() +1;
 			countLectureInSession.set(sessionToExtractAssigned.get(j), new Integer(val));
 		}
+		int j=0; 
 		for (Integer integer : countLectureInSession)
 		{
-			sum=sum+integer.intValue();
+			if(sessions.get(j).getMaxAmmountLectureInSession()<integer.intValue())
+			{
+				fit = fit - 100;
+			}
 		}
-		int j=0;
 		if(fit == 100 * idExtracts.size())
 		{
 			System.out.println(fit);
