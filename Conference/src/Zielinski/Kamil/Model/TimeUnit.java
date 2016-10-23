@@ -7,6 +7,7 @@ import Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType;
 public class TimeUnit
 {
 	private Timestamp startTime;
+	private Timestamp endTime;
 	private long duration;
 	private boolean isFree;
 	private int sessionId;
@@ -21,11 +22,12 @@ public class TimeUnit
 	/*
 	 * Tu mo¿na dodaæ pola dla zajêtego i wolnego miejsca i przydzielenie
 	 */
-	public TimeUnit(Timestamp startTime, long duration, String timeUnitType,
+	public TimeUnit(Timestamp startTime, Timestamp endTime, long duration, String timeUnitType,
 			Zielinski.Kamil.Model.TimetableSkeletonLoader.EventType type)
 	{
 		super();
 		this.startTime = startTime;
+		this.endTime = endTime;
 		this.duration = duration;
 		this.unitName = timeUnitType;
 		this.isFree = true;
@@ -35,37 +37,37 @@ public class TimeUnit
 	}
 
 	public int setMaxLectureInUnit()
-    {
-    	if(unitType==EventType.PLENARY)
-    	{
-    		if(getMinuteDuration()<settings.getMinutePerPlenaryLecture())
-    		{
-    			return 0;
-    		}
-    		else
-    		{
-    			maxLectureInUnit=getMinuteDuration()/settings.getMinutePerPlenaryLecture();
-    			return maxLectureInUnit;
-    		}
-    	}
-    	else if(unitType==EventType.SESSION)
+	{
+		if (unitType == EventType.PLENARY)
 		{
-    		if(getMinuteDuration()<settings.getMinutePerLecture())
-    		{
-    			return 0;
-    		}
-    		else
-    		{
-    			maxLectureInUnit=getMinuteDuration()/settings.getMinutePerLecture();
-    			return maxLectureInUnit;
-    		}
+			if (getMinuteDuration() < settings.getMinutePerPlenaryLecture())
+			{
+				return 0;
+			}
+			else
+			{
+				maxLectureInUnit = getMinuteDuration() / settings.getMinutePerPlenaryLecture();
+				return maxLectureInUnit;
+			}
 		}
-    	else
-    	{
-    		maxLectureInUnit=-1;
-    		return -1;
-    	}
-    }
+		else if (unitType == EventType.SESSION)
+		{
+			if (getMinuteDuration() < settings.getMinutePerLecture())
+			{
+				return 0;
+			}
+			else
+			{
+				maxLectureInUnit = getMinuteDuration() / settings.getMinutePerLecture();
+				return maxLectureInUnit;
+			}
+		}
+		else
+		{
+			maxLectureInUnit = -1;
+			return -1;
+		}
+	}
 
 	public Timestamp getStartTime()
 	{
@@ -142,5 +144,14 @@ public class TimeUnit
 		return maxLectureInUnit;
 	}
 
-	
+	public Timestamp getEndTime()
+	{
+		return endTime;
+	}
+
+	public void setEndTime(Timestamp endTime)
+	{
+		this.endTime = endTime;
+	}
+
 }

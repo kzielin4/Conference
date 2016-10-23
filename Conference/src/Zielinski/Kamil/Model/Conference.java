@@ -1,5 +1,6 @@
 package Zielinski.Kamil.Model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import Zielinski.Kamil.Model.Lecture.LectureType;
@@ -122,7 +123,7 @@ public class Conference
 		{
 			if (unit.getUnitType() == EventType.SESSION)
 			{
-				sessions.add(new Session(sessions.size() - 1, unit.getStartTime(), unit.getMaxLectureInUnit(),
+				sessions.add(new Session(sessions.size() - 1, unit.getStartTime(),unit.getEndTime(), unit.getMaxLectureInUnit(),
 						SessionType.SESSION));
 			}
 		}
@@ -157,5 +158,20 @@ public class Conference
 			list.add(new Boolean(false));
 		}
 		return list;
+	}
+	public void clearId()
+	{
+		for (Session session : sessions)
+		{
+			session.getIdLectures().clear();
+		}
+	}
+	public Timestamp getArrivalSpeakerTime(int idx)
+	{
+		return extracts.get(idx).getSpeaker().getArrivalDate();
+	}
+	public Timestamp getDepartureSpeakerTime(int idx)
+	{
+		return extracts.get(idx).getSpeaker().getDepartureDate();
 	}
 }

@@ -76,12 +76,12 @@ public class TimetableSkeletonLoader
 							{
 								System.out.println("plenary");
 								skeleton.addTimeUnit(
-										new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.PLENARY));
+										new TimeUnit(beginTimestamp,endTimestamp, dif, fields.get(1), EventType.PLENARY));
 							}
 							else if (eventType == EventType.OTHER)
 							{
 								System.out.println("other");
-								skeleton.addTimeUnit(new TimeUnit(beginTimestamp, dif, fields.get(1), EventType.OTHER));
+								skeleton.addTimeUnit(new TimeUnit(beginTimestamp,endTimestamp, dif, fields.get(1), EventType.OTHER));
 							}
 							else if (eventType == EventType.SESSION)
 							{
@@ -90,7 +90,7 @@ public class TimetableSkeletonLoader
 									//System.out.println("session");
 									System.out.println(fields.get(i));
 									skeleton.addTimeUnit(
-											new TimeUnit(beginTimestamp, dif, fields.get(i), EventType.SESSION));
+											new TimeUnit(beginTimestamp,endTimestamp, dif, fields.get(i), EventType.SESSION));
 								}
 							}
 							else

@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public class Session
 {
-	public Session(int idSession, Timestamp beginDate, int maxAmmountLectureInSession,
+	public Session(int idSession, Timestamp beginDate,Timestamp endDate, int maxAmmountLectureInSession,
 			SessionType type)
 	{
 		super();
 		this.idSession = idSession;
 		// this.idlectures = lectures;
 		this.beginDate = beginDate;
-		// this.endDate = endDate;
+		this.endDate = endDate;
 		//this.sessionName = sessionName;
 		this.maxAmmountLectureInSession = maxAmmountLectureInSession;
 		this.idLectures = new ArrayList<Integer>();
@@ -111,4 +111,15 @@ public class Session
 			System.out.println(integer);
 		}
     }
+
+	public SessionType getType()
+	{
+		return type;
+	}
+
+	public void setType(SessionType type)
+	{
+		this.type = type;
+	}
+  
 }
