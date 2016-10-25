@@ -121,5 +121,10 @@ public class Session
 	{
 		this.type = type;
 	}
+	
+	public void clearIdLectures()
+	{
+		idLectures.clear();
+	}
   
 }

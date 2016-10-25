@@ -10,11 +10,12 @@ public class Individual
 	private ArrayList<Session> sessions;
 	private ArrayList<Integer> sessionToExtractAssigned;
 	private ArrayList<Extract> extracts;
+	private long fitValue;
 
 	public Individual(final ArrayList<Integer> idExtracts, final ArrayList<Session> sessions,
 			final ArrayList<Extract> extracts, ArrayList<Integer> sessionToAssigned)
 	{
-
+		fitValue = 0;
 		this.idExtracts = new ArrayList<Integer>(idExtracts);
 		// this.isAssigned = new ArrayList<Boolean>(isAssigned);
 		this.sessions = new ArrayList<Session>();
@@ -31,7 +32,7 @@ public class Individual
 		{
 			for (Integer integer : sessionToAssigned)
 			{
-				sessionToExtractAssigned.add(integer);
+				this.sessionToExtractAssigned.add(integer);
 			}
 		}
 	}
@@ -69,7 +70,7 @@ public class Individual
 	public void init()
 	{
 		int i = 0;
-		
+
 		for (Integer integer : idExtracts)
 		{
 			boolean isSessionOk = false;
@@ -78,7 +79,8 @@ public class Individual
 			while (!isSessionOk)
 			{
 				int poz = rand.nextInt((sessions.size() - 1 - 0) + 1) + 0;
-				if (sessions.get(poz).ammountOfAssignedLectures() <= sessions.get(poz).getMaxAmmountLectureInSession())
+				if (sessions.get(poz).ammountOfAssignedLectures() + 1 <= sessions.get(poz)
+						.getMaxAmmountLectureInSession())
 				{
 					isSessionOk = true;
 					sessions.get(poz).addIdLectures(new Integer(i));
@@ -98,21 +100,38 @@ public class Individual
 		 * System.out.println("W: " + integer); } ++currentPosition; }
 		 */
 		currentPosition = 1;
+		// for (Session ses : sessions)
+		// {
+		for (Integer integer : sessionToExtractAssigned)
+		{
+			System.out.print(" " + integer);
+		}
+		System.out.println(" ");
+		++currentPosition;
+		// }
+	}
+
+	public void printSessionAssigned()
+	{
+		int currentPosition = 1;
 		for (Session ses : sessions)
 		{
-			for (Integer integer : sessionToExtractAssigned)
+			System.out.println("Sesja " + currentPosition);
+			for (Integer integer : ses.getIdLectures())
 			{
-				System.out.print(" " + integer);
+				System.out.println("W: " + integer);
 			}
 			++currentPosition;
 		}
+
 	}
 
 	public long fitValue()
 	{
-		long fit = 100 * idExtracts.size();
+		long fit = 100 * idExtracts.size() + 100 * sessions.size();
 		ArrayList<Integer> countLectureInSession = new ArrayList<Integer>();
-		for(int j=0;j<sessions.size();++j)
+		setLectrureInSession();
+		for (int j = 0; j < sessions.size(); ++j)
 		{
 			countLectureInSession.add(0);
 		}
@@ -134,25 +153,70 @@ public class Individual
 				}
 			}
 		}
-		int sum =0;
-		for(int j=0;j<sessionToExtractAssigned.size();++j)
+		int sum = 0;
+		for (int j = 0; j < sessionToExtractAssigned.size(); ++j)
 		{
-			Integer ck =countLectureInSession.get(sessionToExtractAssigned.get(j));
-			int val = ck.intValue() +1;
+			Integer ck = countLectureInSession.get(sessionToExtractAssigned.get(j));
+			int val = ck.intValue() + 1;
 			countLectureInSession.set(sessionToExtractAssigned.get(j), new Integer(val));
 		}
-		int j=0; 
+
+		int j = 0;
 		for (Integer integer : countLectureInSession)
 		{
-			if(sessions.get(j).getMaxAmmountLectureInSession()<integer.intValue())
+			if (sessions.get(j).getMaxAmmountLectureInSession() < integer.intValue())
 			{
 				fit = fit - 100;
 			}
+			++j;
 		}
-		if(fit == 100 * idExtracts.size())
+		for (Session session : sessions)
 		{
-			System.out.println(fit);
+			int kw1Count = 0;
+			int kw2Count = 0;
+			int kw3Count = 0;
+			int kw[] = new int[3];
+			for (int x = 0; x < session.ammountOfAssignedLectures(); ++x)
+			{
+				if (x == 0)
+				{
+					int id0 = session.getIdLectures().get(0).intValue();
+					Extract extract = getExtractByid(id0);
+					kw[0] = extract.getKw1();
+					kw[1] = extract.getKw2();
+					kw[2] = extract.getKw3();
+					++kw1Count;
+					++kw2Count;
+					++kw3Count;
+				}
+				else
+				{
+					int id = session.getIdLectures().get(x).intValue();
+					Extract extract = getExtractByid(id);
+					if (kw[0] == extract.getKw1() || kw[0] == extract.getKw2() || kw[0] == extract.getKw3())
+					{
+						++kw1Count;
+					}
+					if (kw[1] == extract.getKw1() || kw[1] == extract.getKw2() || kw[1] == extract.getKw3())
+					{
+						++kw2Count;
+					}
+					if (kw[2] == extract.getKw1() || kw[2] == extract.getKw2() || kw[0] == extract.getKw2())
+					{
+						++kw3Count;
+					}
+				}
+			}
+			if (!session.getIdLectures().isEmpty())
+			{
+				if (kw1Count == session.ammountOfAssignedLectures() || kw2Count == session.ammountOfAssignedLectures()
+						|| kw3Count == session.ammountOfAssignedLectures())
+				{
+					fit = fit + 15;
+				}
+			}
 		}
+		this.fitValue = fit;
 		return fit;
 	}
 
@@ -189,12 +253,51 @@ public class Individual
 		return sessionToExtractAssigned.size();
 	}
 
+	public void setLectrureInSession()
+	{
+		for (Session session : sessions)
+		{
+			session.clearIdLectures();
+		}
+		int i = 0;
+		for (Integer idSession : sessionToExtractAssigned)
+		{
+			sessions.get(idSession.intValue()).addIdLectures(idExtracts.get(i));
+			++i;
+		}
+	}
+
 	public void mutate()
 	{
 		Random rand = new Random();
 		int index = rand.nextInt(sessionToExtractAssigned.size());
 		int element = rand.nextInt((sessions.size() - 1 - 0) + 1) + 0;
 		sessionToExtractAssigned.set(index, new Integer(element));
+	}
+
+	public long getFitValue()
+	{
+		return fitValue;
+	}
+
+	public void print()
+	{
+		if (getFitValue() == 100 * idExtracts.size() + 100 * sessions.size())
+		{
+			System.out.println("**************  " + getFitValue() + "**************  ");
+		}
+	}
+
+	public Extract getExtractByid(int id)
+	{
+		for (Extract extract : extracts)
+		{
+			if (extract.getIdExtract() == id)
+			{
+				return extract;
+			}
+		}
+		return null;
 	}
 
 }
