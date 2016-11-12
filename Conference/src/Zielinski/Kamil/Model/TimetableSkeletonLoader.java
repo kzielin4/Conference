@@ -96,6 +96,7 @@ public class TimetableSkeletonLoader
 							else
 							{
 								// obsluga bledu
+								//input close
 								// return null;
 							}
 						}
@@ -103,6 +104,7 @@ public class TimetableSkeletonLoader
 						{
 							// TODO
 							/*
+							 * //input close
 							 * Obsluga bledu
 							 */
 						}
@@ -111,6 +113,7 @@ public class TimetableSkeletonLoader
 					{
 						// TODO
 						/*
+						 * //input close
 						 * Obsluga bledu
 						 */
 					}

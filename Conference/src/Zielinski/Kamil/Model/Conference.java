@@ -14,6 +14,7 @@ public class Conference
 	private ArrayList<Session> sessions;
 	private ArrayList<Extract> extracts;
 	private boolean isComplited;
+	private Categories categories;
 
 	public TimetableSkeleton getTimetableSkeleton()
 	{
@@ -173,5 +174,15 @@ public class Conference
 	public Timestamp getDepartureSpeakerTime(int idx)
 	{
 		return extracts.get(idx).getSpeaker().getDepartureDate();
+	}
+
+	public Categories getCategories()
+	{
+		return categories;
+	}
+
+	public void setCategories(Categories categories)
+	{
+		this.categories = categories;
 	}
 }

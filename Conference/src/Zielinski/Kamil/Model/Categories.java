@@ -116,5 +116,10 @@ public class Categories
 	{
 		this.categories = categories;
 	}
+
+	public ArrayList<Category> getCategories()
+	{
+		return categories;
+	}
 	
 }

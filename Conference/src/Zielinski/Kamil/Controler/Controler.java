@@ -61,9 +61,13 @@ public class Controler
 				|| conference.countPlenaryLecture() > sk.countMaxPlenaryLectureInUnits())
 		{
 			// tu jakiœ b³¹d
+			System.out.println("Za malo unitow sesji");
+			return;
 		}
 		conference.setTimetableSkeleton(sk);
 		conference.initNormalSessions();
+		categories.setCategories(categories.loadCategories());
+		conference.setCategories(categories);
 		genetic(conference);
 
 	}

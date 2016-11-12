@@ -10,10 +10,10 @@ public class Scheduler
 	private ArrayList<Individual> population;
 	private ArrayList<Individual> newPopulation;
 	private ArrayList<Individual> bestIndividuals;
-	final static int POP_STRT = 5000;
-	final static int ELITISM_K = 1;
-	final static int POP_SIZE = 200+ELITISM_K; // population size
-	final static int MAX_ITER = 1000; // max number of iterations
+	final static int POP_STRT = 5000;//5000
+	final static int ELITISM_K = 3;
+	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
+	final static int MAX_ITER = 1000; // max number of iterations //1000
 	final static double MUTATION_RATE = 0.05; // probability of mutation
 	final static double CROSSOVER_RATE = 0.8; // probability of crossover
 	private static Random randNumber;
@@ -39,7 +39,7 @@ public class Scheduler
 		for (int i = 0; i < POP_STRT; ++i)
 		{
 			Individual ind1 = new Individual(
-					data.getExtractIdList()/* , data.getFalseList() */, data.getSessions(), data.getExtracts(), null);
+					data.getExtractIdList()/* , data.getFalseList() */, data.getSessions(), data.getExtracts(), null,data.getCategories());
 			ind1.init();
 			ind1.fitValue();
 			// ind1.fitValue();
@@ -82,9 +82,9 @@ public class Scheduler
 		Individual[] newIndiv = new Individual[2];
 
 		newIndiv[0] = new Individual(ind1.getIdExtracts(), ind1.getSessions(), ind1.getExtracts(),
-				ind1.getSessionToExtractAssigned());
+				ind1.getSessionToExtractAssigned(),data.getCategories());
 		newIndiv[1] = new Individual(ind2.getIdExtracts(), ind2.getSessions(), ind2.getExtracts(),
-				ind2.getSessionToExtractAssigned());
+				ind2.getSessionToExtractAssigned(),data.getCategories());
 
 		int randPoint = randNumber.nextInt(ind1.getIdExtracts().size());
 		int i;
@@ -207,16 +207,7 @@ public class Scheduler
 	{
 		int maxMax = 0;
 		System.out.println("stop1");
-		/*
-		 * for (int i = 0; i < 10000; ++i) { Random rand = new Random(); int
-		 * element1 = rand.nextInt((population.size() - 1 - 0) + 1) + 0; int
-		 * element2 = rand.nextInt((population.size() - 1 - 0) + 1) + 0;
-		 * Individual[] newindividual = crossover(population.get(element1),
-		 * population.get(element2)); newindividual[0].mutate();
-		 * newindividual[1].mutate(); newindividual[0].fitValue();
-		 * newindividual[1].fitValue(); population.add(newindividual[0]);
-		 * population.add(newindividual[1]); } System.out.println("koniec");
-		 */int count;
+		int count;
 		int sum = 0;
 		for (int iter = 0; iter < MAX_ITER; iter++)
 		{
@@ -249,17 +240,13 @@ public class Scheduler
 				}
 				Individual[] indiv = new Individual[2];
 				indiv[0] = new Individual(population.get(idx1).getIdExtracts(), population.get(idx1).getSessions(),
-						population.get(idx1).getExtracts(), population.get(idx1).getSessionToExtractAssigned());
+						population.get(idx1).getExtracts(), population.get(idx1).getSessionToExtractAssigned(),data.getCategories());
 				indiv[1] = new Individual(population.get(idx2).getIdExtracts(), population.get(idx2).getSessions(),
-						population.get(idx2).getExtracts(), population.get(idx2).getSessionToExtractAssigned());
+						population.get(idx2).getExtracts(), population.get(idx2).getSessionToExtractAssigned(),data.getCategories());
 
 				// Crossover
 				indiv[0].fitValue();
 				indiv[1].fitValue();
-				System.out.println("P1: ");
-				indiv[0].printObject();
-				System.out.println("P2: ");
-				indiv[1].printObject();
 				if (randNumber.nextDouble() < CROSSOVER_RATE)
 				{
 					indiv = crossover(indiv[0], indiv[1]);
@@ -274,10 +261,6 @@ public class Scheduler
 				{
 					indiv[1].mutate();
 				}
-				System.out.println("C1: ");
-				indiv[0].printObject();
-				System.out.println("C2: ");
-				indiv[1].printObject();
 				// indiv[0].printObject();
 				// indiv[1].printObject();
 				// add to new population
@@ -343,6 +326,7 @@ public class Scheduler
 		System.out.println("Best one");
 		System.out.println(findBestIndividual().fitValue());
 		findBestIndividual().printSessionAssigned();
+		findBestIndividual().printCategories();
 		System.out.println("---koniec-----");
 	}
 
