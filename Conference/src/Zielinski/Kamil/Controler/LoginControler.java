@@ -1,6 +1,5 @@
 package Zielinski.Kamil.Controler;
 
-import java.awt.Label;
 import java.io.File;
 import java.io.IOException;
 import java.net.PasswordAuthentication;
@@ -8,15 +7,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import Zielinski.Kamil.View.LogStage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class LoginControler
 {
@@ -49,7 +51,7 @@ public class LoginControler
 		}
 		else
 		{
-			// showNegativeNotification();
+			showNegativeNotification();
 		}
 	}
 
@@ -71,6 +73,20 @@ public class LoginControler
 		logScene.show();
 	}
 
+	public void setSignInStage() throws IOException
+	{
+		exit();
+		Stage logScene = new Stage();
+		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("SignIn.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.initStyle(StageStyle.UNDECORATED);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.setTitle("LogWindow");
+		logScene.show();
+	}
+
 	public void showNegativeNotification()
 	{
 		notificationLabel.setText("Invalid Username/Password");
@@ -87,7 +103,7 @@ public class LoginControler
 			while (input.hasNext())
 			{
 				String data = input.next();
-				ArrayList<String> userData = new ArrayList<String>(Arrays.asList(data.split(",")));				
+				ArrayList<String> userData = new ArrayList<String>(Arrays.asList(data.split(",")));
 				if (userData.get(0).equals(user) && userData.get(1).equals(password))
 				{
 					return true;

@@ -10,6 +10,7 @@ public class Scheduler
 	private ArrayList<Individual> population;
 	private ArrayList<Individual> newPopulation;
 	private ArrayList<Individual> bestIndividuals;
+	private Individual bestPlan;
 	final static int POP_STRT = 5000;//5000
 	final static int ELITISM_K = 3;
 	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
@@ -31,7 +32,11 @@ public class Scheduler
 		randNumber = new Random();
 		MAXVALUE = 100 * data.getExtractIdList().size() + 100 * data.getSessions().size();
 	}
-
+    public void runAlgorith()
+    {
+    	initPopulation();
+    	geneticAlgorithm();
+    }
 	public void initPopulation()
 	{
 		long dif = System.currentTimeMillis();
@@ -68,7 +73,7 @@ public class Scheduler
 		 * System.out.println(population.get(i).getSizeAssign());
 		 * population.get(i).fitValue(); } System.out.println("KOniec");
 		 */
-		geneticAlgorithm();
+		//geneticAlgorithm();
 	}
 
 	public long fitFunction()
@@ -326,7 +331,6 @@ public class Scheduler
 		System.out.println("Best one");
 		System.out.println(findBestIndividual().fitValue());
 		findBestIndividual().printSessionAssigned();
-		findBestIndividual().printCategories();
 		System.out.println("---koniec-----");
 	}
 

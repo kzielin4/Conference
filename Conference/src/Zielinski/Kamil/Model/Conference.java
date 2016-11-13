@@ -30,7 +30,33 @@ public class Conference
 	{
 		return sessions;
 	}
-
+	
+	public ArrayList<Session> getNormalSessions()
+	{
+		ArrayList<Session> normalSessions= new ArrayList<Session>();
+		for (Session session : sessions)
+		{
+			if(session.getType() == SessionType.SESSION)
+			{
+				normalSessions.add(session);
+			}
+		}
+		return normalSessions;
+	}
+	
+	public ArrayList<Session> getPlenarySessions()
+	{
+		ArrayList<Session> normalSessions= new ArrayList<Session>();
+		for (Session session : sessions)
+		{
+			if(session.getType() == SessionType.PLENARY)
+			{
+				normalSessions.add(session);
+			}
+		}
+		return normalSessions;
+	}
+	
 	public void setSessions(ArrayList<Session> sessions)
 	{
 		this.sessions = sessions;

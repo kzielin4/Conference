@@ -21,18 +21,19 @@
          </font>
       </Label>
       <Button fx:id="cancelButton" layoutX="465.0" layoutY="353.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="113.0" text="Cancel" />
-      <Button fx:id="loginButton" layoutX="330.0" layoutY="353.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="113.0" text="Login" />
+      <Button fx:id="loginButton" layoutX="204.0" layoutY="353.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="113.0" text="Login" />
       <TextField fx:id="userField" layoutX="206.0" layoutY="146.0" prefHeight="25.0" prefWidth="305.0" />
       <Label layoutX="108.0" layoutY="200.0" prefHeight="25.0" prefWidth="98.0" text="Password:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="passwordField" layoutX="206.0" layoutY="200.0" prefHeight="25.0" prefWidth="305.0" onAction="#login" />
-      <Label  layoutX="108.0" layoutY="276.0" prefHeight="25.0" prefWidth="417.0" textAlignment="RIGHT" textFill="#e40d0d" >
+      <PasswordField fx:id="passwordField" layoutX="206.0" layoutY="200.0" onAction="#login" prefHeight="25.0" prefWidth="305.0" />
+      <Label id="notificationLabel" fx:id="notificationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="276.0" prefHeight="25.0" prefWidth="417.0" textAlignment="RIGHT" textFill="RED">
          <font>
-            <Font name="System Bold Italic" size="14.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <Button fx:id="signButton" layoutX="332.0" layoutY="353.0" mnemonicParsing="false" onAction="#setSignInStage" prefHeight="25.0" prefWidth="113.0" text="Sign in" />
    </children>
 </Pane>

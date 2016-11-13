@@ -13,6 +13,7 @@ public class Individual
 	private ArrayList<Extract> extracts;
 	private Categories categories;
 	private long fitValue;
+	static int epislon;
 
 	public Individual(final ArrayList<Integer> idExtracts, final ArrayList<Session> sessions,
 			final ArrayList<Extract> extracts, ArrayList<Integer> sessionToAssigned, Categories categories)

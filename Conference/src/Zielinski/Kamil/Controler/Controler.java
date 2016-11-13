@@ -1,5 +1,6 @@
 package Zielinski.Kamil.Controler;
 
+import java.awt.Dialog;
 import java.io.IOException;
 
 import Zielinski.Kamil.Model.Categories;
@@ -13,6 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -61,6 +63,7 @@ public class Controler
 				|| conference.countPlenaryLecture() > sk.countMaxPlenaryLectureInUnits())
 		{
 			// tu jakiœ b³¹d
+			// loger plus alert
 			System.out.println("Za malo unitow sesji");
 			return;
 		}
@@ -76,8 +79,9 @@ public class Controler
 	{
 		System.out.println(conference.sessionSize());
 		Scheduler schedul = new Scheduler(conf);
-		schedul.initPopulation();
+		schedul.runAlgorith();
 	}
+
 	public void loadSkeleton()
 	{
 		// categories.loadCategories();
@@ -92,6 +96,17 @@ public class Controler
 	public void loadCategories()
 	{
 		categories.loadCategories();
+	}
+
+	public void showAlert(String title, String value)
+	{
+		/*AnchorPane ap;
+		Dialogs.create()
+        .owner((Stage) ap.getScene().getWindow())
+        .title("Error Dialog")
+        .masthead("Look, an Error Dialog")
+        .message("Ooops, there was an error!")
+        .showError();*/
 	}
 
 }
