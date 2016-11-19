@@ -14,6 +14,8 @@ public class Individual
 	private Categories categories;
 	private long fitValue;
 	static int epislon;
+	static int valueBonus= 1000;
+	private int maxFitValue;
 
 	public Individual(final ArrayList<Integer> idExtracts, final ArrayList<Session> sessions,
 			final ArrayList<Extract> extracts, ArrayList<Integer> sessionToAssigned, Categories categories)
@@ -41,6 +43,7 @@ public class Individual
 		this.categories = categories;
 		this.counter = new CategoriesCounter(categories.getCategories());
 		this.counter.initCounters();
+		this.maxFitValue = valueBonus * idExtracts.size() + valueBonus * sessions.size() + 10 * idExtracts.size() ;
 	}
 
 	public ArrayList<Integer> getIdExtracts()
@@ -122,7 +125,7 @@ public class Individual
 		int currentPosition = 1;
 		for (Session ses : sessions)
 		{
-			System.out.println("Sesja " + currentPosition);
+			System.out.println("Sesja " + ses.getIdSession());
 			for (Integer integer : ses.getIdLectures())
 			{
 				System.out.println("W: " + integer);
@@ -134,7 +137,7 @@ public class Individual
 
 	public long fitValue()
 	{
-		long fit = 100 * idExtracts.size() + 100 * sessions.size();
+		long fit = valueBonus * idExtracts.size() + valueBonus * sessions.size();
 		ArrayList<Integer> countLectureInSession = new ArrayList<Integer>();
 		setLectrureInSession();
 		for (int j = 0; j < sessions.size(); ++j)
@@ -154,7 +157,7 @@ public class Individual
 							|| !(sessions.get(sessionToExtractAssigned.get(i)).getEndDate()
 									.before(extract.getSpeaker().getDepartureDate())))
 					{
-						fit = fit - 100;
+						fit = fit - valueBonus;
 					}
 				}
 			}
@@ -172,7 +175,7 @@ public class Individual
 		{
 			if (sessions.get(j).getMaxAmmountLectureInSession() < integer.intValue())
 			{
-				fit = fit - 100;
+				fit = fit - valueBonus;
 			}
 			++j;
 		}
@@ -308,7 +311,7 @@ public class Individual
 
 	public void print()
 	{
-		if (getFitValue() == 100 * idExtracts.size() + 100 * sessions.size())
+		if (getFitValue() == valueBonus * idExtracts.size() + valueBonus * sessions.size())
 		{
 			System.out.println("**************  " + getFitValue() + "**************  ");
 		}
@@ -333,6 +336,19 @@ public class Individual
 		{
 			System.out.println(extract.getIdCategory());
 		}
+	}
+
+	public int getMaxFitValue()
+	{
+		return maxFitValue;
+	}
+	
+	public boolean isOptimalIndyviudal()
+	{
+		if(fitValue == maxFitValue )
+			return true;
+		else 
+			return false;
 	}
 
 }

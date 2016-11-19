@@ -30,33 +30,59 @@ public class Conference
 	{
 		return sessions;
 	}
-	
+
 	public ArrayList<Session> getNormalSessions()
 	{
-		ArrayList<Session> normalSessions= new ArrayList<Session>();
+		ArrayList<Session> normalSessions = new ArrayList<Session>();
 		for (Session session : sessions)
 		{
-			if(session.getType() == SessionType.SESSION)
+			if (session.getType() == SessionType.SESSION)
 			{
 				normalSessions.add(session);
 			}
 		}
 		return normalSessions;
 	}
-	
+
+	public ArrayList<Extract> getNormalExtracts()
+	{
+		ArrayList<Extract> normalExtracts = new ArrayList<Extract>();
+		for (Extract extract : extracts)
+		{
+			if (extract.getLecture().getType() == LectureType.N)
+			{
+				normalExtracts.add(extract);
+			}
+		}
+		return normalExtracts;
+	}
+
+	public ArrayList<Extract> getPlenaryExtracts()
+	{
+		ArrayList<Extract> plenaryExtracts = new ArrayList<Extract>();
+		for (Extract extract : extracts)
+		{
+			if (extract.getLecture().getType() == LectureType.P)
+			{
+				plenaryExtracts.add(extract);
+			}
+		}
+		return plenaryExtracts;
+	}
+
 	public ArrayList<Session> getPlenarySessions()
 	{
-		ArrayList<Session> normalSessions= new ArrayList<Session>();
+		ArrayList<Session> plenarySessions = new ArrayList<Session>();
 		for (Session session : sessions)
 		{
-			if(session.getType() == SessionType.PLENARY)
+			if (session.getType() == SessionType.PLENARY)
 			{
-				normalSessions.add(session);
+				plenarySessions.add(session);
 			}
 		}
-		return normalSessions;
+		return plenarySessions;
 	}
-	
+
 	public void setSessions(ArrayList<Session> sessions)
 	{
 		this.sessions = sessions;
@@ -146,12 +172,26 @@ public class Conference
 
 	public void initNormalSessions()
 	{
+
 		for (TimeUnit unit : timetableSkeleton.getTimeUnits())
 		{
 			if (unit.getUnitType() == EventType.SESSION)
 			{
-				sessions.add(new Session(sessions.size() - 1, unit.getStartTime(),unit.getEndTime(), unit.getMaxLectureInUnit(),
-						SessionType.SESSION));
+				sessions.add(new Session(sessions.size(), unit.getStartTime(), unit.getEndTime(),
+						unit.getMaxLectureInUnit(), SessionType.SESSION));
+			}
+		}
+	}
+
+	public void initPlenarySessions()
+	{
+
+		for (TimeUnit unit : timetableSkeleton.getTimeUnits())
+		{
+			if (unit.getUnitType() == EventType.PLENARY)
+			{
+				sessions.add(new Session(sessions.size(), unit.getStartTime(), unit.getEndTime(),
+						unit.getMaxLectureInUnit(), SessionType.PLENARY));
 			}
 		}
 	}
@@ -167,12 +207,13 @@ public class Conference
 		return fit;
 	}
 
-	public ArrayList<Integer> getExtractIdList()
+	public ArrayList<Integer> getNormalExtractIdList()
 	{
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for (Extract extract : extracts)
 		{
-			list.add(new Integer(extract.getIdExtract()));
+			if (extract.getLecture().getType() == LectureType.N)
+				list.add(new Integer(extract.getIdExtract()));
 		}
 		return list;
 	}
@@ -186,6 +227,7 @@ public class Conference
 		}
 		return list;
 	}
+
 	public void clearId()
 	{
 		for (Session session : sessions)
@@ -193,10 +235,12 @@ public class Conference
 			session.getIdLectures().clear();
 		}
 	}
+
 	public Timestamp getArrivalSpeakerTime(int idx)
 	{
 		return extracts.get(idx).getSpeaker().getArrivalDate();
 	}
+
 	public Timestamp getDepartureSpeakerTime(int idx)
 	{
 		return extracts.get(idx).getSpeaker().getDepartureDate();

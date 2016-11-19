@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class Scheduler
+public class NormalLectureScheduler
 {
 	private Conference data;
 	private ArrayList<Individual> population;
 	private ArrayList<Individual> newPopulation;
 	private ArrayList<Individual> bestIndividuals;
 	private Individual bestPlan;
-	final static int POP_STRT = 5000;//5000
+	final static int POP_STRT = 6000;//5000
 	final static int ELITISM_K = 3;
 	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
 	final static int MAX_ITER = 1000; // max number of iterations //1000
-	final static double MUTATION_RATE = 0.05; // probability of mutation
+	final static double MUTATION_RATE = 0.1; // probability of mutation 0.05
 	final static double CROSSOVER_RATE = 0.8; // probability of crossover
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;
 
-	public Scheduler(final Conference data)
+	public NormalLectureScheduler(final Conference data)
 	{
 		super();
 		population = new ArrayList<Individual>();
@@ -30,7 +30,7 @@ public class Scheduler
 		this.data = data;
 		totalFitness = 0;
 		randNumber = new Random();
-		MAXVALUE = 100 * data.getExtractIdList().size() + 100 * data.getSessions().size();
+		MAXVALUE = 100 * data.getNormalExtractIdList().size() + 100 * data.getSessions().size();
 	}
     public void runAlgorith()
     {
@@ -44,7 +44,7 @@ public class Scheduler
 		for (int i = 0; i < POP_STRT; ++i)
 		{
 			Individual ind1 = new Individual(
-					data.getExtractIdList()/* , data.getFalseList() */, data.getSessions(), data.getExtracts(), null,data.getCategories());
+					data.getNormalExtractIdList()/* , data.getFalseList() */, data.getNormalSessions(), data.getNormalExtracts(), null,data.getCategories());
 			ind1.init();
 			ind1.fitValue();
 			// ind1.fitValue();
@@ -302,16 +302,20 @@ public class Scheduler
 				individual.printObject();
 			}
 			countTotalFitness();
-			System.out.println(population.size());
-			countTotalFitness();
-			System.out.println("C1: "+countDif());
 			System.gc();
-			System.out.println("wyswietl");
 			// rateAllIndiviual();
 			// reevaluate current population
 			System.out.print("Total Fitness = " + totalFitness);
 			// System.out.println(" ; Best Fitness = " +
 			// findBestIndividual().getFitValue());
+			Individual bestOne = findBestIndividual();
+			System.out.println("lol");
+			System.out.println(bestOne.getFitValue());
+			if(bestOne.isOptimalIndyviudal())
+			{
+				System.out.println("wbilem");
+				break;
+			}
 		}
 		sum = 0;
 		// best indiv

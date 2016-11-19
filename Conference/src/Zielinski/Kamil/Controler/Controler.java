@@ -6,7 +6,7 @@ import java.io.IOException;
 import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.Conference;
 import Zielinski.Kamil.Model.ExtractLoader;
-import Zielinski.Kamil.Model.Scheduler;
+import Zielinski.Kamil.Model.NormalLectureScheduler;
 import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
@@ -69,6 +69,7 @@ public class Controler
 		}
 		conference.setTimetableSkeleton(sk);
 		conference.initNormalSessions();
+		conference.initPlenarySessions();
 		categories.setCategories(categories.loadCategories());
 		conference.setCategories(categories);
 		genetic(conference);
@@ -78,7 +79,7 @@ public class Controler
 	public void genetic(Conference conf)
 	{
 		System.out.println(conference.sessionSize());
-		Scheduler schedul = new Scheduler(conf);
+		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
 		schedul.runAlgorith();
 	}
 
