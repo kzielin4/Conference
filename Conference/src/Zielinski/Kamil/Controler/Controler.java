@@ -7,6 +7,7 @@ import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.Conference;
 import Zielinski.Kamil.Model.ExtractLoader;
 import Zielinski.Kamil.Model.NormalLectureScheduler;
+import Zielinski.Kamil.Model.PlenaryLectureScheduler;
 import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
@@ -80,7 +81,9 @@ public class Controler
 	{
 		System.out.println(conference.sessionSize());
 		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
-		schedul.runAlgorith();
+		//schedul.runAlgorith();
+		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(), conf.getPlenaryExtracts());
+		plenaryScheduler.printAssigned();
 	}
 
 	public void loadSkeleton()

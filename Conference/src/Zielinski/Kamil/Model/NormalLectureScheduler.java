@@ -15,7 +15,7 @@ public class NormalLectureScheduler
 	final static int ELITISM_K = 3;
 	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
 	final static int MAX_ITER = 1000; // max number of iterations //1000
-	final static double MUTATION_RATE = 0.1; // probability of mutation 0.05
+	final static double MUTATION_RATE = 0.05; // probability of mutation 0.05
 	final static double CROSSOVER_RATE = 0.8; // probability of crossover
 	private static Random randNumber;
 	private long totalFitness;
