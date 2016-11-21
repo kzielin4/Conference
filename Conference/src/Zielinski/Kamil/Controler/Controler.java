@@ -51,7 +51,7 @@ public class Controler
 		logScene.setResizable(false);
 	}
 
-	public void loadExtracts()
+	public void loadExtracts() throws IOException
 	{
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
@@ -77,13 +77,16 @@ public class Controler
 
 	}
 
-	public void genetic(Conference conf)
+	public void genetic(Conference conf) throws IOException
 	{
 		System.out.println(conference.sessionSize());
 		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
-		//schedul.runAlgorith();
+		schedul.runAlgorith();
+		conference.setSessionByNormalScheduler(schedul.findBestIndividual().getSessions());
 		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(), conf.getPlenaryExtracts());
 		plenaryScheduler.printAssigned();
+		conf.printSessionAssigned();
+		conf.writeToCSVFile();
 	}
 
 	public void loadSkeleton()

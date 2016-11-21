@@ -23,10 +23,6 @@ public class Lecture
 	private String abstractLecture;
 	//private int speakerNumber;
 	private int sessionNumber;
-	private boolean isAssigned;
-	private int numberInSession;
-
-
 
 	public String getThema()
 	{
@@ -52,6 +48,16 @@ public class Lecture
 	public LectureType getType()
 	{
 		return type;
+	}
+
+	public String getAbstractLecture()
+	{
+		return abstractLecture;
+	}
+
+	public void setAbstractLecture(String abstractLecture)
+	{
+		this.abstractLecture = abstractLecture;
 	}
 
 }

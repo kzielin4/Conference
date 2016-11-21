@@ -1,7 +1,10 @@
 package Zielinski.Kamil.Model;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import Zielinski.Kamil.Model.Lecture.LectureType;
 import Zielinski.Kamil.Model.Session.SessionType;
@@ -88,6 +91,29 @@ public class Conference
 		this.sessions = sessions;
 	}
 
+	public Session getSessionById(int id)
+	{
+		for (Session session : sessions)
+		{
+			if (session.getIdSession() == id)
+			{
+				return session;
+			}
+		}
+		return null;
+	}
+
+	public Extract geExtractById(int id)
+	{
+		for (Extract extract : extracts)
+		{
+			if (extract.getIdExtract() == id)
+			{
+				return extract;
+			}
+		}
+		return null;
+	}
 	public ArrayList<Extract> getExtracts()
 	{
 		return extracts;
@@ -255,4 +281,87 @@ public class Conference
 	{
 		this.categories = categories;
 	}
+
+	public void printSessionAssigned()
+	{
+		int counter = 0;
+		for (Session ses : sessions)
+		{
+			System.out.println("Sesja " + ses.getIdSession());
+			for (Integer integer : ses.getIdLectures())
+			{
+				System.out.println("W: " + integer);
+				++counter;
+			}
+		}
+		System.out.println("Iloœæ wyk³adów przypisanych: " + counter);
+	}
+
+	public void setSessionByNormalScheduler(ArrayList<Session> normalSessions)
+	{
+		for (Session session : normalSessions)
+		{
+			sessions.remove(getSessionById(session.getIdSession()));
+			sessions.add(session);
+		}
+	}
+
+	public void setAssignmentInExtracts()
+	{
+		for (Session session : sessions)
+		{
+			for (Integer idExtract : session.getIdLectures())
+			{
+				
+			}
+		}
+	}
+	public void writeToCSVFile() throws IOException
+	{
+		String csvFile = "Output/out.csv";
+		FileWriter writer = new FileWriter(csvFile);
+		List<String> values = new ArrayList<String>();
+		values.add("ID_LECTURE");
+		values.add("TITLE");
+		values.add("ABSTRACT");
+		values.add("KW1");
+		values.add("KW2");
+		values.add("KW3");
+		values.add("TYPE");
+		//values.add("ARRIVAL");
+		//values.add("DEPARTURE");
+		values.add("SPEAKER");
+		values.add("SESSION_ID");
+		values.add("NUMBER_IN_SESSION");
+		values.add("SESSION_START");
+		values.add("SESSION_END");
+		CSVWritter.writeLine(writer, values);
+		values.clear();
+		for (Session session : sessions)
+		{
+			int number=1;
+			for(Integer idExtract :session.getIdLectures())
+			{
+				Extract tempExtract = geExtractById(idExtract.intValue());
+				values.add(""+tempExtract.getIdExtract());
+				values.add(""+tempExtract.getLecture().getThema());
+				values.add(""+tempExtract.getLecture().getAbstractLecture());
+				values.add(""+tempExtract.getKw1());
+				values.add(""+tempExtract.getKw2());
+				values.add(""+tempExtract.getKw3());
+				values.add(""+tempExtract.getLecture().getType());
+				values.add(""+tempExtract.getSpeaker().getFirstAndSecondName());
+				values.add(""+session.getIdSession());
+				values.add(""+number);
+				values.add(""+session.getBeginDate());
+				values.add(""+session.getEndDate());
+				++number;
+				CSVWritter.writeLine(writer, values);
+				values.clear();
+			}
+		}
+		writer.flush();
+        writer.close();
+	}
+
 }

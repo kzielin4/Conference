@@ -13,10 +13,10 @@ public class NormalLectureScheduler
 	private Individual bestPlan;
 	final static int POP_STRT = 6000;//5000
 	final static int ELITISM_K = 3;
-	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
-	final static int MAX_ITER = 1000; // max number of iterations //1000
-	final static double MUTATION_RATE = 0.05; // probability of mutation 0.05
-	final static double CROSSOVER_RATE = 0.8; // probability of crossover
+	final static int POP_SIZE = 300+ELITISM_K; // population size /2000 200+ELITISM_K;
+	final static int MAX_ITER = 2000; // max number of iterations //1000
+	final static double MUTATION_RATE = 0.15; // probability of mutation 0.05
+	final static double CROSSOVER_RATE = 0.85; // probability of crossover 0.8
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;
@@ -64,8 +64,6 @@ public class NormalLectureScheduler
 			}
 			// individual.printObject();
 		}
-		System.out.println("C1: "+countDif());
-		System.out.println("MaxStart: " + sum);
 		System.out.println("-----------");
 		/*
 		 * System.out.println("\n-----------------\n"); for (int i = 0; i <
@@ -318,23 +316,8 @@ public class NormalLectureScheduler
 			}
 		}
 		sum = 0;
-		// best indiv
-		for (Individual individual : population)
-		{
-			sum = sum + 1;
-			if (individual.getFitValue() >= MAXVALUE)
-			{
-				individual.printObject();
-				// System.out.println("");
-			}
-			individual.printObject();
-			// individual.print();
-		}
-		System.out.println("EndMax: " + sum);
-		System.out.println("MAXMax: " + maxMax);
-		System.out.println("Best one");
 		System.out.println(findBestIndividual().fitValue());
-		findBestIndividual().printSessionAssigned();
+		//findBestIndividual().printSessionAssigned();
 		System.out.println("---koniec-----");
 	}
 

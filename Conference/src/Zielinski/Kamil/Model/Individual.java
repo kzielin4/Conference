@@ -89,7 +89,7 @@ public class Individual
 			{
 				int poz = rand.nextInt((sessions.size() - 1 - 0) + 1) + 0;
 				if (sessions.get(poz).ammountOfAssignedLectures() + 1 <= sessions.get(poz)
-						.getMaxAmmountLectureInSession())
+						.getMaxAmmountLectureInSession() )
 				{
 					isSessionOk = true;
 					sessions.get(poz).addIdLectures(new Integer(i));

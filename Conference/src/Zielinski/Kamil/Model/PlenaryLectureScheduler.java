@@ -32,6 +32,8 @@ public class PlenaryLectureScheduler
 		System.out.printf("Min num of lines for example matrix is: %d\n", minLines.size());
 		// MinLines.printResult(costAssigned,minLines);
 		System.out.println("Size: " + minLines.size());
+		if(minLines.size()<extracts.size())
+			System.exit(0);
 		pritncostAssigned();
 		makeAssignAlgorithm();
 	}
@@ -166,5 +168,19 @@ public class PlenaryLectureScheduler
 				}
 			}
 		}
+		printLectureAssigned();
+	}
+	
+	public void printLectureAssigned()
+	{
+		for (Session ses : sessions)
+		{
+			System.out.println("Sesja " + ses.getIdSession());
+			for (Integer integer : ses.getIdLectures())
+			{
+				System.out.println("W: " + integer);
+			}
+		}
+
 	}
 }

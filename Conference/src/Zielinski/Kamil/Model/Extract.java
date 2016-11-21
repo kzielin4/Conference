@@ -15,6 +15,7 @@ public class Extract
 	private int kw1;
 	private int kw2;
 	private int kw3;
+	private int sessionId;
 
 	public Extract(Lecture lecture, Speaker speaker, int id ,int kw1, int kw2, int kw3)
 	{
@@ -70,6 +71,16 @@ public class Extract
 	public int getKw3()
 	{
 		return kw3;
+	}
+
+	public int getSessionId()
+	{
+		return sessionId;
+	}
+
+	public void setSessionId(int sessionId)
+	{
+		this.sessionId = sessionId;
 	}
 
 }
