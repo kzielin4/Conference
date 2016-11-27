@@ -4,12 +4,15 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -378,22 +381,25 @@ public class Conference
 	public void writeToPDF() throws IOException, DocumentException
 	{
 		PDFWritter pdfWritter = new PDFWritter();
-		pdfWritter.createPdf("HelloWorld.pdf");
+		SimpleDateFormat time_formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		String current_time_str = time_formatter.format(System.currentTimeMillis());
+		pdfWritter.createPdf("HelloWorld_"+current_time_str+".pdf");
 		pdfWritter.write();
 		ArrayList<String> values = new ArrayList<String>();
+		ArrayList<String> fieldsVal = new ArrayList<String>();
 		PdfPTable table = new PdfPTable(8);
-		float[] columnWidths = new float[] { 20f, 20f, 30f, 20f, 30f, 20f, 40f, 40f };
+		float[] columnWidths = new float[] { 23f, 16f, 30f, 24f, 30f, 33f, 33f, 30f };
 		table.setWidths(columnWidths);
 		pdfWritter.addEmptyLine(3);
 		values.clear();
-		values.add("IDLECT");
+		values.add("ID_LECT");
 		values.add("TYPE");
 		values.add("AUTHOR");
-		values.add("SESSID");
-		values.add("SESSNAME");
-		values.add("NUMIN");
-		values.add("SESSSTART");
-		values.add("SESSEND");
+		values.add("SESS_ID");
+		values.add("SESS_NAME");
+		values.add("NUM_IN_SESS");
+		values.add("SESS_START");
+		values.add("SESS_END");
 		pdfWritter.addCelltoTable(table, values);
 		values.clear();
 		for (Session session : sessions)
@@ -401,8 +407,16 @@ public class Conference
 			int number = 1;
 			for (Integer idExtract : session.getIdLectures())
 			{
+				String extString="";
 				Extract tempExtract = geExtractById(idExtract.intValue());
 				values.add("" + tempExtract.getIdExtract());
+				extString=extString+tempExtract.getIdExtract();
+				extString=extString+";"+tempExtract.getLecture().getThema();
+				extString=extString+";"+tempExtract.getLecture().getAbstractLecture();
+			    extString=extString+";"+tempExtract.getKw1();
+			    extString=extString+";"+tempExtract.getKw2();
+			    extString=extString+";"+tempExtract.getKw3();
+			    extString=extString+";"+session.getSessionName();
 				// values.add(""+tempExtract.getLecture().getThema());
 				// values.add(""+tempExtract.getLecture().getAbstractLecture());
 				// values.add(""+tempExtract.getKw1());
@@ -416,13 +430,30 @@ public class Conference
 				values.add("" + session.getBeginDate());
 				values.add("" + session.getEndDate());
 				++number;
+				fieldsVal.add(extString);
 				pdfWritter.addCelltoTable(table, values);
 				values.clear();
 			}
 		}
 		table.setTotalWidth(PageSize.A4.getWidth());
 		table.setLockedWidth(true);
-		pdfWritter.addTable(table);
+		pdfWritter.addTable(table);	
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add("Lecture id:   ");
+		fields.add("Title:        ");
+		fields.add("Abstract:     ");
+		fields.add("KW1:          ");
+		fields.add("KW2:          ");
+		fields.add("KW3:          ");
+		fields.add("Session name: ");
+		pdfWritter.addEmptyLine(2);
+		pdfWritter.addExtractTitle();
+		pdfWritter.addEmptyLine(1);
+		pdfWritter.addSeparator();
+		for (String extract : fieldsVal)
+		{
+			pdfWritter.addAbstractParagraph(fields,extract);
+		}
 		pdfWritter.close();
 		System.out.println("KONIEC");
 	}

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.itextpdf.text.Document;
@@ -34,11 +35,13 @@ import com.itextpdf.text.pdf.PdfPTable;
 public class PDFWritter
 {
 	private Document document;
-	 protected String content;
-     public void TruncateContent(String content) 
-     {
-         this.content = content;
-     }
+	protected String content;
+
+	public void TruncateContent(String content)
+	{
+		this.content = content;
+	}
+
 	public PDFWritter()
 	{
 		super();
@@ -62,9 +65,9 @@ public class PDFWritter
 	public void write() throws DocumentException
 	{
 		Paragraph p1;
-		Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC);
-		Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
-		Chunk chunk = new Chunk("Conference Harmonogram ", chapterFont);
+		Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
+		Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 17, Font.BOLDITALIC);
+		Chunk chunk = new Chunk("Welcome", chapterFont);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
 		p1 = new Paragraph("Conference Harmonogram2", paragraphFont);
@@ -95,39 +98,38 @@ public class PDFWritter
 	{
 		document.close();
 	}
-	/*public void cellLayout(PdfPCell cell, Rectangle position,
-            PdfContentByte[] canvases) {
-        try {
-            BaseFont bf = BaseFont.createFont();
-            Font font = new Font(bf, 12);
-            float availableWidth = position.getWidth();
-            int contentLength = content.length();
-            int leftChar = 0;
-            int rightChar = contentLength - 1;
-            availableWidth -= bf.getWidthPoint("...", 12);
-            while (leftChar < contentLength && rightChar != leftChar) {
-                availableWidth -= bf.getWidthPoint(content.charAt(leftChar), 12);
-                if (availableWidth > 0)
-                    leftChar++;
-                else
-                    break;
-                availableWidth -= bf.getWidthPoint(content.charAt(rightChar), 12);
-                if (availableWidth > 0)
-                    rightChar--;
-                else
-                    break;
-            }
-            String newContent = content.substring(0, leftChar) + "..." + content.substring(rightChar);
-            PdfContentByte canvas = canvases[PdfPTable.TEXTCANVAS];
-            ColumnText ct = new ColumnText(canvas);
-            ct.setSimpleColumn(position);
-            ct.addElement(new Paragraph(newContent, font));
-            ct.go();
-        } catch (DocumentException e) {
-            throw new ExceptionConverter(e);
-        } catch (IOException e) {
-            throw new ExceptionConverter(e);
-        }
-    }*/
-}
 
+	public void addExtractTitle() throws DocumentException
+	{
+		Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 17, Font.BOLDITALIC);
+		Paragraph p1 = new Paragraph("List of Lectures", paragraphFont);
+		p1.setAlignment(Element.ALIGN_CENTER);
+		document.add(p1);
+	}
+
+	public void addAbstractParagraph(ArrayList<String> fields, String values) throws DocumentException
+	{
+		Font filedsFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLDITALIC);
+		Font valuesFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
+		// for (int i = 0; i < fields.size(); ++i)
+		// {
+		ArrayList<String> line2 = new ArrayList<String>(Arrays.asList(values.split(";")));
+		int j = 0;
+		for (String string : fields)
+		{
+			// Chunk c = new Chunk(line1.get(j), filedsFont);
+			// Chunk c2 = new Chunk(string, filedsFont);
+			Paragraph p2 = new Paragraph("" + fields.get(j) + line2.get(j));
+			document.add(p2);
+			// System.out.println(""+fields.get(j)+line2.get(j)+" "+j);
+			++j;
+		}
+		addSeparator();
+	}
+	public void addSeparator() throws DocumentException
+	{
+		Paragraph p2 = new Paragraph("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		p2.setAlignment(Element.ALIGN_CENTER);
+		document.add(p2);
+	}
+}
