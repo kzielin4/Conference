@@ -1,10 +1,17 @@
 package Zielinski.Kamil.Model;
 
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import Zielinski.Kamil.Model.Lecture.LectureType;
 import Zielinski.Kamil.Model.Session.SessionType;
@@ -114,6 +121,7 @@ public class Conference
 		}
 		return null;
 	}
+
 	public ArrayList<Extract> getExtracts()
 	{
 		return extracts;
@@ -204,7 +212,7 @@ public class Conference
 			if (unit.getUnitType() == EventType.SESSION)
 			{
 				sessions.add(new Session(sessions.size(), unit.getStartTime(), unit.getEndTime(),
-						unit.getMaxLectureInUnit(), SessionType.SESSION));
+						unit.getMaxLectureInUnit(), SessionType.SESSION, unit.getUnitName()));
 			}
 		}
 	}
@@ -217,7 +225,7 @@ public class Conference
 			if (unit.getUnitType() == EventType.PLENARY)
 			{
 				sessions.add(new Session(sessions.size(), unit.getStartTime(), unit.getEndTime(),
-						unit.getMaxLectureInUnit(), SessionType.PLENARY));
+						unit.getMaxLectureInUnit(), SessionType.PLENARY, unit.getUnitName()));
 			}
 		}
 	}
@@ -312,10 +320,11 @@ public class Conference
 		{
 			for (Integer idExtract : session.getIdLectures())
 			{
-				
+
 			}
 		}
 	}
+
 	public void writeToCSVFile() throws IOException
 	{
 		String csvFile = "Output/out.csv";
@@ -328,10 +337,11 @@ public class Conference
 		values.add("KW2");
 		values.add("KW3");
 		values.add("TYPE");
-		//values.add("ARRIVAL");
-		//values.add("DEPARTURE");
+		// values.add("ARRIVAL");
+		// values.add("DEPARTURE");
 		values.add("SPEAKER");
 		values.add("SESSION_ID");
+		values.add("SESSION_NAME");
 		values.add("NUMBER_IN_SESSION");
 		values.add("SESSION_START");
 		values.add("SESSION_END");
@@ -339,29 +349,81 @@ public class Conference
 		values.clear();
 		for (Session session : sessions)
 		{
-			int number=1;
-			for(Integer idExtract :session.getIdLectures())
+			int number = 1;
+			for (Integer idExtract : session.getIdLectures())
 			{
 				Extract tempExtract = geExtractById(idExtract.intValue());
-				values.add(""+tempExtract.getIdExtract());
-				values.add(""+tempExtract.getLecture().getThema());
-				values.add(""+tempExtract.getLecture().getAbstractLecture());
-				values.add(""+tempExtract.getKw1());
-				values.add(""+tempExtract.getKw2());
-				values.add(""+tempExtract.getKw3());
-				values.add(""+tempExtract.getLecture().getType());
-				values.add(""+tempExtract.getSpeaker().getFirstAndSecondName());
-				values.add(""+session.getIdSession());
-				values.add(""+number);
-				values.add(""+session.getBeginDate());
-				values.add(""+session.getEndDate());
+				values.add("" + tempExtract.getIdExtract());
+				values.add("" + tempExtract.getLecture().getThema());
+				values.add("" + tempExtract.getLecture().getAbstractLecture());
+				values.add("" + tempExtract.getKw1());
+				values.add("" + tempExtract.getKw2());
+				values.add("" + tempExtract.getKw3());
+				values.add("" + tempExtract.getLecture().getType());
+				values.add("" + tempExtract.getSpeaker().getFirstAndSecondName());
+				values.add("" + session.getIdSession());
+				values.add("" + session.getSessionName());
+				values.add("" + number);
+				values.add("" + session.getBeginDate());
+				values.add("" + session.getEndDate());
 				++number;
 				CSVWritter.writeLine(writer, values);
 				values.clear();
 			}
 		}
 		writer.flush();
-        writer.close();
+		writer.close();
 	}
 
+	public void writeToPDF() throws IOException, DocumentException
+	{
+		PDFWritter pdfWritter = new PDFWritter();
+		pdfWritter.createPdf("HelloWorld.pdf");
+		pdfWritter.write();
+		ArrayList<String> values = new ArrayList<String>();
+		PdfPTable table = new PdfPTable(8);
+		float[] columnWidths = new float[] { 20f, 20f, 30f, 20f, 30f, 20f, 40f, 40f };
+		table.setWidths(columnWidths);
+		pdfWritter.addEmptyLine(3);
+		values.clear();
+		values.add("IDLECT");
+		values.add("TYPE");
+		values.add("AUTHOR");
+		values.add("SESSID");
+		values.add("SESSNAME");
+		values.add("NUMIN");
+		values.add("SESSSTART");
+		values.add("SESSEND");
+		pdfWritter.addCelltoTable(table, values);
+		values.clear();
+		for (Session session : sessions)
+		{
+			int number = 1;
+			for (Integer idExtract : session.getIdLectures())
+			{
+				Extract tempExtract = geExtractById(idExtract.intValue());
+				values.add("" + tempExtract.getIdExtract());
+				// values.add(""+tempExtract.getLecture().getThema());
+				// values.add(""+tempExtract.getLecture().getAbstractLecture());
+				// values.add(""+tempExtract.getKw1());
+				// values.add(""+tempExtract.getKw2());
+				// values.add(""+tempExtract.getKw3());
+				values.add("" + tempExtract.getLecture().getType());
+				values.add("" + tempExtract.getSpeaker().getFirstAndSecondName());
+				values.add("" + session.getIdSession());
+				values.add("" + session.getSessionName());
+				values.add("" + number);
+				values.add("" + session.getBeginDate());
+				values.add("" + session.getEndDate());
+				++number;
+				pdfWritter.addCelltoTable(table, values);
+				values.clear();
+			}
+		}
+		table.setTotalWidth(PageSize.A4.getWidth());
+		table.setLockedWidth(true);
+		pdfWritter.addTable(table);
+		pdfWritter.close();
+		System.out.println("KONIEC");
+	}
 }

@@ -30,7 +30,7 @@ public class Individual
 		for (Session session : sessions)
 		{
 			this.sessions.add(new Session(session.getIdSession(), session.getBeginDate(), session.getEndDate(),
-					session.getMaxAmmountLectureInSession(), session.getType()));
+					session.getMaxAmmountLectureInSession(), session.getType(),session.getSessionName()));
 		}
 		this.sessionToExtractAssigned = new ArrayList<Integer>();
 		if (sessionToAssigned != null)
@@ -299,9 +299,13 @@ public class Individual
 	public void mutate()
 	{
 		Random rand = new Random();
-		int index = rand.nextInt(sessionToExtractAssigned.size());
+		int index1 = rand.nextInt(sessionToExtractAssigned.size());
+		int index2 = rand.nextInt(sessionToExtractAssigned.size());
 		int element = rand.nextInt((sessions.size() - 1 - 0) + 1) + 0;
-		sessionToExtractAssigned.set(index, new Integer(element));
+		int val = sessionToExtractAssigned.get(index2).intValue();
+		//sessionToExtractAssigned.set(index1, new Integer(element));
+		sessionToExtractAssigned.set(index2, new Integer(sessionToExtractAssigned.get(index1).intValue()));
+		sessionToExtractAssigned.set(index1, new Integer(val));
 	}
 
 	public long getFitValue()

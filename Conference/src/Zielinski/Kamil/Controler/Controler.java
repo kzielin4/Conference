@@ -3,8 +3,11 @@ package Zielinski.Kamil.Controler;
 import java.awt.Dialog;
 import java.io.IOException;
 
+import com.itextpdf.text.DocumentException;
+
 import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.Conference;
+import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.Model.ExtractLoader;
 import Zielinski.Kamil.Model.NormalLectureScheduler;
 import Zielinski.Kamil.Model.PlenaryLectureScheduler;
@@ -29,6 +32,7 @@ public class Controler
 	private TimetableSkeletonLoader timetableSkeletonLoader;
 	private Categories categories;
 	private Conference conference;
+	private DBConnector con;
 
 	public Controler()
 	{
@@ -36,6 +40,7 @@ public class Controler
 		timetableSkeletonLoader = new TimetableSkeletonLoader();
 		categories = new Categories();
 		conference = new Conference();
+		DBConnector con = new DBConnector();
 	}
 
 	public void click() throws IOException
@@ -51,7 +56,7 @@ public class Controler
 		logScene.setResizable(false);
 	}
 
-	public void loadExtracts() throws IOException
+	public void loadExtracts() throws IOException, DocumentException
 	{
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
@@ -77,7 +82,7 @@ public class Controler
 
 	}
 
-	public void genetic(Conference conf) throws IOException
+	public void genetic(Conference conf) throws IOException, DocumentException
 	{
 		System.out.println(conference.sessionSize());
 		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
@@ -87,6 +92,7 @@ public class Controler
 		plenaryScheduler.printAssigned();
 		conf.printSessionAssigned();
 		conf.writeToCSVFile();
+		conf.writeToPDF();
 	}
 
 	public void loadSkeleton()
@@ -95,9 +101,7 @@ public class Controler
 		// timetableSkeletonLoader.loadTimetableSkeleton();
 		// TimetableSkeleton sk=new
 		// TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
-		TimetableSkeleton sk = new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
-		System.out.println("lol");
-		System.out.println("ILOŒÆ:  " + sk.countSessionUnits());
+		DBConnector con = new DBConnector();
 	}
 
 	public void loadCategories()

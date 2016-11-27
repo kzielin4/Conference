@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Session
 {
 	public Session(int idSession, Timestamp beginDate,Timestamp endDate, int maxAmmountLectureInSession,
-			SessionType type)
+			SessionType type, String name)
 	{
 		super();
 		this.idSession = idSession;
@@ -18,6 +18,7 @@ public class Session
 		this.maxAmmountLectureInSession = maxAmmountLectureInSession;
 		this.idLectures = new ArrayList<Integer>();
 		this.type = type;
+		this.sessionName=name;
 	}
 
 	private int idSession;

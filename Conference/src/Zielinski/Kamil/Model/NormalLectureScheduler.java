@@ -11,12 +11,12 @@ public class NormalLectureScheduler
 	private ArrayList<Individual> newPopulation;
 	private ArrayList<Individual> bestIndividuals;
 	private Individual bestPlan;
-	final static int POP_STRT = 6000;//5000
-	final static int ELITISM_K = 3;
-	final static int POP_SIZE = 300+ELITISM_K; // population size /2000 200+ELITISM_K;
-	final static int MAX_ITER = 2000; // max number of iterations //1000
-	final static double MUTATION_RATE = 0.15; // probability of mutation 0.05
-	final static double CROSSOVER_RATE = 0.85; // probability of crossover 0.8
+	final static int POP_STRT = 1000;//5000 10000
+	final static int ELITISM_K = 100; //50
+	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
+	final static int MAX_ITER = 2; // max number of iterations //1000 2000
+	final static double MUTATION_RATE = 0.35; // probability of mutation 0.05
+	final static double CROSSOVER_RATE = 0.9; // probability of crossover 0.8
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;
@@ -281,7 +281,7 @@ public class NormalLectureScheduler
 				if (individual.getFitValue() == MAXVALUE)
 				{
 					sum = sum + 1;
-					// individual.printObject();
+					 individual.printObject();
 					// System.out.println("");
 				}
 				// ndividual.printObject();
@@ -312,6 +312,7 @@ public class NormalLectureScheduler
 			if(bestOne.isOptimalIndyviudal())
 			{
 				System.out.println("wbilem");
+				System.out.println("PO ITERACJACH = "+iter);
 				break;
 			}
 		}
