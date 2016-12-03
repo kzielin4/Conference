@@ -2,6 +2,7 @@ package Zielinski.Kamil.Controler;
 
 import java.awt.Dialog;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import com.itextpdf.text.DocumentException;
 
@@ -32,7 +33,6 @@ public class Controler
 	private TimetableSkeletonLoader timetableSkeletonLoader;
 	private Categories categories;
 	private Conference conference;
-	private DBConnector con;
 
 	public Controler()
 	{
@@ -40,7 +40,6 @@ public class Controler
 		timetableSkeletonLoader = new TimetableSkeletonLoader();
 		categories = new Categories();
 		conference = new Conference();
-		DBConnector con = new DBConnector();
 	}
 
 	public void click() throws IOException
@@ -56,7 +55,7 @@ public class Controler
 		logScene.setResizable(false);
 	}
 
-	public void loadExtracts() throws IOException, DocumentException
+	public void loadExtracts() throws IOException, DocumentException, SQLException
 	{
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
@@ -82,7 +81,7 @@ public class Controler
 
 	}
 
-	public void genetic(Conference conf) throws IOException, DocumentException
+	public void genetic(Conference conf) throws IOException, DocumentException, SQLException
 	{
 		System.out.println(conference.sessionSize());
 		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
@@ -93,6 +92,7 @@ public class Controler
 		conf.printSessionAssigned();
 		conf.writeToCSVFile();
 		conf.writeToPDF();
+		//conf.writeToDB();
 	}
 
 	public void loadSkeleton()
@@ -106,7 +106,6 @@ public class Controler
 
 	public void loadCategories()
 	{
-		categories.loadCategories();
 	}
 
 	public void showAlert(String title, String value)

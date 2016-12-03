@@ -14,7 +14,7 @@ public class Individual
 	private Categories categories;
 	private long fitValue;
 	static int epislon;
-	static int valueBonus= 1000;
+	static int valueBonus= 100000;
 	private int maxFitValue;
 
 	public Individual(final ArrayList<Integer> idExtracts, final ArrayList<Session> sessions,

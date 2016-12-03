@@ -12,11 +12,11 @@ public class NormalLectureScheduler
 	private ArrayList<Individual> bestIndividuals;
 	private Individual bestPlan;
 	final static int POP_STRT = 1000;//5000 10000
-	final static int ELITISM_K = 100; //50
-	final static int POP_SIZE = 200+ELITISM_K; // population size /2000 200+ELITISM_K;
-	final static int MAX_ITER = 1500; // max number of iterations //1000 2000
-	final static double MUTATION_RATE = 0.37; // probability of mutation 0.05
-	final static double CROSSOVER_RATE = 0.89; // probability of crossover 0.8
+	final static int ELITISM_K = 60; //50
+	final static int POP_SIZE = 120+ELITISM_K; // population size /2000 200+ELITISM_K;
+	final static int MAX_ITER = 2000; // max number of iterations //1000 2000
+	final static double MUTATION_RATE = 0.37555; // probability of mutation 0.05
+	final static double CROSSOVER_RATE = 0.91; // probability of crossover 0.8
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;
@@ -290,7 +290,7 @@ public class NormalLectureScheduler
 			{
 				maxMax = sum;
 			}
-			System.out.println("Max: " + sum);
+			System.out.println("Iter: " + iter);
 			sum = 0;
 			population.removeAll(population);
 			population.addAll(newPopulation);

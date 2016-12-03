@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 import javax.swing.ToolTipManager;
 
+import Zielinski.Kamil.Model.Lecture.LectureType;
+import Zielinski.Kamil.Model.Session.SessionType;
+
 public class DBConnector
 {
 	private java.sql.Connection connection;
@@ -159,16 +162,15 @@ public class DBConnector
 		}
 		finally
 		{
-			// connection.commit();
+			connection.commit();
 			return tempLecture;
 		}
-
 	}
 
 	public int addSession(Session session) throws SQLException
 	{
 		PreparedStatement insert = null;
-		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd)" + " values (?, ?, ?, ?);";
+		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd,sessionType,idConference)" + " values (?, ?, ?, ?,?,?);";
 		Savepoint sp = connection.setSavepoint();
 		int isADD = 0;
 		try
@@ -178,12 +180,50 @@ public class DBConnector
 			insert.setString(2, session.getSessionName());
 			insert.setTimestamp(3, session.getBeginDate());
 			insert.setTimestamp(4, session.getEndDate());
+			if (session.getType() ==SessionType.PLENARY) 
+				insert.setString(5,"P");
+			else
+				insert.setString(5,"N");
+			insert.setInt(6, 0);
 			insert.execute();
 			isADD = 1;
 		}
 		catch (SQLException ex)
 		{
-			System.out.println("Duplikat klucza");
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		finally
+		{
+			System.out.println("Rekord dodany");
+			insert.close();
+		}
+		return isADD;
+
+	}
+
+	public int addSpeaker(Extract extract) throws SQLException
+	{
+		PreparedStatement insert = null;
+		String insertString = "insert into speaker (idSpeaker,firstAndSecondName,arrivalDate,departureDate,idConference)"
+				+ " values (?, ?, ?, ?, ?);";
+		Savepoint sp = connection.setSavepoint();
+		Speaker speaker = extract.getSpeaker();
+		int isADD = 0;
+		try
+		{
+			insert = connection.prepareCall(insertString);
+			insert.setInt(1, extract.getIdExtract());
+			insert.setString(2, speaker.getFirstAndSecondName());
+			insert.setTimestamp(3, speaker.getArrivalDate());
+			insert.setTimestamp(4, speaker.getDepartureDate());
+			insert.setInt(5, 0);
+			insert.execute();
+			isADD = 1;
+		}
+		catch (SQLException ex)
+		{
+			System.out.println(ex);
 			connection.rollback(sp);
 		}
 		finally
@@ -193,30 +233,38 @@ public class DBConnector
 			insert.close();
 		}
 		return isADD;
-
 	}
-
-	public int addSpeaker(Speaker speaker) throws SQLException
+	
+	public int addLecutre(Extract extract,int idSession,int number) throws SQLException
 	{
 		PreparedStatement insert = null;
-		String insertString = "insert into speaker (idSpeaker,firstName,secondName,arrivalDate,departureDate)"
-				+ " values (?, ?, ?, ?, ?);";
+		String insertString = "insert into lecture (idLecture, idSpeaker,idSession,lectureType,thema,abstract,kw1,kw2,kw3,idConference,numberIn)"
+				+ " values (?, ?, ?, ?, ?,?, ?, ?, ?, ?,?);";
 		Savepoint sp = connection.setSavepoint();
 		int isADD = 0;
-		/*try
+		try
 		{
 			insert = connection.prepareCall(insertString);
-			insert.setInt(1, speaker.getIdSpeaker());
-			insert.setString(2, speaker.getFirstName());
-			insert.setString(3, speaker.getLastName());
-			insert.setTimestamp(3, speaker.getArrivalDate());
-			insert.setTimestamp(4, speaker.getDepartureDate());
+			insert.setInt(1, extract.getIdExtract());
+			insert.setInt(2, extract.getIdExtract());
+			insert.setInt(3, idSession);
+			if (extract.getLecture().getType() == LectureType.P) 
+				insert.setString(4,"P");
+			else
+				insert.setString(4,"N");
+			insert.setString(5, extract.getLecture().getThema());
+			insert.setString(6, extract.getLecture().getAbstractLecture());
+			insert.setInt(7,extract.getKw1());
+			insert.setInt(8,extract.getKw2());
+			insert.setInt(9,extract.getKw3());
+			insert.setInt(10, 0);
+			insert.setInt(11, number);
 			insert.execute();
 			isADD = 1;
 		}
 		catch (SQLException ex)
 		{
-			System.out.println("Duplikat klucza");
+			System.out.println(ex);
 			connection.rollback(sp);
 		}
 		finally
@@ -224,7 +272,7 @@ public class DBConnector
 			// connection.commit();
 			System.out.println("Rekord dodany");
 			insert.close();
-		}*/
+		}
 		return isADD;
 	}
 
@@ -266,21 +314,6 @@ public class DBConnector
 			return lectures;
 		}
 
-	}
-
-	public static void main(String[] args) throws SQLException
-	{
-		DBConnector con = new DBConnector();
-		// do inserta
-		// INSERT INTO `mydb`.`speaker` (`idSpeaker`, `firstName`, `lastName`,
-		// `arrivalDate`, `departureDate`) VALUES ('1', 'Kamil', 'Zielinski',
-		// '2012-01-01', '2012-01-03');
-		// con.getSession(1);
-		// con.getSpeaker(3);
-		System.out.println("----------------------------------------------------------");
-		// con.addSession(new Session(2, null, Timestamp.valueOf("2012-01-01
-		// 12:12:12"), Timestamp.valueOf("2012-01-03 12:12:12"),
-		// "sessionName"));
 	}
 
 }

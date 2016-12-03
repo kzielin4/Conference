@@ -3,6 +3,7 @@ package Zielinski.Kamil.Model;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -456,5 +457,32 @@ public class Conference
 		}
 		pdfWritter.close();
 		System.out.println("KONIEC");
+	}
+	
+	public void writeToDB() throws SQLException
+	{
+		DBConnector con = new DBConnector();
+		for (Session session : sessions)
+		{
+			System.out.println("ses");
+			con.addSession(session);
+		}
+		for (Session session : sessions)
+		{
+			int number = 1;
+			for (Integer idExtract : session.getIdLectures())
+			{
+				System.out.println("sp");
+				Extract tempExtract = geExtractById(idExtract.intValue());
+				con.addSpeaker(tempExtract);
+				System.out.println("lec");
+				con.addLecutre(tempExtract, session.getIdSession(), number);
+			}
+		}
+		/*for (Extract extract : extracts)
+		{
+			con.addSpeaker(extract);
+			con.addLecutre(extract, idSession, number)
+		}*/
 	}
 }
