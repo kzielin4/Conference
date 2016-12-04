@@ -16,10 +16,13 @@ import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -36,6 +39,8 @@ public class Controler
 	private Conference conference;
 	@FXML
 	private Button dbButton;
+	@FXML
+	private ImageView LoadIMG;
 
 	public Controler()
 	{
@@ -56,6 +61,66 @@ public class Controler
 		logScene.setTitle("LogWindow");
 		logScene.show();
 		logScene.setResizable(false);
+	}
+
+	public void createConference()
+	{
+		Task task = new Task<Void>()
+		{
+			@Override
+			public Void call() throws Exception
+			{
+				Platform.runLater(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						try
+						{
+							setLoadingStage();
+						}
+						catch (IOException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				return null;
+			}
+		};
+		Thread th = new Thread(task);
+		th.setDaemon(true);
+		th.start();
+		new Thread(new Runnable() {
+		    public void run() {
+		       try
+			{
+				loadExtracts();
+				exitloading();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (DocumentException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (SQLException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (InterruptedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    }
+		}).start();
 	}
 
 	public void loadExtracts() throws IOException, DocumentException, SQLException, InterruptedException
@@ -80,22 +145,22 @@ public class Controler
 		conference.initPlenarySessions();
 		categories.setCategories(categories.loadCategories());
 		conference.setCategories(categories);
-		genetic(conference);
+		runAlgorithms(conference);
 
 	}
-
-	public void genetic(Conference conf) throws IOException, DocumentException, SQLException
+	public void runAlgorithms(Conference conf) throws IOException, DocumentException, SQLException
 	{
 		System.out.println(conference.sessionSize());
 		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
 		schedul.runAlgorith();
 		conference.setSessionByNormalScheduler(schedul.findBestIndividual().getSessions());
-		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(), conf.getPlenaryExtracts());
+		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(),
+				conf.getPlenaryExtracts());
 		plenaryScheduler.printAssigned();
 		conf.printSessionAssigned();
 		conf.writeToCSVFile();
 		conf.writeToPDF();
-		//conf.writeToDB();
+		// conf.writeToDB();
 	}
 
 	public void loadSkeleton()
@@ -113,18 +178,18 @@ public class Controler
 
 	public void showAlert(String title, String value)
 	{
-		/*AnchorPane ap;
-		Dialogs.create()
-        .owner((Stage) ap.getScene().getWindow())
-        .title("Error Dialog")
-        .masthead("Look, an Error Dialog")
-        .message("Ooops, there was an error!")
-        .showError();*/
+		/*
+		 * AnchorPane ap; Dialogs.create() .owner((Stage)
+		 * ap.getScene().getWindow()) .title("Error Dialog") .masthead(
+		 * "Look, an Error Dialog") .message("Ooops, there was an error!")
+		 * .showError();
+		 */
 	}
+
 	public void setLoadingStage() throws IOException
 	{
 		System.out.println("loading...");
-		exitloading();
+		exitMainView();
 		Stage logScene = new Stage();
 		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("LoadingView.fxml"));
 		Scene scene = new Scene(page);
@@ -134,10 +199,15 @@ public class Controler
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
 	}
-	
-	public void exitloading()
+
+	public void exitMainView()
 	{
 		Stage stage = (Stage) dbButton.getScene().getWindow();
+		stage.close();
+	}
+	public void exitloading()
+	{
+		Stage stage = (Stage) LoadIMG.getScene().getWindow();
 		stage.close();
 	}
 }

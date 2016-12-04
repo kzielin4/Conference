@@ -13,7 +13,7 @@
             <Image url="@../../../../ob1.jpg" />
          </image></ImageView>
       <Button fx:id="dbButton" layoutX="387.0" layoutY="219.0" mnemonicParsing="false" onAction="#setLoadingStage" prefHeight="121.0" prefWidth="296.0" text="Check Database" />
-      <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" onAction="#loadExtracts" prefHeight="121.0" prefWidth="296.0" text="Create Conference Timetabel" />
+      <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" onAction="#createConference" prefHeight="121.0" prefWidth="296.0" text="Create Conference Timetabel" />
       <ToggleButton layoutX="24.0" layoutY="395.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="105.0" text="ANG/PL" />
       <Button layoutX="619.0" layoutY="395.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="64.0" text="Cancel" />
    </children>
