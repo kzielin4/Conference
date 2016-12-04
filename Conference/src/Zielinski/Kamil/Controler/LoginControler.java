@@ -3,10 +3,12 @@ package Zielinski.Kamil.Controler;
 import java.io.File;
 import java.io.IOException;
 import java.net.PasswordAuthentication;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.View.LogStage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +35,7 @@ public class LoginControler
 	@FXML
 	private Label notificationLabel;
 
-	public void login()
+	public void login() throws SQLException
 	{
 		String user = userField.getText();
 		String pass = passwordField.getText();
@@ -92,9 +94,9 @@ public class LoginControler
 		notificationLabel.setText("Invalid Username/Password");
 	}
 
-	public boolean passwordVeryfication(String user, String password)
+	public boolean passwordVeryfication(String user, String password) throws SQLException
 	{
-		String filePath = "config/UserData.csv";
+		/*String filePath = "config/UserData.csv";
 		File file = new File(filePath);
 
 		try
@@ -116,6 +118,17 @@ public class LoginControler
 		{
 
 			e.printStackTrace();
+		}
+		return false;*/
+		DBConnector con = new DBConnector();
+		String passwd = con.getUserPassword(user);
+	    if (passwd.equals(""))
+	    {
+	    	return false;
+	    }
+		if (passwd.equals(password))
+		{
+			return true;
 		}
 		return false;
 	}

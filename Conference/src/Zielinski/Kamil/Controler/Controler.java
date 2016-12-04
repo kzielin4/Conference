@@ -1,8 +1,8 @@
 package Zielinski.Kamil.Controler;
 
-import java.awt.Dialog;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 import com.itextpdf.text.DocumentException;
 
@@ -16,6 +16,7 @@ import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
 import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -33,6 +34,8 @@ public class Controler
 	private TimetableSkeletonLoader timetableSkeletonLoader;
 	private Categories categories;
 	private Conference conference;
+	@FXML
+	private Button dbButton;
 
 	public Controler()
 	{
@@ -55,7 +58,7 @@ public class Controler
 		logScene.setResizable(false);
 	}
 
-	public void loadExtracts() throws IOException, DocumentException, SQLException
+	public void loadExtracts() throws IOException, DocumentException, SQLException, InterruptedException
 	{
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
@@ -118,5 +121,23 @@ public class Controler
         .message("Ooops, there was an error!")
         .showError();*/
 	}
-
+	public void setLoadingStage() throws IOException
+	{
+		System.out.println("loading...");
+		exitloading();
+		Stage logScene = new Stage();
+		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("LoadingView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.initStyle(StageStyle.UNDECORATED);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
+	}
+	
+	public void exitloading()
+	{
+		Stage stage = (Stage) dbButton.getScene().getWindow();
+		stage.close();
+	}
 }

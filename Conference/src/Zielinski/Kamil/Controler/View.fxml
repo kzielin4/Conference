@@ -6,18 +6,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Zielinski.Kamil.Controler.Controler">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Zielinski.Kamil.Controler.Controler">
    <children>
-      <ImageView fitHeight="164.0" fitWidth="356.0" layoutX="286.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="164.0" fitWidth="356.0" layoutX="274.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../ob1.jpg" />
          </image></ImageView>
-      <Button fx:id="buttonValidate" layoutX="238.0" layoutY="219.0" mnemonicParsing="false" onAction="#click" prefHeight="25.0" prefWidth="170.0" text="Show Speakers" />
-      <Button fx:id="buttonValidate1" layoutX="434.0" layoutY="219.0" mnemonicParsing="false" onAction="#loadSkeleton" prefHeight="25.0" prefWidth="170.0" text="Show Lectures" />
-      <Button fx:id="buttonValidate2" layoutX="42.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Show Sessions" />
-      <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" onAction="#loadExtracts" prefHeight="25.0" prefWidth="170.0" text="Load Extract" />
-      <Button fx:id="buttonValidate21" layoutX="238.0" layoutY="288.0" mnemonicParsing="false" onAction="#loadCategories" prefHeight="25.0" prefWidth="170.0" text="Create Conference Schedule" />
-      <Button fx:id="buttonValidate211" layoutX="434.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Export To File" />
-      <ToggleButton layoutX="434.0" layoutY="369.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="ENG/PL" />
+      <Button fx:id="dbButton" layoutX="387.0" layoutY="219.0" mnemonicParsing="false" onAction="#setLoadingStage" prefHeight="121.0" prefWidth="296.0" text="Check Database" />
+      <Button fx:id="buttonValidate3" layoutX="42.0" layoutY="219.0" mnemonicParsing="false" onAction="#loadExtracts" prefHeight="121.0" prefWidth="296.0" text="Create Conference Timetabel" />
+      <ToggleButton layoutX="24.0" layoutY="395.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="105.0" text="ANG/PL" />
+      <Button layoutX="619.0" layoutY="395.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="64.0" text="Cancel" />
    </children>
 </Pane>

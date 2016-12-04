@@ -16,14 +16,12 @@
             <Image url="@../../../../Images/LockIcon.png" />
          </image>
       </ImageView>
-      <Label fx:id="nameLabel" layoutX="14.0" layoutY="150.0" prefHeight="25.0" prefWidth="66.0" text="Name:" />
-      <Label fx:id="surnameLabel" layoutX="14.0" layoutY="185.0" prefHeight="17.0" prefWidth="59.0" text="Surname:" />
+      <Label fx:id="nameLabel" layoutX="14.0" layoutY="150.0" prefHeight="25.0" prefWidth="66.0" text="Nick:" />
+      <Label fx:id="surnameLabel" layoutX="14.0" layoutY="185.0" prefHeight="17.0" prefWidth="59.0" text="Mail:" />
       <Label fx:id="passLabel1" layoutX="14.0" layoutY="213.0" prefHeight="17.0" prefWidth="59.0" text="Password:" />
-      <Label fx:id="passLabel2" layoutX="14.0" layoutY="243.0" prefHeight="17.0" prefWidth="59.0" text="Password:" />
       <TextField fx:id="nameField" layoutX="89.0" layoutY="150.0" prefHeight="25.0" prefWidth="127.0" />
       <TextField fx:id="surnameField" layoutX="89.0" layoutY="181.0" prefHeight="25.0" prefWidth="127.0" />
       <PasswordField fx:id="passField1" layoutX="89.0" layoutY="209.0" prefHeight="25.0" prefWidth="127.0" />
-      <PasswordField fx:id="passField2" layoutX="89.0" layoutY="239.0" prefHeight="25.0" prefWidth="127.0" />
       <Button fx:id="acceptButton" layoutX="18.0" layoutY="332.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="90.0" text="Accept" onAction="#acceptClick" textFill="#3db90c">
          <font>
             <Font name="System Bold" size="18.0" />

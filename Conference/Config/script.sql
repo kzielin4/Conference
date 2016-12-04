@@ -118,3 +118,30 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 INSERT INTO `mydb`.`conference` (`idConference`, `conferenceName`, `timeStart`, `timeEnd`) VALUES ('0', '1', '2013-10-06 16:00:00', '2013-10-06 16:00:00');
 ALTER TABLE `mydb`.`lecture` 
 ADD COLUMN `numberIn` INT(11) NULL AFTER `idConference`;
+ALTER TABLE `mydb`.`users` 
+DROP COLUMN `idUsers`,
+CHANGE COLUMN `userName` `userName` VARCHAR(100) NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`userName`);
+
+ALTER TABLE `mydb`.`lecture` 
+CHANGE COLUMN `idConference` `idConference` INT(11) NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`idLecture`, `idConference`);
+
+ALTER TABLE `mydb`.`session` 
+DROP FOREIGN KEY `idConference`;
+ALTER TABLE `mydb`.`session` 
+CHANGE COLUMN `idConference` `idConference` INT(11) NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`idSession`, `idConference`);
+ALTER TABLE `mydb`.`session` 
+ADD CONSTRAINT `idConference`
+  FOREIGN KEY (`idConference`)
+  REFERENCES `mydb`.`conference` (`idConference`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+ALTER TABLE `mydb`.`speaker` 
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`idSpeaker`, `idConference`);

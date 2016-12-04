@@ -1,7 +1,9 @@
 package Zielinski.Kamil.Controler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
+import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.View.LogStage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,26 +34,26 @@ public class SignInControler
 	@FXML
 	private Label notificationLabel;
 
-	public void acceptClick()
+	public void acceptClick() throws SQLException, IOException
 	{
 		String name = nameField.getText();
-		String surname = surnameField.getText();
+		String mail = surnameField.getText();
 		String pass1 = passField1.getText();
-		String pass2 = passField2.getText();
-		String massage = "Empty: ";
-		if (name == "")
+		if (name.equals("")||mail.equals("")||pass1.equals(""))
 		{
-			massage = massage + "Name ";
+			String message = "Blank fields";
+			notificationLabel.setText(message);
+			return;
 		}
-		if (surname == "")
+		DBConnector con = new DBConnector();
+		if (!con.getUserPassword(name).equals(""))
 		{
-			massage = massage + "Surname ";
+			String message = "User "+name+" already exists";
+			notificationLabel.setText(message);
+			return;
 		}
-		if (pass1 == "" || pass2 == "")
-		{
-			massage = massage + "Password ";
-		}
-		notificationLabel.setText(massage);
+		con.addUser(name, pass1, mail);
+		this.exit();
 	}
 	
     public void exit() throws IOException
