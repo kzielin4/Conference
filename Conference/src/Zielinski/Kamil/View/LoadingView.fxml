@@ -13,7 +13,7 @@
             <Image url="@../../../../Images/loading.gif" />
          </image>
       </ImageView>
-      <Label layoutX="47.0" layoutY="272.0" prefHeight="48.0" prefWidth="225.0" text="         Processing..." textAlignment="CENTER" textFill="#781e6e">
+      <Label fx:id="label1" layoutX="47.0" layoutY="272.0" prefHeight="48.0" prefWidth="225.0" text="         Processing..." textAlignment="CENTER" textFill="#781e6e">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>

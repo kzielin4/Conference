@@ -11,13 +11,15 @@ public class NormalLectureScheduler
 	private ArrayList<Individual> newPopulation;
 	private ArrayList<Individual> bestIndividuals;
 	private Individual bestPlan;
-	final static int POP_STRT = 500;//5000 10000
-	final static int ELITISM_K = 55; //50
-	final static int POP_SIZE = 105+ELITISM_K; // population size /2000 200+ELITISM_K;
+	final static int POP_STRT = 1000;// 5000 10000
+	final static int ELITISM_K = 80; // 50
+	final static int POP_SIZE = 160 + ELITISM_K; // population size /2000
+													// 200+ELITISM_K;
 	final static int MAX_ITER = 5000; // max number of iterations //1000 2000
-	final static double MUTATION_RATE = 0.31199; // probability of mutation 0.05
-	final static double CROSSOVER_RATE = 0.899999; // probability of crossover 0.8
-	final static int MAXNOUPDATEITERATION = 400 ;
+	final static double MUTATION_RATE = 0.3075555; // probability of mutation 0.05
+	final static double CROSSOVER_RATE = 0.897555; // probability of crossover
+													// 0.8
+	final static int MAXNOUPDATEITERATION = 1000;
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;
@@ -33,11 +35,13 @@ public class NormalLectureScheduler
 		randNumber = new Random();
 		MAXVALUE = 100 * data.getNormalExtractIdList().size() + 100 * data.getSessions().size();
 	}
-    public void runAlgorith()
-    {
-    	initPopulation();
-    	geneticAlgorithm();
-    }
+
+	public void runAlgorith()
+	{
+		initPopulation();
+		geneticAlgorithm();
+	}
+
 	public void initPopulation()
 	{
 		long dif = System.currentTimeMillis();
@@ -45,7 +49,8 @@ public class NormalLectureScheduler
 		for (int i = 0; i < POP_STRT; ++i)
 		{
 			Individual ind1 = new Individual(
-					data.getNormalExtractIdList()/* , data.getFalseList() */, data.getNormalSessions(), data.getNormalExtracts(), null,data.getCategories());
+					data.getNormalExtractIdList()/* , data.getFalseList() */, data.getNormalSessions(),
+					data.getNormalExtracts(), null, data.getCategories());
 			ind1.init();
 			ind1.fitValue();
 			// ind1.fitValue();
@@ -72,7 +77,7 @@ public class NormalLectureScheduler
 		 * System.out.println(population.get(i).getSizeAssign());
 		 * population.get(i).fitValue(); } System.out.println("KOniec");
 		 */
-		//geneticAlgorithm();
+		// geneticAlgorithm();
 	}
 
 	public long fitFunction()
@@ -86,9 +91,9 @@ public class NormalLectureScheduler
 		Individual[] newIndiv = new Individual[2];
 
 		newIndiv[0] = new Individual(ind1.getIdExtracts(), ind1.getSessions(), ind1.getExtracts(),
-				ind1.getSessionToExtractAssigned(),data.getCategories());
+				ind1.getSessionToExtractAssigned(), data.getCategories());
 		newIndiv[1] = new Individual(ind2.getIdExtracts(), ind2.getSessions(), ind2.getExtracts(),
-				ind2.getSessionToExtractAssigned(),data.getCategories());
+				ind2.getSessionToExtractAssigned(), data.getCategories());
 
 		int randPoint = randNumber.nextInt(ind1.getIdExtracts().size());
 		int i;
@@ -151,7 +156,7 @@ public class NormalLectureScheduler
 		return idSelect;
 
 	}
-	
+
 	public void findBestStartIndividual()
 	{
 		int idxMax = 0;
@@ -167,8 +172,9 @@ public class NormalLectureScheduler
 				idxMax = idx;
 			}
 		}
-		Collections.<Individual>swap(population, 0, idxMax);
+		Collections.<Individual> swap(population, 0, idxMax);
 	}
+
 	public Individual findBestIndividual()
 	{
 		int idxMax = 0;
@@ -212,7 +218,7 @@ public class NormalLectureScheduler
 		int maxMax = 0;
 		System.out.println("stop1");
 		int count;
-		long lastBestValue=0;
+		long lastBestValue = 0;
 		int sum = 0;
 		int counter = 0;
 		for (int iter = 0; iter < MAX_ITER; iter++)
@@ -225,12 +231,12 @@ public class NormalLectureScheduler
 			count = 0;
 			sum = 0;
 			// Elitism
-			 for (int i=0; i<ELITISM_K; ++i)
-			 {
-				 newPopulation.add(findBestIndividual());
-				 ++count;
-			 }
-			
+			for (int i = 0; i < ELITISM_K; ++i)
+			{
+				newPopulation.add(findBestIndividual());
+				++count;
+			}
+
 			System.out.println("\n-----------");
 			countTotalFitness();
 			// System.out.println(count);
@@ -246,9 +252,11 @@ public class NormalLectureScheduler
 				}
 				Individual[] indiv = new Individual[2];
 				indiv[0] = new Individual(population.get(idx1).getIdExtracts(), population.get(idx1).getSessions(),
-						population.get(idx1).getExtracts(), population.get(idx1).getSessionToExtractAssigned(),data.getCategories());
+						population.get(idx1).getExtracts(), population.get(idx1).getSessionToExtractAssigned(),
+						data.getCategories());
 				indiv[1] = new Individual(population.get(idx2).getIdExtracts(), population.get(idx2).getSessions(),
-						population.get(idx2).getExtracts(), population.get(idx2).getSessionToExtractAssigned(),data.getCategories());
+						population.get(idx2).getExtracts(), population.get(idx2).getSessionToExtractAssigned(),
+						data.getCategories());
 
 				// Crossover
 				indiv[0].fitValue();
@@ -284,7 +292,7 @@ public class NormalLectureScheduler
 				if (individual.getFitValue() == MAXVALUE)
 				{
 					sum = sum + 1;
-					 individual.printObject();
+					individual.printObject();
 					// System.out.println("");
 				}
 				// ndividual.printObject();
@@ -312,18 +320,18 @@ public class NormalLectureScheduler
 			Individual bestOne = findBestIndividual();
 			System.out.println("lol");
 			System.out.println(bestOne.getFitValue());
-			if(bestOne.isOptimalIndyviudal())
+			if (bestOne.isOptimalIndyviudal())
 			{
 				System.out.println("wbilem");
-				System.out.println("PO ITERACJACH = "+iter);
+				System.out.println("PO ITERACJACH = " + iter);
 				break;
 			}
-			if(bestOne.getFitValue()>lastBestValue )
+			if (bestOne.getFitValue() > lastBestValue)
 			{
 				counter = 0;
 				lastBestValue = bestOne.getFitValue();
 			}
-			else if(counter > MAXNOUPDATEITERATION)
+			else if (counter > MAXNOUPDATEITERATION)
 			{
 				break;
 			}
@@ -331,7 +339,7 @@ public class NormalLectureScheduler
 		}
 		sum = 0;
 		System.out.println(findBestIndividual().fitValue());
-		//findBestIndividual().printSessionAssigned();
+		// findBestIndividual().printSessionAssigned();
 		System.out.println("---koniec-----");
 	}
 

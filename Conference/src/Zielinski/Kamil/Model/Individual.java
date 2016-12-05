@@ -14,8 +14,11 @@ public class Individual
 	private Categories categories;
 	private long fitValue;
 	static int epislon;
-	static int valueBonus= 100000;
 	private int maxFitValue;
+	final static int VALUEBONUS= 100000;
+	final static int MAXBONUS=10;
+	final static int MIDBONUS=6;
+	final static int MINBONUS=3;
 
 	public Individual(final ArrayList<Integer> idExtracts, final ArrayList<Session> sessions,
 			final ArrayList<Extract> extracts, ArrayList<Integer> sessionToAssigned, Categories categories)
@@ -43,7 +46,7 @@ public class Individual
 		this.categories = categories;
 		this.counter = new CategoriesCounter(categories.getCategories());
 		this.counter.initCounters();
-		this.maxFitValue = valueBonus * idExtracts.size() + valueBonus * sessions.size() + 10 * idExtracts.size() ;
+		this.maxFitValue = VALUEBONUS * idExtracts.size() + VALUEBONUS * sessions.size() + MAXBONUS * idExtracts.size() ;
 	}
 
 	public ArrayList<Integer> getIdExtracts()
@@ -137,7 +140,7 @@ public class Individual
 
 	public long fitValue()
 	{
-		long fit = valueBonus * idExtracts.size() + valueBonus * sessions.size();
+		long fit = VALUEBONUS * idExtracts.size() + VALUEBONUS * sessions.size();
 		ArrayList<Integer> countLectureInSession = new ArrayList<Integer>();
 		setLectrureInSession();
 		for (int j = 0; j < sessions.size(); ++j)
@@ -157,7 +160,7 @@ public class Individual
 							|| !(sessions.get(sessionToExtractAssigned.get(i)).getEndDate()
 									.before(extract.getSpeaker().getDepartureDate())))
 					{
-						fit = fit - valueBonus;
+						fit = fit - VALUEBONUS;
 					}
 				}
 			}
@@ -175,7 +178,7 @@ public class Individual
 		{
 			if (sessions.get(j).getMaxAmmountLectureInSession() < integer.intValue())
 			{
-				fit = fit - valueBonus;
+				fit = fit - VALUEBONUS;
 			}
 			++j;
 		}
@@ -226,15 +229,15 @@ public class Individual
 					Extract extract = getExtractByid(id);
 					if (idCategory.intValue() == extract.getKw1())
 					{
-						actualFit = actualFit + 10;
+						actualFit = actualFit + MAXBONUS;
 					}
 					else if (idCategory.intValue() == extract.getKw2())
 					{
-						actualFit = actualFit + 6;
+						actualFit = actualFit + MIDBONUS;
 					}
 					else if (idCategory.intValue() == extract.getKw3())
 					{
-						actualFit = actualFit + 3;
+						actualFit = actualFit + MINBONUS;
 					}
 				}
 				if (actualFit > bestFit)
@@ -315,7 +318,7 @@ public class Individual
 
 	public void print()
 	{
-		if (getFitValue() == valueBonus * idExtracts.size() + valueBonus * sessions.size())
+		if (getFitValue() == VALUEBONUS * idExtracts.size() + VALUEBONUS * sessions.size())
 		{
 			System.out.println("**************  " + getFitValue() + "**************  ");
 		}

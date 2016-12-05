@@ -14,6 +14,7 @@ import Zielinski.Kamil.Model.NormalLectureScheduler;
 import Zielinski.Kamil.Model.PlenaryLectureScheduler;
 import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
+import Zielinski.Kamil.Model.myLogger;
 import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -41,6 +42,8 @@ public class Controler
 	private Button dbButton;
 	@FXML
 	private ImageView LoadIMG;
+	@FXML
+	private Label label1;
 
 	public Controler()
 	{
@@ -97,7 +100,6 @@ public class Controler
 		       try
 			{
 				loadExtracts();
-				exitloading();
 			}
 			catch (IOException e)
 			{
@@ -125,6 +127,7 @@ public class Controler
 
 	public void loadExtracts() throws IOException, DocumentException, SQLException, InterruptedException
 	{
+		myLogger logger = new myLogger();
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
 		// extractLoader.executeLoading();
@@ -160,6 +163,7 @@ public class Controler
 		conf.printSessionAssigned();
 		conf.writeToCSVFile();
 		conf.writeToPDF();
+		exitloading();
 		// conf.writeToDB();
 	}
 
@@ -207,7 +211,7 @@ public class Controler
 	}
 	public void exitloading()
 	{
-		Stage stage = (Stage) LoadIMG.getScene().getWindow();
+		Stage stage = (Stage) label1.getScene().getWindow();
 		stage.close();
 	}
 }
