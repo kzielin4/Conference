@@ -30,6 +30,7 @@ public class ExtractLoader
 
 	public ArrayList<Extract> loadExtracts()
 	{
+		MyLogger logger = new MyLogger();
 		categories.setCategories(categories.loadCategories());
 		if (categories.getSize() == 0)
 		{
@@ -48,7 +49,7 @@ public class ExtractLoader
 			{
 				String data = input.nextLine();
 				ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(data.split(",")));
-				if (i != 0 && validateExtractLine(extractData))
+				if (i != 0 && validateExtractLine(extractData,i+1))
 				{
 					// DEVIDE AUTHORS
 					ArrayList<String> authorsList = new ArrayList<String>(Arrays.asList(extractData.get(9).split("/")));
@@ -56,6 +57,12 @@ public class ExtractLoader
 					// speakerNumber, sessionNumber);
 					Timestamp beginTimestamp = Timestamp.valueOf(extractData.get(7).replace(".", "-") + ":00");
 					Timestamp endTimestamp = Timestamp.valueOf(extractData.get(8).replace(".", "-") + ":00");
+					if(!validator.validateTimestamps(beginTimestamp, endTimestamp))
+					{
+						int num = i+1;
+						logger.writeError("Wrong date ARRIVAL<DEPARTURE Extract csv file in line "+ num);
+						return null;
+					}
 					Speaker speaker = new Speaker(authorsList.get(0), beginTimestamp, endTimestamp);
 					Lecture lecture;
 					if (extractData.get(6).equals(new String("P")))
@@ -67,9 +74,6 @@ public class ExtractLoader
 						lecture = new Lecture(LectureType.N, extractData.get(1), extractData.get(2));
 					}
 					extractList.add(new Extract(lecture, speaker, Integer.parseInt(extractData.get(0)),Integer.parseInt(extractData.get(3)),Integer.parseInt(extractData.get(4)),Integer.parseInt(extractData.get(5))));
-					// TODO
-					// TU DODAÆ WYK£ADOWCÓW
-					// TU DODAÆ WYK£ADY
 				}
 				else if (i != 0)
 				{
@@ -105,19 +109,20 @@ public class ExtractLoader
 
 	// TODO
 	// ROZSZERZ O CONFIG ile ma byæ pól
-	public boolean validateExtractLine(ArrayList<String> extractData)
+	public boolean validateExtractLine(ArrayList<String> extractData,int number)
 	{
+		MyLogger logger = new MyLogger();
 		int requiredFields = 10;
 		if (extractData.size() != requiredFields)
 		{
+			logger.writeError("Wrong ammount of fields in Extract csv file in line "+ number);
 			return false;
 		}
 		else
 		{
 			if (!validator.isNumeric(extractData.get(0)))
 			{
-				System.out.println("id-nie");
-				// tu log o zlym formacie id
+				logger.writeError("Wrong ID_LECTURE format in Extract csv file in line "+ number);
 				return false;
 			}
 			// warunek kategorii
@@ -128,26 +133,23 @@ public class ExtractLoader
 					// check is category filed is okej
 					if (!validator.isNumeric(extractData.get(i)) || !isCategory(extractData.get(i)))
 					{
-						System.out.println("categorie-nie");
+						int n1 =i-2;
+						logger.writeError("Wrong KW"+n1+" in Extract csv file in line "+ number);
 						return false;
 					}
 				}
 
 				if (!validator.isLectureType(extractData.get(6)))
 				{
-					System.out.println("type-nie");
+					logger.writeError("Wrong LECTURE_TYPE in Extract csv file in line "+ number);
 					return false;
 				}
 				if (!validator.isStringDateMinute(extractData.get(7).replace(".", "-"))
 						|| !validator.isStringDateMinute(extractData.get(8).replace(".", "-")))
 				{
-					System.out.println("data-nie");
+					logger.writeError("Wrong date of ARRIVAL or DEPARTURE in csv file in line "+ number);
 					return false;
 				}
-				// to trzeba bêdzie zrobiæ przy tworzeniu klasy
-				// extractData.get(7)=extractData.get(7).replace(".", "-");
-				// TODO
-				// CZY DODAÆ WALIDACJE IMION
 			}
 		}
 		return true;

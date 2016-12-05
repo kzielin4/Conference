@@ -2,6 +2,7 @@ package Zielinski.Kamil.Model;
 
 import java.awt.List;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,7 +57,13 @@ public class Validator
 		}
 		return isOK;
 	}
-
+    public boolean validateTimestamps(Timestamp t1 , Timestamp t2)
+    {
+    	if(t1.before(t2))
+    		return true;
+    	else
+    		return false;
+    }
 	public boolean isStringDateMinute(String date)
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");

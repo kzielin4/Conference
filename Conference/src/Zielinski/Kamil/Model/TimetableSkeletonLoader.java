@@ -33,9 +33,12 @@ public class TimetableSkeletonLoader
 		File file = new File(filePath);
 		Timestamp lineDate;
 		String lineDateString = "NULL";
+		MyLogger logger = new MyLogger();
 		try
 		{
 			Scanner input = new Scanner(file);
+			input.useDelimiter("\n");
+			int num =1;
 			while (input.hasNext())
 			{
 				String data = input.next();
@@ -44,17 +47,14 @@ public class TimetableSkeletonLoader
 					ArrayList<String> line = new ArrayList<String>(Arrays.asList(data.split(",")));
 					if (validator.isStringDate(line.get(0)))
 					{
-						// System.out.println("okej");
 						lineDateString = line.get(0);
 						lineDate = Timestamp.valueOf(line.get(0) + " 00:00:00");
+						System.out.println(lineDate);
 					}
 					else
 					{
-						// TODO
-						/*
-						 * Tu trzeba dodaæ obs³ugê b³êdu - tzn log daæ ¿e Ÿle i
-						 * trzeba poprawiæ;
-						 */
+						logger.writeError("Expect date format YYYY-MM-DD in Skeleton csv file line "+num);
+						return null;
 					}
 				}
 				else
@@ -74,7 +74,7 @@ public class TimetableSkeletonLoader
 							EventType eventType = checkEvent(fields);
 							if (eventType == EventType.PLENARY)
 							{
-								System.out.println("plenary");
+								System.out.println("plenart");
 								skeleton.addTimeUnit(
 										new TimeUnit(beginTimestamp,endTimestamp, dif, fields.get(1), EventType.PLENARY));
 							}
@@ -87,38 +87,31 @@ public class TimetableSkeletonLoader
 							{
 								for (int i = 1; i < fields.size(); i++)
 								{
-									//System.out.println("session");
-									System.out.println(fields.get(i));
+									System.out.println("session");
 									skeleton.addTimeUnit(
 											new TimeUnit(beginTimestamp,endTimestamp, dif, fields.get(i), EventType.SESSION));
 								}
 							}
 							else
 							{
-								// obsluga bledu
-								//input close
-								// return null;
+								logger.writeError("Wrong type of event in Skeleton csv file line "+num);
+								return null;
 							}
 						}
 						else
 						{
-							// TODO
-							/*
-							 * //input close
-							 * Obsluga bledu
-							 */
+							logger.writeError("Expect hours format HH:MM-HH:MM in Skeleton csv file line "+num);
+							return null;
 						}
 					}
 					else
 					{
-						// TODO
-						/*
-						 * //input close
-						 * Obsluga bledu
-						 */
+						logger.writeError("Wrong type of line in Skeleton csv file line "+num);
+						return null;
 					}
 
 				}
+				++num;
 			}
 			input.close();
 
@@ -133,8 +126,17 @@ public class TimetableSkeletonLoader
 
 	public LineType checkLineType(String line)
 	{
+		System.out.println(line);
 		ArrayList<String> checkLine = new ArrayList<String>(Arrays.asList(line.split(",")));
-		if (checkLine.size() == 1)
+		System.out.println(checkLine.size());
+		int counter = 0;
+		for (String string : checkLine)
+		{
+		    if(string.length()>0)
+		    	++counter;
+		}
+		System.out.println(counter);
+		if (counter==2)
 		{
 			return LineType.DATE;
 		}
@@ -145,7 +147,14 @@ public class TimetableSkeletonLoader
 	// TOFIX
 	public EventType checkEvent(ArrayList<String> fields)
 	{
-		if (fields.size() == 2)
+		System.out.println("SIZE TYPE: "+fields.size());
+		int counter = 0;
+		for (String string : fields)
+		{
+		    if(string.length()>0)
+		    	++counter;
+		}
+		if (counter == 3)
 		{
 			if (fields.get(1).length() >= 7
 					&& ((String) fields.get(1).subSequence(0, 7)).toUpperCase().contains("PLENARY"))

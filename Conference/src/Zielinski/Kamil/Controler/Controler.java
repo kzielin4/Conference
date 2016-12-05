@@ -2,6 +2,7 @@ package Zielinski.Kamil.Controler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import com.itextpdf.text.DocumentException;
@@ -9,12 +10,13 @@ import com.itextpdf.text.DocumentException;
 import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.Conference;
 import Zielinski.Kamil.Model.DBConnector;
+import Zielinski.Kamil.Model.Extract;
 import Zielinski.Kamil.Model.ExtractLoader;
 import Zielinski.Kamil.Model.NormalLectureScheduler;
 import Zielinski.Kamil.Model.PlenaryLectureScheduler;
 import Zielinski.Kamil.Model.TimetableSkeleton;
 import Zielinski.Kamil.Model.TimetableSkeletonLoader;
-import Zielinski.Kamil.Model.myLogger;
+import Zielinski.Kamil.Model.MyLogger;
 import Zielinski.Kamil.View.LogStage;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -95,52 +97,65 @@ public class Controler
 		Thread th = new Thread(task);
 		th.setDaemon(true);
 		th.start();
-		new Thread(new Runnable() {
-		    public void run() {
-		       try
+		new Thread(new Runnable()
+		{
+			public void run()
 			{
-				loadExtracts();
+				try
+				{
+					loadExtracts();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (DocumentException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (InterruptedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (DocumentException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (SQLException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (InterruptedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		    }
 		}).start();
 	}
 
 	public void loadExtracts() throws IOException, DocumentException, SQLException, InterruptedException
 	{
-		myLogger logger = new myLogger();
+		MyLogger logger = new MyLogger();
 		System.out.println("Wczytaj");
 		// ExtractLoader extractLoader = new ExtractLoader();
 		// extractLoader.executeLoading();
-		conference.setExtracts(extractLoader.loadExtracts());
-		TimetableSkeleton sk = new TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
+		ArrayList<Extract> extracts = extractLoader.loadExtracts();
+		if(extracts ==null)
+		{
+			System.out.println("ex");
+			return;
+		}
+		conference.setExtracts(extracts);
+		// TimetableSkeleton sk
+		// =timetableSkeletonLoader.loadTimetableSkeleton();
+		TimetableSkeleton sk = timetableSkeletonLoader.loadTimetableSkeleton();
+		if (sk == null)
+		{
+			System.out.println("sk");
+			return;
+		}
 		System.out.println("CONF: " + conference.countNormalLecture());
 		System.out.println("ILOŒÆ:  " + sk.countMaxNormalLectureInUnits());
 		if (conference.countNormalLecture() > sk.countMaxNormalLectureInUnits()
 				|| conference.countPlenaryLecture() > sk.countMaxPlenaryLectureInUnits())
 		{
-			// tu jakiœ b³¹d
-			// loger plus alert
-			System.out.println("Za malo unitow sesji");
+			logger.writeError("Not enough session units to assigned all lectures");
 			return;
 		}
 		conference.setTimetableSkeleton(sk);
@@ -151,6 +166,7 @@ public class Controler
 		runAlgorithms(conference);
 
 	}
+
 	public void runAlgorithms(Conference conf) throws IOException, DocumentException, SQLException
 	{
 		System.out.println(conference.sessionSize());
@@ -209,6 +225,7 @@ public class Controler
 		Stage stage = (Stage) dbButton.getScene().getWindow();
 		stage.close();
 	}
+
 	public void exitloading()
 	{
 		Stage stage = (Stage) label1.getScene().getWindow();

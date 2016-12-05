@@ -1,0 +1,12 @@
+gru 05, 2016 8:44:28 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
+gru 05, 2016 8:44:28 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Wrong type of line in Skeleton csv file line 2
+gru 05, 2016 8:47:59 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 11
+gru 05, 2016 8:58:10 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
+gru 05, 2016 9:06:27 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
+gru 05, 2016 9:10:42 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Wrong type of event in Skeleton csv file line 9

@@ -6,22 +6,27 @@ import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 
-public class myLogger
+public class MyLogger
 {
 	private java.util.logging.Logger logger;
+	private FileHandler fh;
 
-	public myLogger()
+	public MyLogger()
 	{
 		logger = java.util.logging.Logger.getLogger("MyLog");
-		FileHandler fh;
-
+	}
+  
+	public void writeError(String message)
+	{
 		try
 		{
 
-			fh = new FileHandler("Logs/log.txt", true);
+			fh = new FileHandler("Logs/log.txt",true);
 			logger.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
+			logger.warning(message);
+			fh.close();
 
 		}
 		catch (SecurityException e)
@@ -32,10 +37,10 @@ public class myLogger
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public void writeError(String message)
-	{
 		logger.warning(message);
+	}
+	public void close()
+	{
+		fh.close();
 	}
 }
