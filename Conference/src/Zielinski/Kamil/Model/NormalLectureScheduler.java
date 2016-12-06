@@ -13,13 +13,13 @@ public class NormalLectureScheduler
 	private Individual bestPlan;
 	final static int POP_STRT = 1000;// 5000 10000
 	final static int ELITISM_K = 65; // 50
-	final static int POP_SIZE = 130 + ELITISM_K; // population size /2000
+	final static int POP_SIZE = 140 + ELITISM_K; // population size /2000
 													// 200+ELITISM_K;
 	final static int MAX_ITER = 5000; // max number of iterations //1000 2000
-	final static double MUTATION_RATE = 0.3055555; // probability of mutation 0.05
-	final static double CROSSOVER_RATE = 0.895555; // probability of crossover
+	final static double MUTATION_RATE = 0.3155555; // probability of mutation 0.05
+	final static double CROSSOVER_RATE = 0.9405555; // probability of crossover
 													// 0.8
-	final static int MAXNOUPDATEITERATION = 1000;
+	final static int MAXNOUPDATEITERATION = 300;
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;

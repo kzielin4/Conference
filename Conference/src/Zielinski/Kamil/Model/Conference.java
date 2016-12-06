@@ -384,7 +384,7 @@ public class Conference
 		PDFWritter pdfWritter = new PDFWritter();
 		SimpleDateFormat time_formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		String current_time_str = time_formatter.format(System.currentTimeMillis());
-		pdfWritter.createPdf("HelloWorld_"+current_time_str+".pdf");
+		pdfWritter.createPdf("Output/ConferanceTimetable_"+current_time_str+".pdf");
 		pdfWritter.write();
 		ArrayList<String> values = new ArrayList<String>();
 		ArrayList<String> fieldsVal = new ArrayList<String>();
@@ -462,10 +462,13 @@ public class Conference
 	public void writeToDB() throws SQLException
 	{
 		DBConnector con = new DBConnector();
+		int idConf = con.getAvaliableConferenceID();
+		con.addConference(idConf, "Conference",Timestamp.valueOf("2013-10-06 16:00:00"),Timestamp.valueOf("2013-10-06 16:00:00"));
+		System.out.println("addConference");
 		for (Session session : sessions)
 		{
 			System.out.println("ses");
-			con.addSession(session);
+			con.addSession(session,idConf);
 		}
 		for (Session session : sessions)
 		{
@@ -474,10 +477,14 @@ public class Conference
 			{
 				System.out.println("sp");
 				Extract tempExtract = geExtractById(idExtract.intValue());
-				con.addSpeaker(tempExtract);
+				con.addSpeaker(tempExtract,idConf );
 				System.out.println("lec");
-				con.addLecutre(tempExtract, session.getIdSession(), number);
+				con.addLecutre(tempExtract, session.getIdSession(), number,idConf);
 			}
+		}
+		for(Category category: categories.getCategories())
+		{
+			con.addCategory(category, idConf);
 		}
 		/*for (Extract extract : extracts)
 		{

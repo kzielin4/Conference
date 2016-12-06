@@ -145,3 +145,17 @@ ADD CONSTRAINT `idConference`
 ALTER TABLE `mydb`.`speaker` 
 DROP PRIMARY KEY,
 ADD PRIMARY KEY (`idSpeaker`, `idConference`);
+
+ALTER TABLE `mydb`.`session` 
+DROP INDEX `idSession_UNIQUE` ;
+
+ALTER TABLE `mydb`.`lecture` 
+DROP INDEX `idLecture_UNIQUE` ;
+
+CREATE TABLE `mydb`.`category` (
+  `idCategory` INT NOT NULL,
+  `categoryName` VARCHAR(100) NULL,
+  `idConference` INT NOT NULL,
+  PRIMARY KEY (`idConference`, `idCategory`));
+
+

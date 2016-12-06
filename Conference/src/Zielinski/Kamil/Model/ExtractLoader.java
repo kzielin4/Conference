@@ -31,12 +31,12 @@ public class ExtractLoader
 	public ArrayList<Extract> loadExtracts()
 	{
 		MyLogger logger = new MyLogger();
-		categories.setCategories(categories.loadCategories());
-		if (categories.getSize() == 0)
+		ArrayList<Category> cat = categories.loadCategories();
+		if (cat == null)
 		{
-			// tu log ze brak kategorii
 			return null;
 		}
+		categories.setCategories(cat);
 		ArrayList<Extract> extractList = new ArrayList<Extract>();
 		String filePath = "Extracts/Extracts.csv";
 		File file = new File(filePath);

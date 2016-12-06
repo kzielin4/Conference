@@ -12,6 +12,7 @@ import Zielinski.Kamil.Model.Conference;
 import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.Model.Extract;
 import Zielinski.Kamil.Model.ExtractLoader;
+import Zielinski.Kamil.Model.MailSender;
 import Zielinski.Kamil.Model.NormalLectureScheduler;
 import Zielinski.Kamil.Model.PlenaryLectureScheduler;
 import Zielinski.Kamil.Model.TimetableSkeleton;
@@ -46,7 +47,8 @@ public class Controler
 	private ImageView LoadIMG;
 	@FXML
 	private Label label1;
-
+    private boolean isRUN;
+    private Stage stage;
 	public Controler()
 	{
 		extractLoader = new ExtractLoader();
@@ -72,7 +74,7 @@ public class Controler
 	{
 		Task task = new Task<Void>()
 		{
-			@Override
+		    @Override
 			public Void call() throws Exception
 			{
 				Platform.runLater(new Runnable()
@@ -82,7 +84,7 @@ public class Controler
 					{
 						try
 						{
-							setLoadingStage();
+							stage = setLoadingStage();
 						}
 						catch (IOException e)
 						{
@@ -104,6 +106,7 @@ public class Controler
 				try
 				{
 					loadExtracts();
+					isRUN = false;
 				}
 				catch (IOException e)
 				{
@@ -127,6 +130,11 @@ public class Controler
 				}
 			}
 		}).start();
+		while (isRUN)
+		{
+			exitloading();
+		}
+		System.out.println("I co teraz !!!!!!!!!!!!!!!!!!!!!!");
 	}
 
 	public void loadExtracts() throws IOException, DocumentException, SQLException, InterruptedException
@@ -175,12 +183,11 @@ public class Controler
 		conference.setSessionByNormalScheduler(schedul.findBestIndividual().getSessions());
 		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(),
 				conf.getPlenaryExtracts());
-		plenaryScheduler.printAssigned();
-		conf.printSessionAssigned();
-		conf.writeToCSVFile();
+		//plenaryScheduler.printAssigned();
+		//conf.printSessionAssigned();
+		//conf.writeToCSVFile();
 		conf.writeToPDF();
-		exitloading();
-		// conf.writeToDB();
+		conf.writeToDB();
 	}
 
 	public void loadSkeleton()
@@ -194,6 +201,21 @@ public class Controler
 
 	public void loadCategories()
 	{
+		DBConnector con = new DBConnector();
+		try
+		{
+			System.out.println(con.isSessionExist(0, 1));
+			System.out.println(con.isSessionExist(1, 1));
+			System.out.println(con.getAvaliableConferenceID() );
+			MailSender sender = new MailSender();
+		    sender.sentMail("kpz94@o2.pl","Output/HelloWorld_2016-12-06_17-53-09.pdf");
+			System.out.println("koniec123");
+		}
+		catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void showAlert(String title, String value)
@@ -206,7 +228,7 @@ public class Controler
 		 */
 	}
 
-	public void setLoadingStage() throws IOException
+	public Stage setLoadingStage() throws IOException
 	{
 		System.out.println("loading...");
 		exitMainView();
@@ -218,6 +240,7 @@ public class Controler
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
+		return  logScene;
 	}
 
 	public void exitMainView()
@@ -228,7 +251,6 @@ public class Controler
 
 	public void exitloading()
 	{
-		Stage stage = (Stage) label1.getScene().getWindow();
 		stage.close();
 	}
 }

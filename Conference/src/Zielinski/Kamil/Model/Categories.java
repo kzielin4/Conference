@@ -65,9 +65,11 @@ public class Categories
 				{
 					categories.add(new Category(Integer.parseInt(extractData.get(1)), extractData.get(0)));
 				}
-				else if (i != 0)
+				else if (i != 0 && !checkLine(extractData))
 				{
-					// log z b³edem
+					MyLogger logger = new MyLogger();
+					int num = i+1;
+					logger.writeError("Wrong IDCATEGORY value in Categories csv file line "+num);
 					return null;
 				}
 				i = i + 1;

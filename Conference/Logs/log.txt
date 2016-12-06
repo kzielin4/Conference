@@ -10,3 +10,5 @@ gru 05, 2016 9:06:27 PM Zielinski.Kamil.Model.MyLogger writeError
 WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
 gru 05, 2016 9:10:42 PM Zielinski.Kamil.Model.MyLogger writeError
 WARNING: Wrong type of event in Skeleton csv file line 9
+gru 06, 2016 5:47:44 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Wrong IDCATEGORY value in Categories csv file line 2

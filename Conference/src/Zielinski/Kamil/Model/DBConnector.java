@@ -65,33 +65,19 @@ public class DBConnector
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		Session tempSession = null;
-		/*try
-		{
-			stmt = connection.createStatement();
-			ResultSet rset = stmt.executeQuery(selectString);
-			if (rset.next())
-			{
-				int idx = rset.getInt(1);
-				String name = rset.getString(2);
-				Timestamp timestamp1 = rset.getTimestamp(3);
-				Timestamp timestamp2 = rset.getTimestamp(4);
-				System.out.println("ID: " + name + "    " + timestamp1 + "    " + timestamp1);
-				tempSession = new Session(idx, null, timestamp1, timestamp2, name);
-			}
-
-		}
-		catch (SQLException ex)
-		{
-			ex.printStackTrace();
-			System.out.println(ex);
-			connection.rollback(sp);
-		}
-		finally
-		{
-			// connection.commit();
-			return tempSession;
-		}
-		*/
+		/*
+		 * try { stmt = connection.createStatement(); ResultSet rset =
+		 * stmt.executeQuery(selectString); if (rset.next()) { int idx =
+		 * rset.getInt(1); String name = rset.getString(2); Timestamp timestamp1
+		 * = rset.getTimestamp(3); Timestamp timestamp2 = rset.getTimestamp(4);
+		 * System.out.println("ID: " + name + "    " + timestamp1 + "    " +
+		 * timestamp1); tempSession = new Session(idx, null, timestamp1,
+		 * timestamp2, name); }
+		 * 
+		 * } catch (SQLException ex) { ex.printStackTrace();
+		 * System.out.println(ex); connection.rollback(sp); } finally { //
+		 * connection.commit(); return tempSession; }
+		 */
 		return tempSession;
 	}
 
@@ -114,7 +100,8 @@ public class DBConnector
 				Timestamp departureDate = rset.getTimestamp(5);
 				System.out.println(
 						"ID: " + firstName + "    " + secoundName + "    " + arrivalDate + "    " + departureDate);
-				//tempSpeaker = new Speaker(firstName, secoundName, arrivalDate, departureDate);
+				// tempSpeaker = new Speaker(firstName, secoundName,
+				// arrivalDate, departureDate);
 			}
 
 		}
@@ -167,11 +154,12 @@ public class DBConnector
 		}
 		return tempLecture;
 	}
-    
-	public int addSession(Session session) throws SQLException
+
+	public int addSession(Session session,int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
-		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd,sessionType,idConference)" + " values (?, ?, ?, ?,?,?);";
+		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd,sessionType,idConference)"
+				+ " values (?, ?, ?, ?,?,?);";
 		Savepoint sp = connection.setSavepoint();
 		int isADD = 0;
 		try
@@ -181,11 +169,11 @@ public class DBConnector
 			insert.setString(2, session.getSessionName());
 			insert.setTimestamp(3, session.getBeginDate());
 			insert.setTimestamp(4, session.getEndDate());
-			if (session.getType() ==SessionType.PLENARY) 
-				insert.setString(5,"P");
+			if (session.getType() == SessionType.PLENARY)
+				insert.setString(5, "P");
 			else
-				insert.setString(5,"N");
-			insert.setInt(6, 0);
+				insert.setString(5, "N");
+			insert.setInt(6, idConf);
 			insert.execute();
 			isADD = 1;
 		}
@@ -202,7 +190,8 @@ public class DBConnector
 		return isADD;
 
 	}
-	public int addUser(String name, String pass , String mail) throws SQLException
+
+	public int addUser(String name, String pass, String mail) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into users (userName,userPassword,userMail)" + " values (?,?,?);";
@@ -230,13 +219,14 @@ public class DBConnector
 		return isADD;
 
 	}
+
 	public String getUserPassword(String nick) throws SQLException
 	{
 		java.sql.Statement stmt = null;
 		String selectString = "SELECT * FROM mydb.users where userName like '" + nick + "';";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
-		String passwd="";
+		String passwd = "";
 		try
 		{
 			stmt = connection.createStatement();
@@ -255,7 +245,8 @@ public class DBConnector
 		}
 		return passwd;
 	}
-	public int addSpeaker(Extract extract) throws SQLException
+
+	public int addSpeaker(Extract extract,int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into speaker (idSpeaker,firstAndSecondName,arrivalDate,departureDate,idConference)"
@@ -270,7 +261,7 @@ public class DBConnector
 			insert.setString(2, speaker.getFirstAndSecondName());
 			insert.setTimestamp(3, speaker.getArrivalDate());
 			insert.setTimestamp(4, speaker.getDepartureDate());
-			insert.setInt(5, 0);
+			insert.setInt(5, idConf);
 			insert.execute();
 			isADD = 1;
 		}
@@ -287,8 +278,36 @@ public class DBConnector
 		}
 		return isADD;
 	}
-	
-	public int addLecutre(Extract extract,int idSession,int number) throws SQLException
+	public int addCategory(Category category,int idConf) throws SQLException
+	{
+		PreparedStatement insert = null;
+		String insertString = "insert into category (idCategory,categoryName,idConference)"
+				+ " values (?, ?, ?);";
+		Savepoint sp = connection.setSavepoint();
+		int isADD = 0;
+		try
+		{
+			insert = connection.prepareCall(insertString);
+			insert.setInt(1, category.getIdCategory());
+			insert.setString(2,category.getName());
+			insert.setInt(3, idConf);
+			insert.execute();
+			isADD = 1;
+		}
+		catch (SQLException ex)
+		{
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		finally
+		{
+			// connection.commit();
+			System.out.println("Rekord dodany");
+			insert.close();
+		}
+		return isADD;
+	}
+	public int addLecutre(Extract extract, int idSession, int number,int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into lecture (idLecture, idSpeaker,idSession,lectureType,thema,abstract,kw1,kw2,kw3,idConference,numberIn)"
@@ -301,16 +320,16 @@ public class DBConnector
 			insert.setInt(1, extract.getIdExtract());
 			insert.setInt(2, extract.getIdExtract());
 			insert.setInt(3, idSession);
-			if (extract.getLecture().getType() == LectureType.P) 
-				insert.setString(4,"P");
+			if (extract.getLecture().getType() == LectureType.P)
+				insert.setString(4, "P");
 			else
-				insert.setString(4,"N");
+				insert.setString(4, "N");
 			insert.setString(5, extract.getLecture().getThema());
 			insert.setString(6, extract.getLecture().getAbstractLecture());
-			insert.setInt(7,extract.getKw1());
-			insert.setInt(8,extract.getKw2());
-			insert.setInt(9,extract.getKw3());
-			insert.setInt(10, 0);
+			insert.setInt(7, extract.getKw1());
+			insert.setInt(8, extract.getKw2());
+			insert.setInt(9, extract.getKw3());
+			insert.setInt(10, idConf);
 			insert.setInt(11, number);
 			insert.execute();
 			isADD = 1;
@@ -328,6 +347,7 @@ public class DBConnector
 		}
 		return isADD;
 	}
+
 	public ArrayList<Lecture> getAllLectureFromSession(int idx) throws SQLException
 	{
 		ArrayList<Lecture> lectures = new ArrayList<Lecture>();
@@ -367,10 +387,11 @@ public class DBConnector
 		}
 
 	}
+
 	public boolean isConferenceExists(int idConf) throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM mydb.confernce where idConference = " + idConf + ";";
+		String selectString = "SELECT * FROM mydb.conference where idConference = " + idConf + ";";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		boolean isExist = false;
@@ -392,7 +413,86 @@ public class DBConnector
 		}
 		return isExist;
 	}
-	public int addConference(int id , String name, Timestamp start, Timestamp end) throws SQLException
+
+	public boolean isSpeakerExist(int idConf, int idSpeaker) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.speaker where idConference = " + idConf + " and idSpeaker = "+ idSpeaker + ";";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		boolean isExist = false;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			if (rset.next())
+			{
+				isExist = true;
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return isExist;
+	}
+
+	public boolean isLectureExist(int idConf, int idLecture) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.lecture where idConference = " + idConf + " and idLecture = "+ idLecture + ";";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		boolean isExist = false;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			if (rset.next())
+			{
+				isExist = true;
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return isExist;
+	}
+	
+	public boolean isSessionExist(int idConf, int idSession) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.session where idConference = " + idConf + " and idSession = "+ idSession + ";";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		boolean isExist = false;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			if (rset.next())
+			{
+				isExist = true;
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return isExist;
+	}
+
+	public int addConference(int id, String name, Timestamp start, Timestamp end) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into conference (idConference,conferenceName,timeStart,timeEnd)"
@@ -402,7 +502,7 @@ public class DBConnector
 		try
 		{
 			insert = connection.prepareCall(insertString);
-			insert.setInt(1,id);
+			insert.setInt(1, id);
 			insert.setString(2, name);
 			insert.setTimestamp(3, start);
 			insert.setTimestamp(4, end);
@@ -422,5 +522,20 @@ public class DBConnector
 		return isADD;
 	}
 	
-
+    public int getAvaliableConferenceID()
+    {
+    	int i=0;
+    	try
+		{
+			while(isConferenceExists(i))
+			{
+				++i;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return i;
+    }
 }
