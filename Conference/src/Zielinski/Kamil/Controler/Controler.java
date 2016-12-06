@@ -207,8 +207,11 @@ public class Controler
 			System.out.println(con.isSessionExist(0, 1));
 			System.out.println(con.isSessionExist(1, 1));
 			System.out.println(con.getAvaliableConferenceID() );
-			MailSender sender = new MailSender();
-		    sender.sentMail("kpz94@o2.pl","Output/HelloWorld_2016-12-06_17-53-09.pdf");
+			//MailSender sender = new MailSender();
+		    //sender.sentMail("kpz94@o2.pl","Output/HelloWorld_2016-12-06_17-53-09.pdf");
+			System.out.println(con.getConferenceIdList().size());
+			System.out.println(con.getSessionIdList(3).size());
+			System.out.println(con.getLectureIdList(3, 1).size());
 			System.out.println("koniec123");
 		}
 		catch (SQLException e)

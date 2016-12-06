@@ -58,29 +58,6 @@ public class DBConnector
 		}
 	}
 
-	public Session getSession(int id) throws SQLException
-	{
-		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM session where idSession=" + id + ";";
-		System.out.println(selectString);
-		Savepoint sp = connection.setSavepoint();
-		Session tempSession = null;
-		/*
-		 * try { stmt = connection.createStatement(); ResultSet rset =
-		 * stmt.executeQuery(selectString); if (rset.next()) { int idx =
-		 * rset.getInt(1); String name = rset.getString(2); Timestamp timestamp1
-		 * = rset.getTimestamp(3); Timestamp timestamp2 = rset.getTimestamp(4);
-		 * System.out.println("ID: " + name + "    " + timestamp1 + "    " +
-		 * timestamp1); tempSession = new Session(idx, null, timestamp1,
-		 * timestamp2, name); }
-		 * 
-		 * } catch (SQLException ex) { ex.printStackTrace();
-		 * System.out.println(ex); connection.rollback(sp); } finally { //
-		 * connection.commit(); return tempSession; }
-		 */
-		return tempSession;
-	}
-
 	public Speaker getSpeaker(int id) throws SQLException
 	{
 		java.sql.Statement stmt = null;
@@ -155,7 +132,7 @@ public class DBConnector
 		return tempLecture;
 	}
 
-	public int addSession(Session session,int idConf) throws SQLException
+	public int addSession(Session session, int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into session (idSession,sessionName,timeStart,timeEnd,sessionType,idConference)"
@@ -246,7 +223,7 @@ public class DBConnector
 		return passwd;
 	}
 
-	public int addSpeaker(Extract extract,int idConf) throws SQLException
+	public int addSpeaker(Extract extract, int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into speaker (idSpeaker,firstAndSecondName,arrivalDate,departureDate,idConference)"
@@ -278,18 +255,18 @@ public class DBConnector
 		}
 		return isADD;
 	}
-	public int addCategory(Category category,int idConf) throws SQLException
+
+	public int addCategory(Category category, int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
-		String insertString = "insert into category (idCategory,categoryName,idConference)"
-				+ " values (?, ?, ?);";
+		String insertString = "insert into category (idCategory,categoryName,idConference)" + " values (?, ?, ?);";
 		Savepoint sp = connection.setSavepoint();
 		int isADD = 0;
 		try
 		{
 			insert = connection.prepareCall(insertString);
 			insert.setInt(1, category.getIdCategory());
-			insert.setString(2,category.getName());
+			insert.setString(2, category.getName());
 			insert.setInt(3, idConf);
 			insert.execute();
 			isADD = 1;
@@ -307,7 +284,8 @@ public class DBConnector
 		}
 		return isADD;
 	}
-	public int addLecutre(Extract extract, int idSession, int number,int idConf) throws SQLException
+
+	public int addLecutre(Extract extract, int idSession, int number, int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
 		String insertString = "insert into lecture (idLecture, idSpeaker,idSession,lectureType,thema,abstract,kw1,kw2,kw3,idConference,numberIn)"
@@ -348,13 +326,13 @@ public class DBConnector
 		return isADD;
 	}
 
-	public ArrayList<Lecture> getAllLectureFromSession(int idx) throws SQLException
+	public ArrayList<Lecture> getAllLectureFromSession(int idSes, int idConf) throws SQLException
 	{
 		ArrayList<Lecture> lectures = new ArrayList<Lecture>();
 		// TODO
 		// dowalic while od getlecture i dodajemy do listy i zwracamy liste
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM lecture where idSession=" + idx + ";";
+		String selectString = "SELECT * FROM lecture where idSession=" + idSes + " and idConference= " + idConf + ";";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		try
@@ -417,7 +395,8 @@ public class DBConnector
 	public boolean isSpeakerExist(int idConf, int idSpeaker) throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM mydb.speaker where idConference = " + idConf + " and idSpeaker = "+ idSpeaker + ";";
+		String selectString = "SELECT * FROM mydb.speaker where idConference = " + idConf + " and idSpeaker = "
+				+ idSpeaker + ";";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		boolean isExist = false;
@@ -443,7 +422,8 @@ public class DBConnector
 	public boolean isLectureExist(int idConf, int idLecture) throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM mydb.lecture where idConference = " + idConf + " and idLecture = "+ idLecture + ";";
+		String selectString = "SELECT * FROM mydb.lecture where idConference = " + idConf + " and idLecture = "
+				+ idLecture + ";";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		boolean isExist = false;
@@ -465,11 +445,12 @@ public class DBConnector
 		}
 		return isExist;
 	}
-	
+
 	public boolean isSessionExist(int idConf, int idSession) throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM mydb.session where idConference = " + idConf + " and idSession = "+ idSession + ";";
+		String selectString = "SELECT * FROM mydb.session where idConference = " + idConf + " and idSession = "
+				+ idSession + ";";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		boolean isExist = false;
@@ -521,13 +502,13 @@ public class DBConnector
 		}
 		return isADD;
 	}
-	
-    public int getAvaliableConferenceID()
-    {
-    	int i=0;
-    	try
+
+	public int getAvaliableConferenceID()
+	{
+		int i = 0;
+		try
 		{
-			while(isConferenceExists(i))
+			while (isConferenceExists(i))
 			{
 				++i;
 			}
@@ -536,6 +517,86 @@ public class DBConnector
 		{
 			e.printStackTrace();
 		}
-    	return i;
-    }
+		return i;
+	}
+
+	public ArrayList<Integer> getConferenceIdList() throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.conference;";
+		System.out.println(selectString);
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		Savepoint sp = connection.setSavepoint();
+		boolean isExist = false;
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			while (rset.next())
+			{
+				idList.add(new Integer(rset.getInt(1)));
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return idList;
+	}
+	
+	public ArrayList<Integer> getSessionIdList(int idConf) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.session where idConference = "+idConf+";";
+		System.out.println(selectString);
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		Savepoint sp = connection.setSavepoint();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			while (rset.next())
+			{
+				idList.add(new Integer(rset.getInt(1)));
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		System.out.println("SIZE: "+idList.size());
+		return idList;
+	}
+	
+	public ArrayList<Integer> getLectureIdList(int idConf,int idSession) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.lecture where idConference = "+idConf+" and idSession="+idSession+";";
+		System.out.println(selectString);
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		Savepoint sp = connection.setSavepoint();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			while (rset.next())
+			{
+				idList.add(new Integer(rset.getInt(1)));
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return idList;
+	}
 }
