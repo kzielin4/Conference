@@ -3,6 +3,7 @@ package Zielinski.Kamil.Controler;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import Zielinski.Kamil.Model.CoderBase64;
 import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.View.LogStage;
 import javafx.fxml.FXML;
@@ -34,7 +35,7 @@ public class SignInControler
 	@FXML
 	private Label notificationLabel;
 
-	public void acceptClick() throws SQLException, IOException
+	public void acceptClick() throws Exception
 	{
 		String name = nameField.getText();
 		String mail = surnameField.getText();
@@ -52,7 +53,10 @@ public class SignInControler
 			notificationLabel.setText(message);
 			return;
 		}
-		con.addUser(name, pass1, mail);
+		CoderBase64 coder = new CoderBase64();
+		String code = coder.encrypt(pass1);
+		System.out.println(code);
+		con.addUser(name, code, mail);
 		this.exit();
 	}
 	

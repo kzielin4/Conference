@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class Conference
 	private TimetableSkeleton timetableSkeleton;
 	private ArrayList<Session> sessions;
 	private ArrayList<Extract> extracts;
+	private Timestamp startTime;
+	private Timestamp endTime;
 	private boolean isComplited;
 	private Categories categories;
 
@@ -34,10 +37,11 @@ public class Conference
 	{
 		return timetableSkeleton;
 	}
-
 	public void setTimetableSkeleton(TimetableSkeleton timetableSkeleton)
 	{
 		this.timetableSkeleton = timetableSkeleton;
+		this.setStartTime(timetableSkeleton);
+		this.setEndTime(timetableSkeleton);
 	}
 
 	public ArrayList<Session> getSessions()
@@ -463,7 +467,7 @@ public class Conference
 	{
 		DBConnector con = new DBConnector();
 		int idConf = con.getAvaliableConferenceID();
-		con.addConference(idConf, "Conference",Timestamp.valueOf("2013-10-06 16:00:00"),Timestamp.valueOf("2013-10-06 16:00:00"));
+		con.addConference(idConf, "Conference",startTime,endTime);
 		System.out.println("addConference");
 		for (Session session : sessions)
 		{
@@ -491,5 +495,48 @@ public class Conference
 			con.addSpeaker(extract);
 			con.addLecutre(extract, idSession, number)
 		}*/
+	}
+	public void writeTOICS() throws IOException
+	{
+		ICSWritter writter = new ICSWritter("CAL.ics");
+		for (Session session : sessions)
+		{  
+			int number = 1;
+			String description="Lecture in session: \n";
+			for (Integer idExtract : session.getIdLectures())
+			{
+				Extract tempExtract = geExtractById(idExtract.intValue());
+				description=description+number+".  Id lecture: "+tempExtract.getIdExtract()+"\nLecture thema: "+tempExtract.getLecture().getThema()+"\nAuthor: "+tempExtract.getSpeaker().getFirstAndSecondName()+"\n\n";
+				++number;
+			}
+			try
+			{
+				writter.addEvenet(session.getBeginDate().getTime(),session.getEndDate().getTime(),session.getSessionName(), description, 1);
+			}
+			catch (ParseException e)
+			{
+				// TODO Auto-generated catch block
+				MyLogger logger = new MyLogger();
+				logger.writeError("ICS writter error");
+			}
+		}
+		writter.write();
+		writter.close();
+	}
+	public Timestamp getStartTime()
+	{
+		return startTime;
+	}
+	public void setStartTime(TimetableSkeleton timetableSkeleton)
+	{
+		this.startTime = timetableSkeleton.getTimeUnit(0).getStartTime();
+	}
+	public Timestamp getEndTime()
+	{
+		return endTime;
+	}
+	public void setEndTime(TimetableSkeleton timetableSkeleton)
+	{
+		this.endTime = timetableSkeleton.getTimeUnit(timetableSkeleton.getTimeUnits().size()-1).getEndTime();
 	}
 }

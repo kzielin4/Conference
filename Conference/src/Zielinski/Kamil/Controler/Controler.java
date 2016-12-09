@@ -9,6 +9,7 @@ import com.itextpdf.text.DocumentException;
 
 import Zielinski.Kamil.Model.Categories;
 import Zielinski.Kamil.Model.Conference;
+import Zielinski.Kamil.Model.Config;
 import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.Model.Extract;
 import Zielinski.Kamil.Model.ExtractLoader;
@@ -84,11 +85,11 @@ public class Controler
 					{
 						try
 						{
+							isRUN = true;
 							stage = setLoadingStage();
 						}
 						catch (IOException e)
 						{
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -107,6 +108,7 @@ public class Controler
 				{
 					loadExtracts();
 					isRUN = false;
+					th.destroy();
 				}
 				catch (IOException e)
 				{
@@ -132,8 +134,9 @@ public class Controler
 		}).start();
 		while (isRUN)
 		{
-			exitloading();
+			
 		}
+		stage.close();
 		System.out.println("I co teraz !!!!!!!!!!!!!!!!!!!!!!");
 	}
 
@@ -186,8 +189,9 @@ public class Controler
 		//plenaryScheduler.printAssigned();
 		//conf.printSessionAssigned();
 		//conf.writeToCSVFile();
-		conf.writeToPDF();
-		conf.writeToDB();
+		//conf.writeToPDF();
+		//conf.writeToDB();
+		//conf.writeTOICS();
 	}
 
 	public void loadSkeleton()
@@ -201,24 +205,17 @@ public class Controler
 
 	public void loadCategories()
 	{
-		DBConnector con = new DBConnector();
 		try
 		{
-			System.out.println(con.isSessionExist(0, 1));
-			System.out.println(con.isSessionExist(1, 1));
-			System.out.println(con.getAvaliableConferenceID() );
-			//MailSender sender = new MailSender();
-		    //sender.sentMail("kpz94@o2.pl","Output/HelloWorld_2016-12-06_17-53-09.pdf");
-			System.out.println(con.getConferenceIdList().size());
-			System.out.println(con.getSessionIdList(3).size());
-			System.out.println(con.getLectureIdList(3, 1).size());
-			System.out.println("koniec123");
+			stage=setDBView();
 		}
-		catch (SQLException e)
+		catch (IOException e1)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		System.out.println("USER: "+Config.getUsername());
+	
 	}
 
 	public void showAlert(String title, String value)
@@ -240,6 +237,20 @@ public class Controler
 		Scene scene = new Scene(page);
 		logScene.setScene(scene);
 		logScene.initStyle(StageStyle.UNDECORATED);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
+		return  logScene;
+	}
+	
+	public Stage setDBView() throws IOException
+	{
+		System.out.println("loading...");
+		exitMainView();
+		Stage logScene = new Stage();
+		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("DBView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();

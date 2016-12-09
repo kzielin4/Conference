@@ -157,5 +157,11 @@ CREATE TABLE `mydb`.`category` (
   `categoryName` VARCHAR(100) NULL,
   `idConference` INT NOT NULL,
   PRIMARY KEY (`idConference`, `idCategory`));
-
+  
+ALTER TABLE `mydb`.`category` 
+ADD CONSTRAINT `idConference2`
+  FOREIGN KEY (`idConference`)
+  REFERENCES `mydb`.`conference` (`idConference`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
 

@@ -5,5 +5,12 @@
 	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/itextpdf-5.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/java-mail-1.4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/org-apache-commons-codec.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/ical4j-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/backport-util-concurrent.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kamil/git/Conference/Conference/mysql-connector-java-5.1.39/apache-commons-lang.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

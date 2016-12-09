@@ -11,15 +11,25 @@ public class Session
 	{
 		super();
 		this.idSession = idSession;
-		// this.idlectures = lectures;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
-		//this.sessionName = sessionName;
 		this.maxAmmountLectureInSession = maxAmmountLectureInSession;
 		this.idLectures = new ArrayList<Integer>();
 		this.type = type;
 		this.sessionName=name;
 	}
+	
+	public Session(int idSession, Timestamp beginDate,Timestamp endDate,SessionType type, String name)
+	{
+		super();
+		this.idSession = idSession;
+		this.beginDate = beginDate;
+		this.endDate = endDate;
+		this.idLectures = new ArrayList<Integer>();
+		this.type = type;
+		this.sessionName=name;
+	}
+
 
 	private int idSession;
 	private ArrayList<Integer> idLectures;

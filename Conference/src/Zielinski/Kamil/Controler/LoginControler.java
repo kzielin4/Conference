@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import Zielinski.Kamil.Model.CoderBase64;
+import Zielinski.Kamil.Model.Config;
 import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.View.LogStage;
 import javafx.fxml.FXML;
@@ -35,7 +37,7 @@ public class LoginControler
 	@FXML
 	private Label notificationLabel;
 
-	public void login() throws SQLException
+	public void login() throws Exception
 	{
 		String user = userField.getText();
 		String pass = passwordField.getText();
@@ -44,11 +46,13 @@ public class LoginControler
 		{
 			try
 			{
+				Config.setUsername(user);
 				setMainStage();
 			}
 			catch (IOException e)
 			{
 				e.printStackTrace();
+				System.out.println(e);
 			}
 		}
 		else
@@ -82,7 +86,6 @@ public class LoginControler
 		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("SignIn.fxml"));
 		Scene scene = new Scene(page);
 		logScene.setScene(scene);
-		logScene.initStyle(StageStyle.UNDECORATED);
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.setTitle("LogWindow");
@@ -94,38 +97,18 @@ public class LoginControler
 		notificationLabel.setText("Invalid Username/Password");
 	}
 
-	public boolean passwordVeryfication(String user, String password) throws SQLException
+	public boolean passwordVeryfication(String user, String password) throws Exception
 	{
-		/*String filePath = "config/UserData.csv";
-		File file = new File(filePath);
-
-		try
-		{
-			Scanner input = new Scanner(file);
-			while (input.hasNext())
-			{
-				String data = input.next();
-				ArrayList<String> userData = new ArrayList<String>(Arrays.asList(data.split(",")));
-				if (userData.get(0).equals(user) && userData.get(1).equals(password))
-				{
-					return true;
-				}
-			}
-			input.close();
-
-		}
-		catch (IOException e)
-		{
-
-			e.printStackTrace();
-		}
-		return false;*/
+		
 		DBConnector con = new DBConnector();
-		String passwd = con.getUserPassword(user);
+		CoderBase64 coder = new CoderBase64();
+		String passwd = con.getUserPassword(user);getClass();
+		System.out.println(passwd);
 	    if (passwd.equals(""))
 	    {
 	    	return false;
 	    }
+	    passwd = coder.decrypt(passwd);
 		if (passwd.equals(password))
 		{
 			return true;
