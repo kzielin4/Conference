@@ -5,6 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
+
+import org.omg.CosNaming.IstringHelper;
+
 import com.itextpdf.text.DocumentException;
 
 import Zielinski.Kamil.Model.Categories;
@@ -31,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -41,15 +47,18 @@ public class Controler
 	private ExtractLoader extractLoader;
 	private TimetableSkeletonLoader timetableSkeletonLoader;
 	private Categories categories;
-	private Conference conference;
+	private volatile Conference conference;
 	@FXML
 	private Button dbButton;
+	@FXML
+	private Button confButton;
 	@FXML
 	private ImageView LoadIMG;
 	@FXML
 	private Label label1;
-    private boolean isRUN;
-    private Stage stage;
+	private volatile boolean isRUN;
+	private volatile Stage stage;
+
 	public Controler()
 	{
 		extractLoader = new ExtractLoader();
@@ -73,9 +82,11 @@ public class Controler
 
 	public void createConference()
 	{
+		confButton.setDisable(true);
+		dbButton.setDisable(true);
 		Task task = new Task<Void>()
 		{
-		    @Override
+			@Override
 			public Void call() throws Exception
 			{
 				Platform.runLater(new Runnable()
@@ -86,13 +97,15 @@ public class Controler
 						try
 						{
 							isRUN = true;
-							stage = setLoadingStage();
+							setLoadingStage();
+							System.out.println("Stage1: " + stage);
 						}
 						catch (IOException e)
 						{
 							e.printStackTrace();
 						}
 					}
+
 				});
 				return null;
 			}
@@ -100,15 +113,17 @@ public class Controler
 		Thread th = new Thread(task);
 		th.setDaemon(true);
 		th.start();
-		new Thread(new Runnable()
+		Thread thread = new Thread(new Runnable()
 		{
 			public void run()
 			{
 				try
 				{
+					isRUN = true;
 					loadExtracts();
 					isRUN = false;
-					th.destroy();
+					exitloading();
+					System.out.println("Stage2: " + stage.toString());
 				}
 				catch (IOException e)
 				{
@@ -131,30 +146,62 @@ public class Controler
 					e.printStackTrace();
 				}
 			}
-		}).start();
-		while (isRUN)
+		});
+		thread.start();
+		Thread thread2 = new Thread(new Runnable()
 		{
-			
-		}
-		stage.close();
-		System.out.println("I co teraz !!!!!!!!!!!!!!!!!!!!!!");
+			public void run()
+			{
+
+				Task<Void> task = new Task<Void>()
+				{
+
+					@Override
+					protected Void call() throws Exception
+					{
+
+						Platform.runLater(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								try
+								{
+									setExportStage();
+								}
+								catch (IOException e)
+								{
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
+
+						return null;
+					}
+				};
+				Thread th = new Thread(task);
+				th.setDaemon(true);
+				while (isRUN)
+				{
+				}
+				th.start();
+			}
+		});
+		thread2.start();
 	}
 
 	public void loadExtracts() throws IOException, DocumentException, SQLException, InterruptedException
 	{
 		MyLogger logger = new MyLogger();
 		System.out.println("Wczytaj");
-		// ExtractLoader extractLoader = new ExtractLoader();
-		// extractLoader.executeLoading();
 		ArrayList<Extract> extracts = extractLoader.loadExtracts();
-		if(extracts ==null)
+		if (extracts == null)
 		{
 			System.out.println("ex");
 			return;
 		}
 		conference.setExtracts(extracts);
-		// TimetableSkeleton sk
-		// =timetableSkeletonLoader.loadTimetableSkeleton();
 		TimetableSkeleton sk = timetableSkeletonLoader.loadTimetableSkeleton();
 		if (sk == null)
 		{
@@ -186,12 +233,14 @@ public class Controler
 		conference.setSessionByNormalScheduler(schedul.findBestIndividual().getSessions());
 		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(),
 				conf.getPlenaryExtracts());
-		//plenaryScheduler.printAssigned();
-		//conf.printSessionAssigned();
-		//conf.writeToCSVFile();
-		//conf.writeToPDF();
-		//conf.writeToDB();
-		//conf.writeTOICS();
+		conference = conf;
+		Config.setConference(conf);
+		// plenaryScheduler.printAssigned();
+		// conf.printSessionAssigned();
+		// conf.writeToCSVFile();
+		// conf.writeToPDF();
+		// conf.writeToDB();
+		// conf.writeTOICS();
 	}
 
 	public void loadSkeleton()
@@ -207,45 +256,89 @@ public class Controler
 	{
 		try
 		{
-			stage=setDBView();
+			stage = setDBView();
 		}
 		catch (IOException e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println("USER: "+Config.getUsername());
-	
+		System.out.println("USER: " + Config.getUsername());
+
 	}
 
-	public void showAlert(String title, String value)
+	public void choosePDF()
 	{
-		/*
-		 * AnchorPane ap; Dialogs.create() .owner((Stage)
-		 * ap.getScene().getWindow()) .title("Error Dialog") .masthead(
-		 * "Look, an Error Dialog") .message("Ooops, there was an error!")
-		 * .showError();
-		 */
+		Config.setExportType(2);
+		try
+		{
+			setExportTypeView();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void chooseCSV()
+	{
+		Config.setExportType(1);
+		try
+		{
+			setExportTypeView();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void chooseICS()
+	{
+		Config.setExportType(3);
+		try
+		{
+			setExportTypeView();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void writeToDB()
+	{
+		try
+		{
+			Config.getConference().writeToDB();
+		}
+		catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public Stage setLoadingStage() throws IOException
+	public void setLoadingStage() throws IOException
 	{
+
 		System.out.println("loading...");
 		exitMainView();
 		Stage logScene = new Stage();
-		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("LoadingView.fxml"));
+		Pane page;
+		page = (Pane) FXMLLoader.load(LogStage.class.getResource("LoadingView.fxml"));
 		Scene scene = new Scene(page);
 		logScene.setScene(scene);
 		logScene.initStyle(StageStyle.UNDECORATED);
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
-		return  logScene;
+		stage = logScene;
+
 	}
-	
+
 	public Stage setDBView() throws IOException
 	{
-		System.out.println("loading...");
 		exitMainView();
 		Stage logScene = new Stage();
 		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("DBView.fxml"));
@@ -254,7 +347,20 @@ public class Controler
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
-		return  logScene;
+		return logScene;
+	}
+
+	public void setExportStage() throws IOException
+	{
+		exitMainView();
+		Stage logScene = new Stage();
+		Pane page;
+		page = (Pane) FXMLLoader.load(LogStage.class.getResource("ExportView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
 	}
 
 	public void exitMainView()
@@ -263,8 +369,86 @@ public class Controler
 		stage.close();
 	}
 
+	public void setStage()
+	{
+		stage = (Stage) dbButton.getScene().getWindow();
+	}
+
 	public void exitloading()
 	{
-		stage.close();
+		Platform.runLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				stage.close();
+			}
+		});
+	}
+	
+	public void setExportTypeView() throws IOException
+	{
+		Stage logScene = new Stage();
+		Pane page;
+		page = (Pane) FXMLLoader.load(LogStage.class.getResource("ExportTypeView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
+		
+	}
+	public void writeFile() 
+	{
+		int type=Config.getExportType();
+		if(type==1)
+		{
+			try
+			{
+				Config.getConference().writeToCSVFile();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(type==2)
+		{
+			try
+			{
+				try
+				{
+					Config.getConference().writeToPDF();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			catch (DocumentException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(type==3)
+		{
+			
+			try
+			{
+				Config.getConference().writeTOICS();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+	}
+	public void sentFile()
+	{
+		writeFile();
 	}
 }

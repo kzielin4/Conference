@@ -335,7 +335,8 @@ public class Conference
 
 	public void writeToCSVFile() throws IOException
 	{
-		String csvFile = "Output/out.csv";
+		String csvFile = "Output/ConferenceTimeTable.csv";
+		Config.setFileName(csvFile);
 		FileWriter writer = new FileWriter(csvFile);
 		List<String> values = new ArrayList<String>();
 		values.add("ID_LECTURE");
@@ -388,7 +389,9 @@ public class Conference
 		PDFWritter pdfWritter = new PDFWritter();
 		SimpleDateFormat time_formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		String current_time_str = time_formatter.format(System.currentTimeMillis());
-		pdfWritter.createPdf("Output/ConferanceTimetable_"+current_time_str+".pdf");
+		String fileName ="Output/ConferanceTimetable_"+current_time_str+".pdf";
+		Config.setFileName(fileName);
+		pdfWritter.createPdf(fileName);
 		pdfWritter.write();
 		ArrayList<String> values = new ArrayList<String>();
 		ArrayList<String> fieldsVal = new ArrayList<String>();
@@ -422,11 +425,6 @@ public class Conference
 			    extString=extString+";"+tempExtract.getKw2();
 			    extString=extString+";"+tempExtract.getKw3();
 			    extString=extString+";"+session.getSessionName();
-				// values.add(""+tempExtract.getLecture().getThema());
-				// values.add(""+tempExtract.getLecture().getAbstractLecture());
-				// values.add(""+tempExtract.getKw1());
-				// values.add(""+tempExtract.getKw2());
-				// values.add(""+tempExtract.getKw3());
 				values.add("" + tempExtract.getLecture().getType());
 				values.add("" + tempExtract.getSpeaker().getFirstAndSecondName());
 				values.add("" + session.getIdSession());
@@ -498,7 +496,8 @@ public class Conference
 	}
 	public void writeTOICS() throws IOException
 	{
-		ICSWritter writter = new ICSWritter("CAL.ics");
+		ICSWritter writter = new ICSWritter("Output/ConferenceCalendar.ics");
+		Config.setFileName("Output/ConferenceCalendar.ics");
 		for (Session session : sessions)
 		{  
 			int number = 1;
