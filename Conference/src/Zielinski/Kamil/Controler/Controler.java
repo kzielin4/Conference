@@ -306,13 +306,13 @@ public class Controler
 			e.printStackTrace();
 		}
 	}
-	public void writeToDB()
+	public void chooseDB()
 	{
 		try
 		{
-			Config.getConference().writeToDB();
+			setDatabaseExportView();
 		}
-		catch (SQLException e)
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -329,7 +329,6 @@ public class Controler
 		page = (Pane) FXMLLoader.load(LogStage.class.getResource("LoadingView.fxml"));
 		Scene scene = new Scene(page);
 		logScene.setScene(scene);
-		logScene.initStyle(StageStyle.UNDECORATED);
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
@@ -340,6 +339,18 @@ public class Controler
 	public Stage setDBView() throws IOException
 	{
 		exitMainView();
+		Stage logScene = new Stage();
+		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("DBView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
+		return logScene;
+	}
+	
+	public Stage setDBView2() throws IOException
+	{
 		Stage logScene = new Stage();
 		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("DBView.fxml"));
 		Scene scene = new Scene(page);
@@ -361,6 +372,20 @@ public class Controler
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
+		stage=logScene;
+	}
+	
+	public void setDatabaseExportView() throws IOException
+	{
+		Stage logScene = new Stage();
+		Pane page;
+		page = (Pane) FXMLLoader.load(LogStage.class.getResource("DatabaseExporterView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
+		stage=logScene;
 	}
 
 	public void exitMainView()
@@ -396,8 +421,24 @@ public class Controler
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
+		stage=logScene;
 		
 	}
+	
+	
+	public void setExportMailView() throws IOException
+	{
+		Stage logScene = new Stage();
+		Pane page;
+		page = (Pane) FXMLLoader.load(LogStage.class.getResource("ExportMailView.fxml"));
+		Scene scene = new Scene(page);
+		logScene.setScene(scene);
+		logScene.setResizable(false);
+		logScene.initModality(Modality.APPLICATION_MODAL);
+		logScene.show();
+		
+	}
+	
 	public void writeFile() 
 	{
 		int type=Config.getExportType();
@@ -446,9 +487,19 @@ public class Controler
 				e.printStackTrace();
 			}			
 		}
+		//stage.close();
 	}
 	public void sentFile()
 	{
 		writeFile();
+		try
+		{
+			setExportMailView();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

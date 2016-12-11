@@ -461,11 +461,11 @@ public class Conference
 		System.out.println("KONIEC");
 	}
 	
-	public void writeToDB() throws SQLException
+	public int writeToDB(String confName) throws SQLException
 	{
 		DBConnector con = new DBConnector();
 		int idConf = con.getAvaliableConferenceID();
-		con.addConference(idConf, "Conference",startTime,endTime);
+		con.addConference(idConf, confName, startTime,endTime);
 		System.out.println("addConference");
 		for (Session session : sessions)
 		{
@@ -488,11 +488,7 @@ public class Conference
 		{
 			con.addCategory(category, idConf);
 		}
-		/*for (Extract extract : extracts)
-		{
-			con.addSpeaker(extract);
-			con.addLecutre(extract, idSession, number)
-		}*/
+		return idConf;
 	}
 	public void writeTOICS() throws IOException
 	{

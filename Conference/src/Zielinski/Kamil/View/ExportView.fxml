@@ -38,7 +38,7 @@
             <Font name="Arial Black" size="29.0" />
          </font>
       </Label>
-      <Button fx:id="dataButton" layoutX="629.0" layoutY="125.0" mnemonicParsing="false" prefHeight="207.0" prefWidth="197.0">
+      <Button fx:id="dataButton" layoutX="629.0" layoutY="125.0" mnemonicParsing="false" prefHeight="207.0" prefWidth="197.0" onAction="#chooseDB">
          <graphic>
             <ImageView fitHeight="188.0" fitWidth="172.0" pickOnBounds="true">
                <image>
@@ -46,7 +46,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="cancelButton" layoutX="628.0" layoutY="354.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="197.0" text="QUIT">
+      <Button fx:id="cancelButton" layoutX="628.0" layoutY="354.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="197.0" text="Database" onAction="#setDBView2">
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Button>

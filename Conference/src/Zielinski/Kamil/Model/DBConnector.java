@@ -254,7 +254,58 @@ public class DBConnector
 		}
 		return passwd;
 	}
+	
+	public String getUserMail(String nick) throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.users where userName like '" + nick + "';";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		String mail = "";
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			if (rset.next())
+			{
+				mail = rset.getString(3);
+			}
 
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return mail;
+	}
+	
+	public ArrayList<String> getUsersList() throws SQLException
+	{
+		java.sql.Statement stmt = null;
+		String selectString = "SELECT * FROM mydb.users;";
+		System.out.println(selectString);
+		Savepoint sp = connection.setSavepoint();
+		ArrayList<String> userList = new ArrayList<String>();
+		try
+		{
+			stmt = connection.createStatement();
+			ResultSet rset = stmt.executeQuery(selectString);
+			while (rset.next())
+			{
+				userList.add(rset.getString(1));
+			}
+
+		}
+		catch (SQLException ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+			connection.rollback(sp);
+		}
+		return userList;
+	}
 	public int addSpeaker(Extract extract, int idConf) throws SQLException
 	{
 		PreparedStatement insert = null;
