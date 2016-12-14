@@ -184,27 +184,6 @@ public class Individual
 		}
 		for (Session session : sessions)
 		{
-			/*
-			 * int kw1Count = 0; int kw2Count = 0; int kw3Count = 0; int kw[] =
-			 * new int[3]; for (int x = 0; x <
-			 * session.ammountOfAssignedLectures(); ++x) { if (x == 0) { int id0
-			 * = session.getIdLectures().get(0).intValue(); Extract extract =
-			 * getExtractByid(id0); kw[0] = extract.getKw1(); kw[1] =
-			 * extract.getKw2(); kw[2] = extract.getKw3(); ++kw1Count;
-			 * ++kw2Count; ++kw3Count; } else { int id =
-			 * session.getIdLectures().get(x).intValue(); Extract extract =
-			 * getExtractByid(id); if (kw[0] == extract.getKw1() || kw[0] ==
-			 * extract.getKw2() || kw[0] == extract.getKw3()) { ++kw1Count; } if
-			 * (kw[1] == extract.getKw1() || kw[1] == extract.getKw2() || kw[1]
-			 * == extract.getKw3()) { ++kw2Count; } if (kw[2] ==
-			 * extract.getKw1() || kw[2] == extract.getKw2() || kw[0] ==
-			 * extract.getKw2()) { ++kw3Count; }
-			 * 
-			 * } if (!session.getIdLectures().isEmpty()) { if (kw1Count ==
-			 * session.ammountOfAssignedLectures() || kw2Count ==
-			 * session.ammountOfAssignedLectures() || kw3Count ==
-			 * session.ammountOfAssignedLectures()) { fit = fit + 15; } }
-			 */
 			for (int x = 0; x < session.ammountOfAssignedLectures(); ++x)
 			{
 				int id = session.getIdLectures().get(x).intValue();
@@ -356,6 +335,11 @@ public class Individual
 			return true;
 		else 
 			return false;
+	}
+	
+	public long getMinFitValueToBeCorrect()
+	{
+		return VALUEBONUS * idExtracts.size() + VALUEBONUS * sessions.size();
 	}
 
 }

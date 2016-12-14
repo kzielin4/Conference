@@ -12,14 +12,14 @@ public class NormalLectureScheduler
 	private ArrayList<Individual> bestIndividuals;
 	private Individual bestPlan;
 	final static int POP_STRT = 1000;// 5000 10000
-	final static int ELITISM_K = 65; // 50
-	final static int POP_SIZE = 140 + ELITISM_K; // population size /2000
+	final static int ELITISM_K = 20; // 50
+	final static int POP_SIZE = 125 + ELITISM_K; // population size /2000
 													// 200+ELITISM_K;
-	final static int MAX_ITER = 100; // max number of iterations //1000 2000
-	final static double MUTATION_RATE = 0.3155555; // probability of mutation 0.05
-	final static double CROSSOVER_RATE = 0.9405555; // probability of crossover
+	final static int MAX_ITER = 5000; // max number of iterations //1000 2000
+	final static double MUTATION_RATE = 0.3255555; // probability of mutation 0.05
+	final static double CROSSOVER_RATE = 0.915555; // probability of crossover
 													// 0.8
-	final static int MAXNOUPDATEITERATION = 300;
+	final static int MAXNOUPDATEITERATION = 500;
 	private static Random randNumber;
 	private long totalFitness;
 	private int MAXVALUE;
@@ -275,11 +275,6 @@ public class NormalLectureScheduler
 				{
 					indiv[1].mutate();
 				}
-				// indiv[0].printObject();
-				// indiv[1].printObject();
-				// add to new population
-				// newPopulation.set(count, indiv[0]);
-				// newPopulation.set(count+1, indiv[1]);
 				indiv[0].fitValue();
 				indiv[1].fitValue();
 				newPopulation.add(indiv[0]);
@@ -293,9 +288,8 @@ public class NormalLectureScheduler
 				{
 					sum = sum + 1;
 					individual.printObject();
-					// System.out.println("");
 				}
-				// ndividual.printObject();
+
 			}
 			if (sum > maxMax)
 			{
@@ -312,11 +306,7 @@ public class NormalLectureScheduler
 			}
 			countTotalFitness();
 			System.gc();
-			// rateAllIndiviual();
-			// reevaluate current population
 			System.out.print("Total Fitness = " + totalFitness);
-			// System.out.println(" ; Best Fitness = " +
-			// findBestIndividual().getFitValue());
 			Individual bestOne = findBestIndividual();
 			System.out.println("lol");
 			System.out.println(bestOne.getFitValue());
@@ -339,7 +329,6 @@ public class NormalLectureScheduler
 		}
 		sum = 0;
 		System.out.println(findBestIndividual().fitValue());
-		// findBestIndividual().printSessionAssigned();
 		System.out.println("---koniec-----");
 	}
 

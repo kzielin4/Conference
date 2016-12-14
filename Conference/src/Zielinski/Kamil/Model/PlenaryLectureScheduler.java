@@ -11,12 +11,14 @@ public class PlenaryLectureScheduler
 	private int costAssigned[][];
 	private int allocation[][];
 	private int lineTable[][];
+	private boolean isAssignPossible;
 
 	public PlenaryLectureScheduler(ArrayList<Session> sessions, ArrayList<Extract> extracts)
 	{
 		super();
 		this.sessions = sessions;
 		this.extracts = extracts;
+		this.isAssignPossible = true;
 		this.costAssigned = new int[extracts.size()][sessions.size()];
 		this.allocation = new int[extracts.size()][sessions.size()];
 		this.lineTable = new int[extracts.size()][sessions.size()];
@@ -30,12 +32,12 @@ public class PlenaryLectureScheduler
 		setCostAssigned();
 		List<Line> minLines = MinLines.getMinLines(costAssigned);
 		System.out.printf("Min num of lines for example matrix is: %d\n", minLines.size());
-		// MinLines.printResult(costAssigned,minLines);
 		System.out.println("Size: " + minLines.size());
 		if(minLines.size()<extracts.size())
-			System.exit(0);
-		pritncostAssigned();
-		makeAssignAlgorithm();
+		{
+			isAssignPossible=false;
+		}
+		//runAssignAlgorithm();
 	}
 
 	public void pritncostAssigned()
@@ -115,7 +117,7 @@ public class PlenaryLectureScheduler
 		return true;
 	}
 
-	public void makeAssignAlgorithm()
+	public void runAssignAlgorithm()
 	{
 		boolean isOkAssign = false;
 		Random rand = new Random();
@@ -182,5 +184,15 @@ public class PlenaryLectureScheduler
 			}
 		}
 
+	}
+
+	public boolean getisAssignPossible()
+	{
+		return isAssignPossible;
+	}
+
+	public void setAssignPossible(boolean isAssignPossible)
+	{
+		this.isAssignPossible = isAssignPossible;
 	}
 }

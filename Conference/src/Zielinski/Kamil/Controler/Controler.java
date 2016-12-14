@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 
 import org.omg.CosNaming.IstringHelper;
 
@@ -37,9 +35,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Stop;
+import javafx.stage.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.*;
+
+
 
 public class Controler
 {
@@ -58,6 +61,7 @@ public class Controler
 	private Label label1;
 	private volatile boolean isRUN;
 	private volatile Stage stage;
+	private volatile int correct = 1;
 
 	public Controler()
 	{
@@ -167,6 +171,11 @@ public class Controler
 							{
 								try
 								{
+									if (Config.getConference() == null)
+									{
+										setErrorDialog("Scheduling lectures error");
+										Platform.exit();
+									}
 									setExportStage();
 								}
 								catch (IOException e)
@@ -199,6 +208,7 @@ public class Controler
 		if (extracts == null)
 		{
 			System.out.println("ex");
+			setErrorDialog("Extract loading error");
 			return;
 		}
 		conference.setExtracts(extracts);
@@ -206,6 +216,7 @@ public class Controler
 		if (sk == null)
 		{
 			System.out.println("sk");
+			setErrorDialog("Skeleton loading error");
 			return;
 		}
 		System.out.println("CONF: " + conference.countNormalLecture());
@@ -214,7 +225,8 @@ public class Controler
 				|| conference.countPlenaryLecture() > sk.countMaxPlenaryLectureInUnits())
 		{
 			logger.writeError("Not enough session units to assigned all lectures");
-			return;
+			setErrorDialog("Ammount lectures error");
+			
 		}
 		conference.setTimetableSkeleton(sk);
 		conference.initNormalSessions();
@@ -230,25 +242,34 @@ public class Controler
 		System.out.println(conference.sessionSize());
 		NormalLectureScheduler schedul = new NormalLectureScheduler(conf);
 		schedul.runAlgorith();
+		if(schedul.findBestIndividual().getFitValue() < schedul.findBestIndividual().getMinFitValueToBeCorrect())
+		{
+			System.out.println(schedul.findBestIndividual().getFitValue());
+			System.out.println(schedul.findBestIndividual().getMinFitValueToBeCorrect());
+			MyLogger logger = new MyLogger();
+			logger.writeError("Can not assign normal lecture to sessions with this data.");	
+			//setErrorDialog("Normal lectures scheduling error");
+			//Platform.exit();
+			Config.setConference(null);
+			return;
+		}
 		conference.setSessionByNormalScheduler(schedul.findBestIndividual().getSessions());
-		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(),
-				conf.getPlenaryExtracts());
-		conference = conf;
+		PlenaryLectureScheduler plenaryScheduler = new PlenaryLectureScheduler(conf.getPlenarySessions(),conf.getPlenaryExtracts());
+		plenaryScheduler.runAssignAlgorithm();
+		if(!plenaryScheduler.getisAssignPossible())
+		{
+			MyLogger logger = new MyLogger();
+			logger.writeError("Can not assign plenary lecture to sessions with this data.");	
+			//setErrorDialog("Plenart lectures scheduling error");
+			//Platform.exit();
+			Config.setConference(null);
+			return;
+		}
 		Config.setConference(conf);
-		// plenaryScheduler.printAssigned();
-		// conf.printSessionAssigned();
-		// conf.writeToCSVFile();
-		// conf.writeToPDF();
-		// conf.writeToDB();
-		// conf.writeTOICS();
 	}
 
 	public void loadSkeleton()
 	{
-		// categories.loadCategories();
-		// timetableSkeletonLoader.loadTimetableSkeleton();
-		// TimetableSkeleton sk=new
-		// TimetableSkeleton(timetableSkeletonLoader.loadTimetableSkeleton());
 		DBConnector con = new DBConnector();
 	}
 
@@ -276,7 +297,6 @@ public class Controler
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -413,6 +433,7 @@ public class Controler
 	
 	public void setExportTypeView() throws IOException
 	{
+		
 		Stage logScene = new Stage();
 		Pane page;
 		page = (Pane) FXMLLoader.load(LogStage.class.getResource("ExportTypeView.fxml"));
@@ -422,7 +443,6 @@ public class Controler
 		logScene.initModality(Modality.APPLICATION_MODAL);
 		logScene.show();
 		stage=logScene;
-		
 	}
 	
 	
@@ -487,7 +507,14 @@ public class Controler
 				e.printStackTrace();
 			}			
 		}
-		//stage.close();
+	}
+	public void saveOnlyFile()
+	{
+		
+		writeFile();
+		setInfoDialog("File saved", "File was correct create and saved on you local computer");
+		MyLogger logger = new MyLogger();
+		logger.writeInfo("File "+ Config.getFileName()+" was correct saved");
 	}
 	public void sentFile()
 	{
@@ -501,5 +528,25 @@ public class Controler
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setErrorDialog(String message)
+	{
+		javafx.scene.control.Alert alert =  new javafx.scene.control.Alert(AlertType.ERROR);
+		alert.setTitle("Error Window");
+		alert.setHeaderText(message);
+		alert.setContentText("Look in to log file to get more details");
+		alert.showAndWait();
+		return;
+	}
+	
+	public void setInfoDialog(String message , String detials)
+	{
+		javafx.scene.control.Alert alert =  new javafx.scene.control.Alert(AlertType.INFORMATION);
+		alert.setTitle("INFO");
+		alert.setHeaderText(message);
+		alert.setContentText(detials);
+		alert.showAndWait();
+		return;
 	}
 }

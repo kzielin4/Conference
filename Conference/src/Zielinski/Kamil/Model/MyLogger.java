@@ -37,8 +37,31 @@ public class MyLogger
 		{
 			e.printStackTrace();
 		}
-		logger.warning(message);
 	}
+	
+	public void writeInfo(String message)
+	{
+		try
+		{
+
+			fh = new FileHandler("Logs/log.txt",true);
+			logger.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+			logger.info(message);
+			fh.close();
+
+		}
+		catch (SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void close()
 	{
 		fh.close();

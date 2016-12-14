@@ -48,7 +48,8 @@ public class CSVWritter
 
 		StringBuilder sb = new StringBuilder();
 		for (String value : values)
-		{
+		{    
+			value.replace("\n", "");
 			if (!first)
 			{
 				sb.append(separators);

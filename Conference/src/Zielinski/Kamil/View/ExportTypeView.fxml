@@ -10,7 +10,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="564.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Zielinski.Kamil.Controler.Controler">
    <children>
-      <Button fx:id="localSaveButton" layoutX="39.0" layoutY="138.0" mnemonicParsing="false" prefHeight="191.0" prefWidth="218.0" onAction="#writeFile">
+      <Button fx:id="localSaveButton" layoutX="39.0" layoutY="138.0" mnemonicParsing="false" prefHeight="191.0" prefWidth="218.0" onAction="#saveOnlyFile">
          <graphic>
             <ImageView fitHeight="150.0" fitWidth="179.0" pickOnBounds="true">
                <image>

@@ -1,14 +1,22 @@
-gru 05, 2016 8:44:28 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
-gru 05, 2016 8:44:28 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Wrong type of line in Skeleton csv file line 2
-gru 05, 2016 8:47:59 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 11
-gru 05, 2016 8:58:10 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
-gru 05, 2016 9:06:27 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Expect date format YYYY-MM-DD in Skeleton csv file line 1
-gru 05, 2016 9:10:42 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Wrong type of event in Skeleton csv file line 9
-gru 06, 2016 5:47:44 PM Zielinski.Kamil.Model.MyLogger writeError
-WARNING: Wrong IDCATEGORY value in Categories csv file line 2
+gru 14, 2016 7:47:53 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Can not assign normal lecture to sessions with this data.
+gru 14, 2016 7:49:59 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Can not assign normal lecture to sessions with this data.
+gru 14, 2016 8:07:43 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: File Output/ConferenceCalendar.ics was correct saved
+gru 14, 2016 8:11:03 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct saved
+gru 14, 2016 8:12:40 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceTimeTable.csv was correct saved
+gru 14, 2016 8:12:44 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferanceTimetable_2016-12-14_20-12-43.pdf was correct saved
+gru 14, 2016 8:13:21 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct saved
+gru 14, 2016 8:14:21 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct sent to kpz94@o2.pl
+gru 14, 2016 8:15:09 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct saved
+gru 14, 2016 8:17:00 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferanceTimetable_2016-12-14_20-16-49.pdf was correct sent to kpz94@o2.pl
+gru 14, 2016 8:21:16 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct sent to kpz94@o2.pl

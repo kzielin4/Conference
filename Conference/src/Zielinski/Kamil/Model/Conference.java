@@ -356,11 +356,14 @@ public class Conference
 		values.add("SESSION_END");
 		CSVWritter.writeLine(writer, values);
 		values.clear();
+		int i=0;
 		for (Session session : sessions)
 		{
 			int number = 1;
 			for (Integer idExtract : session.getIdLectures())
 			{
+				values.clear();
+				boolean isOk=true;
 				Extract tempExtract = geExtractById(idExtract.intValue());
 				values.add("" + tempExtract.getIdExtract());
 				values.add("" + tempExtract.getLecture().getThema());
@@ -371,17 +374,20 @@ public class Conference
 				values.add("" + tempExtract.getLecture().getType());
 				values.add("" + tempExtract.getSpeaker().getFirstAndSecondName());
 				values.add("" + session.getIdSession());
-				values.add("" + session.getSessionName());
+				values.add("" + session.getSessionName().trim());
 				values.add("" + number);
 				values.add("" + session.getBeginDate());
 				values.add("" + session.getEndDate());
 				++number;
+				System.out.println(values);
 				CSVWritter.writeLine(writer, values);
 				values.clear();
+				++i;
 			}
 		}
 		writer.flush();
 		writer.close();
+		System.out.println(i);
 	}
 
 	public void writeToPDF() throws IOException, DocumentException
@@ -482,6 +488,7 @@ public class Conference
 				con.addSpeaker(tempExtract,idConf );
 				System.out.println("lec");
 				con.addLecutre(tempExtract, session.getIdSession(), number,idConf);
+				++number;
 			}
 		}
 		for(Category category: categories.getCategories())
@@ -510,7 +517,6 @@ public class Conference
 			}
 			catch (ParseException e)
 			{
-				// TODO Auto-generated catch block
 				MyLogger logger = new MyLogger();
 				logger.writeError("ICS writter error");
 			}

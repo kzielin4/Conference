@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import Zielinski.Kamil.Model.Config;
 import Zielinski.Kamil.Model.DBConnector;
 import Zielinski.Kamil.Model.MailSender;
+import Zielinski.Kamil.Model.MyLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class MailSenderControler
@@ -43,34 +45,55 @@ public class MailSenderControler
 		{
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void quit()
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
 	}
-	
+
 	public void sent()
 	{
 		MailSender mailSender = new MailSender();
 		if (choiseUserBox.getValue() == null)
 			return;
 		DBConnector con = new DBConnector();
-		sentMailButton.setDisable(true);
-		returnButton.setDisable(true);
 		try
 		{
 			String mail = con.getUserMail(choiseUserBox.getValue());
-			mailSender.sentMail(mail,Config.getFileName());
-			sentMailButton.setDisable(false);
-			returnButton.setDisable(false);
+			mailSender.sentMail(mail, Config.getFileName());
+			setInfoDialog("Mail sent", "Mail with attachment was correct sent to recipient");
+			MyLogger logger = new MyLogger();
+			logger.writeInfo("File "+ Config.getFileName()+" was correct sent to "+mail);	
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			MyLogger logger = new MyLogger();
+			logger.writeError("Email of user: "+Config.getUsername()+" is invalid");	
+			setErrorDialog("Mail is uncorrect");
 		}
+	}
+
+	public void setErrorDialog(String message)
+	{
+		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(AlertType.ERROR);
+		alert.setTitle("Error Window");
+		alert.setHeaderText(message);
+		alert.setContentText("Look in to log file to get more details");
+		alert.showAndWait();
+		return;
+	}
+
+	public void setInfoDialog(String message, String detials)
+	{
+		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(AlertType.INFORMATION);
+		alert.setTitle("INFO");
+		alert.setHeaderText(message);
+		alert.setContentText(detials);
+		alert.showAndWait();
+		return;
 	}
 
 }

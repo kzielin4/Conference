@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Dialogs;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -34,6 +35,7 @@ public class DBControler
 	private ChoiceBox<Integer> choiseLecBox;
 	@FXML
 	private TableView<DataTable> tableView;
+	private Stage stage;
 
 	public DBControler()
 	{
@@ -75,6 +77,7 @@ public class DBControler
 
 	public void addSessions()
 	{
+		stage = (Stage) confButton.getScene().getWindow() ;
 		DBConnector con = new DBConnector();
 		if (choiseConfBox.getValue() == null)
 			return;
