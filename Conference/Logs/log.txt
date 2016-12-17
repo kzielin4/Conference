@@ -20,3 +20,49 @@ gru 14, 2016 8:17:00 PM Zielinski.Kamil.Model.MyLogger writeInfo
 INFO: File Output/ConferanceTimetable_2016-12-14_20-16-49.pdf was correct sent to kpz94@o2.pl
 gru 14, 2016 8:21:16 PM Zielinski.Kamil.Model.MyLogger writeInfo
 INFO: File Output/ConferenceCalendar.ics was correct sent to kpz94@o2.pl
+gru 14, 2016 8:27:28 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceTimeTable.csv was correct saved
+gru 14, 2016 8:27:41 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: Conference kamil123 was saved to Database correct with id 12
+gru 17, 2016 11:18:18 AM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase and 1 uppercase 
+gru 17, 2016 11:18:23 AM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase and 1 uppercase 
+gru 17, 2016 11:18:26 AM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase and 1 uppercase 
+gru 17, 2016 11:18:29 AM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase and 1 uppercase 
+gru 17, 2016 11:18:34 AM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase and 1 uppercase 
+gru 17, 2016 11:18:51 AM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: User kamil1correct added to system
+gru 17, 2016 11:22:16 AM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase ,1 uppercase and 1 specialcase
+gru 17, 2016 11:22:21 AM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: User kamil12correct added to system
+gru 17, 2016 11:27:27 AM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: User rootcorrect added to system
+gru 17, 2016 11:28:02 AM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: User kamilcorrect added to system
+gru 17, 2016 1:57:26 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Password does not fulfill security requirements, password should must containt min 8 signs, at least 1 lowercase ,1 uppercase and 1 specialcase
+gru 17, 2016 1:57:29 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: User rootcorrect added to system
+gru 17, 2016 2:01:26 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: Can not assign normal lecture to sessions with this data.
+gru 17, 2016 2:04:03 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: Conference Conferencja kamila was saved to Database correct with id 0
+gru 17, 2016 2:04:08 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceTimeTable.csv was correct saved
+gru 17, 2016 2:04:17 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceTimeTable.csv was correct sent to kpz94@o2.pl
+gru 17, 2016 2:04:23 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferanceTimetable_2016-12-17_14-04-21.pdf was correct saved
+gru 17, 2016 2:05:05 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct sent to kpz94@o2.pl
+gru 17, 2016 2:05:39 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: File Output/ConferenceCalendar.ics was correct saved
+gru 17, 2016 2:07:08 PM Zielinski.Kamil.Model.MyLogger writeError
+WARNING: User exists kamilcan not add dupliacte user to database
+gru 17, 2016 2:09:07 PM Zielinski.Kamil.Model.MyLogger writeInfo
+INFO: Conference moja druga konferencjka was saved to Database correct with id 1

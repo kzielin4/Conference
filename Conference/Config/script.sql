@@ -164,4 +164,14 @@ ADD CONSTRAINT `idConference2`
   REFERENCES `mydb`.`conference` (`idConference`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+  
+  ALTER TABLE `mydb`.`conference` 
+ADD COLUMN `userName` VARCHAR(100) NULL AFTER `timeEnd`,
+ADD INDEX `userName_idx` (`userName` ASC);
+ALTER TABLE `mydb`.`conference` 
+ADD CONSTRAINT `userName`
+  FOREIGN KEY (`userName`)
+  REFERENCES `mydb`.`users` (`userName`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
 

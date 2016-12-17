@@ -232,7 +232,7 @@ public class DBConnector
 	public String getUserPassword(String nick) throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM mydb.users where userName like '" + nick + "';";
+		String selectString = "SELECT * FROM mydb.users where userName = '" + nick + "';";
 		System.out.println(selectString);
 		Savepoint sp = connection.setSavepoint();
 		String passwd = "";
@@ -559,8 +559,8 @@ public class DBConnector
 	public int addConference(int id, String name, Timestamp start, Timestamp end) throws SQLException
 	{
 		PreparedStatement insert = null;
-		String insertString = "insert into conference (idConference,conferenceName,timeStart,timeEnd)"
-				+ " values (?, ?, ?, ?);";
+		String insertString = "insert into conference (idConference,conferenceName,timeStart,timeEnd,userName)"
+				+ " values (?, ?, ?, ?,?);";
 		Savepoint sp = connection.setSavepoint();
 		int isADD = 0;
 		try
@@ -570,6 +570,7 @@ public class DBConnector
 			insert.setString(2, name);
 			insert.setTimestamp(3, start);
 			insert.setTimestamp(4, end);
+			insert.setString(5, Config.getUsername());
 			insert.execute();
 			isADD = 1;
 		}
@@ -606,7 +607,7 @@ public class DBConnector
 	public ArrayList<Integer> getConferenceIdList() throws SQLException
 	{
 		java.sql.Statement stmt = null;
-		String selectString = "SELECT * FROM mydb.conference;";
+		String selectString = "SELECT * FROM mydb.conference where userName = '" +Config.getUsername()+"';";
 		System.out.println(selectString);
 		ArrayList<Integer> idList = new ArrayList<Integer>();
 		Savepoint sp = connection.setSavepoint();

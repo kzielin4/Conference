@@ -21,7 +21,7 @@ public class Validator
 	public ArrayList<String> parseLine(String line)
 	{
 		ArrayList<String> extractData = new ArrayList<String>(Arrays.asList(line.split(",")));
-		//System.out.println(extractData.size());
+		// System.out.println(extractData.size());
 		return extractData;
 	}
 
@@ -57,13 +57,15 @@ public class Validator
 		}
 		return isOK;
 	}
-    public boolean validateTimestamps(Timestamp t1 , Timestamp t2)
-    {
-    	if(t1.before(t2))
-    		return true;
-    	else
-    		return false;
-    }
+
+	public boolean validateTimestamps(Timestamp t1, Timestamp t2)
+	{
+		if (t1.before(t2))
+			return true;
+		else
+			return false;
+	}
+
 	public boolean isStringDateMinute(String date)
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -148,6 +150,38 @@ public class Validator
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isPasswordValid(String password)
+	{
+		int uppercase = 0, lowercase = 0 , specialcase=0;
+		char ch;
+		if (password.length() < 8)
+			return false;
+		for (int i = 0; i < password.length(); i++)
+		{
+			ch = password.charAt(i);
+			int asciivalue = (int) ch;
+			if (asciivalue >= 65 && asciivalue <= 90)
+			{
+				uppercase++;
+			}
+			else if (asciivalue >= 97 && asciivalue <= 122)
+			{
+				lowercase++;
+			}
+			else if (asciivalue >= 33 && asciivalue <= 64)
+			{
+				specialcase++;
+			}
+		}
+		if (lowercase == 0)
+			return false;
+		if (uppercase == 0)
+			return false;
+		if (specialcase == 0)
+			return false;
+		return true;
 	}
 
 }

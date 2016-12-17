@@ -40,6 +40,7 @@ public class DBExporterControler
 	        setInfoDialog("Conference added", "Conference "+name +" was correct added to database with id "+id);
 			MyLogger logger = new MyLogger();
 			logger.writeInfo("Conference "+name +" was saved to Database correct with id "+id);	
+			submitButton.setDisable(true);
 		}
 		catch (SQLException e)
 		{
