@@ -86,6 +86,8 @@ public class Controler
 
 	public void createConference()
 	{
+		MyLogger logger = new MyLogger();
+		logger.writeInfo("User "+Config.getUsername()+" choose create conference mode");	
 		confButton.setDisable(true);
 		dbButton.setDisable(true);
 		Task task = new Task<Void>()
@@ -208,7 +210,7 @@ public class Controler
 		if (extracts == null)
 		{
 			System.out.println("ex");
-			setErrorDialog("Extract loading error");
+			Config.setConference(null);
 			return;
 		}
 		conference.setExtracts(extracts);
@@ -216,7 +218,7 @@ public class Controler
 		if (sk == null)
 		{
 			System.out.println("sk");
-			setErrorDialog("Skeleton loading error");
+			Config.setConference(null);
 			return;
 		}
 		System.out.println("CONF: " + conference.countNormalLecture());
@@ -226,6 +228,8 @@ public class Controler
 		{
 			logger.writeError("Not enough session units to assigned all lectures");
 			setErrorDialog("Ammount lectures error");
+			Platform.exit();
+			return;
 			
 		}
 		conference.setTimetableSkeleton(sk);
@@ -244,12 +248,8 @@ public class Controler
 		schedul.runAlgorith();
 		if(schedul.findBestIndividual().getFitValue() < schedul.findBestIndividual().getMinFitValueToBeCorrect())
 		{
-			System.out.println(schedul.findBestIndividual().getFitValue());
-			System.out.println(schedul.findBestIndividual().getMinFitValueToBeCorrect());
 			MyLogger logger = new MyLogger();
 			logger.writeError("Can not assign normal lecture to sessions with this data.");	
-			//setErrorDialog("Normal lectures scheduling error");
-			//Platform.exit();
 			Config.setConference(null);
 			return;
 		}
@@ -260,8 +260,6 @@ public class Controler
 		{
 			MyLogger logger = new MyLogger();
 			logger.writeError("Can not assign plenary lecture to sessions with this data.");	
-			//setErrorDialog("Plenart lectures scheduling error");
-			//Platform.exit();
 			Config.setConference(null);
 			return;
 		}
@@ -358,6 +356,8 @@ public class Controler
 
 	public Stage setDBView() throws IOException
 	{
+		MyLogger logger = new MyLogger();
+		logger.writeInfo("User "+Config.getUsername()+" choose DB view");	
 		exitMainView();
 		Stage logScene = new Stage();
 		Pane page = (Pane) FXMLLoader.load(LogStage.class.getResource("DBView.fxml"));

@@ -67,10 +67,10 @@ public class PDFWritter
 		Paragraph p1;
 		Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
 		Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 17, Font.BOLDITALIC);
-		Chunk chunk = new Chunk("Welcome", chapterFont);
+		Chunk chunk = new Chunk("", chapterFont);
 		Chapter chapter = new Chapter(new Paragraph(chunk), 1);
 		chapter.setNumberDepth(0);
-		p1 = new Paragraph("Conference Harmonogram2", paragraphFont);
+		p1 = new Paragraph("Conference Harmonogram", paragraphFont);
 		p1.setAlignment(Element.ALIGN_CENTER);
 		chapter.add(p1);
 		document.add(chapter);

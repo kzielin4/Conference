@@ -13,7 +13,7 @@
             <Image url="@../../../../Images/loading.gif" />
          </image>
       </ImageView>
-      <Label layoutX="32.0" layoutY="306.0" prefHeight="71.0" prefWidth="238.0" text="    Creating timetable" textAlignment="CENTER">
+      <Label layoutX="32.0" layoutY="306.0" prefHeight="71.0" prefWidth="238.0" text="    Creating Timetable" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>

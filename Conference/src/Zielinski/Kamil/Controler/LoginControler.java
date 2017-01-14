@@ -11,6 +11,7 @@ import java.util.Scanner;
 import Zielinski.Kamil.Model.CoderBase64;
 import Zielinski.Kamil.Model.Config;
 import Zielinski.Kamil.Model.DBConnector;
+import Zielinski.Kamil.Model.MyLogger;
 import Zielinski.Kamil.View.LogStage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +48,8 @@ public class LoginControler
 			try
 			{
 				Config.setUsername(user);
+				MyLogger logger = new MyLogger();
+				logger.writeInfo("User "+user+" successful login in to system");	
 				setMainStage();
 			}
 			catch (IOException e)
@@ -57,6 +60,8 @@ public class LoginControler
 		}
 		else
 		{
+			MyLogger logger = new MyLogger();
+			logger.writeInfo("Invalid Username/Password: "+user+"/"+pass);	
 			showNegativeNotification();
 		}
 	}
@@ -75,7 +80,6 @@ public class LoginControler
 		Scene scene = new Scene(page);
 		logScene.setScene(scene);
 		logScene.initModality(Modality.APPLICATION_MODAL);
-		logScene.setTitle("LogWindow");
 		logScene.show();
 	}
 
@@ -88,7 +92,6 @@ public class LoginControler
 		logScene.setScene(scene);
 		logScene.setResizable(false);
 		logScene.initModality(Modality.APPLICATION_MODAL);
-		logScene.setTitle("LogWindow");
 		logScene.show();
 	}
 
